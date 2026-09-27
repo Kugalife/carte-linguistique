@@ -30,6 +30,10 @@ vingtaine de secondes.
 
 # Contrôles de cohérence sur les données chargées
 .venv/bin/python pipeline/scripts/03_controle_croise.py
+
+# Phase 1 : secteurs et aires de diffusion de la RMR de Montréal, avec leurs
+# limites. Le premier lancement télécharge 225 Mo de fichiers de limites.
+.venv/bin/python pipeline/scripts/04_charger_limites_rmr.py
 ```
 
 Copier `.env.example` vers `.env` pour configurer une clé CensusMapper — utile
@@ -48,6 +52,7 @@ pipeline/
     connectors/
       statcan_sdmx.py  source primaire des effectifs 2021
       censusmapper.py  recensements 1996-2016, contrôle croisé
+      statcan_limites.py  géométries (fichiers de limites cartographiques)
   sql/
     001_schema.sql            schéma générique multi-pays
     002_reference_canada.sql  données de référence du Canada
@@ -84,11 +89,6 @@ Trois résultats modifient ce que prévoyait le PRD. Ils sont détaillés dans
    maternelle. C'est lui, et non la PLOP, qui rendra le Canada comparable aux
    États-Unis, à l'Australie et à la Nouvelle-Zélande en phase 6. Il est catalogué
    mais non chargé.
-
-## Ce qui reste ouvert
-
-- **Géométries.** Les fichiers de limites cartographiques ne s'obtiennent pas par
-  API. La colonne `territoire.geometrie` existe, vide.
 
 ## Licence
 

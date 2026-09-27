@@ -175,9 +175,36 @@ de 54 correspond aux résidents des établissements institutionnels, que les axe
 linguistiques excluent. **Le dénominateur d'un pourcentage linguistique est
 `observation.total_reference`, jamais `territoire.population`.**
 
-## 6. Ce qui reste à faire
+## 6. Fichiers des limites cartographiques
 
-- [ ] Géométries : téléchargement des fichiers de limites cartographiques (aucune API ; fichiers zip par niveau).
+Aucune API : un fichier zip national par niveau, téléchargé une fois et conservé
+sous `data/raw/statcan_limites/` (connecteur `statcan_limites.py`).
+
+| Niveau | Fichier | Taille |
+|---|---|---|
+| RMR et agglomérations | `lcma000b21a_e.zip` | 13 Mo |
+| Secteurs de recensement | `lct_000b21a_e.zip` | 13 Mo |
+| Aires de diffusion | `lda_000b21a_e.zip` | 197 Mo |
+
+- **Version cartographique** (« b » dans le nom), découpée selon le littoral. La
+  version numérique (« a ») couvre le fleuve et les lacs.
+- **Projection EPSG:3347** (Lambert de Statistique Canada, en mètres). Le
+  pipeline stocke les géométries en WGS 84 (EPSG:4326), la projection des tuiles.
+- **Le fichier des aires de diffusion ne dit ni le secteur ni la RMR.** Ses
+  attributs : `DAUID`, `DGUID`, `LANDAREA`, `PRUID`. L'aire est rattachée au
+  secteur qui contient un point intérieur de son polygone. Les secteurs, eux, se
+  filtrent par préfixe : un `CTUID` commence par le code de sa RMR.
+- **`LANDAREA` est la superficie terrestre en km²**, arrondie à 4 décimales. Elle
+  sert au contrôle d'emboîtement : la somme des aires redonne le secteur.
+- **Le serveur ralentit parfois une connexion** à quelques dizaines de Ko/s ou la
+  laisse en suspens, alors qu'une nouvelle connexion obtient plusieurs Mo/s. Le
+  connecteur rouvre la connexion sous 200 Ko/s et reprend le transfert (en-tête
+  `Range`, que le serveur accepte).
+- DuckDB lit le shapefile dans l'archive (`/vsizip/`), sans décompression.
+
+## 7. Ce qui reste à faire
+
+- [x] Géométries : fichiers de limites cartographiques, voir la section 6.
 - [ ] Clé CensusMapper, pour la phase 3 seulement.
 - [ ] Contrôle croisé SDMX / CensusMapper (`03_controle_croise.py`), qui exige cette clé.
 - [ ] Vérifier la disponibilité de la PLOP dans les recensements antérieurs (roadmap phase 3).

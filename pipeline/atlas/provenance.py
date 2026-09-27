@@ -38,6 +38,7 @@ def enregistrer(
     source_code: str,
     requete: str,
     reponse: bytes | None = None,
+    reponse_sha256: str | None = None,
     nb_lignes: int | None = None,
     tableau_source: str | None = None,
     version_source: str | None = None,
@@ -49,11 +50,13 @@ def enregistrer(
 
     conserver_brut : écrit la réponse telle que reçue sous data/raw/, nommée par
     l'identifiant. Sans cela, l'empreinte ne serait vérifiable contre rien.
+    reponse_sha256 : empreinte d'une réponse déjà conservée ailleurs sous
+    data/raw/ (fichier trop gros pour être relu en mémoire).
     """
     maintenant = datetime.now(timezone.utc)
     ext_id = identifiant(source_code, requete, maintenant)
 
-    sha = empreinte(reponse) if reponse is not None else None
+    sha = empreinte(reponse) if reponse is not None else reponse_sha256
     if conserver_brut and reponse is not None:
         dossier = config.BRUT / source_code
         dossier.mkdir(parents=True, exist_ok=True)

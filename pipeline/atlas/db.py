@@ -55,3 +55,12 @@ def inserer_par_profondeur(
         con.executemany(sql, lot)
         total += len(lot)
     return total
+
+
+def charger_spatial(con: duckdb.DuckDBPyConnection) -> None:
+    """Active l'extension spatiale (lecture des shapefiles par GDAL, reprojection).
+
+    Chargée à la demande seulement : la phase 0 n'en a pas besoin, et
+    l'extension se télécharge au premier usage.
+    """
+    con.execute("INSTALL spatial; LOAD spatial;")

@@ -30,10 +30,28 @@ reproductible, et deux extractions sont comparables ligne à ligne.
 `annee_limites` est `NOT NULL` et distincte de l'année d'observation. Voir
 [décision 0002](decisions/0002-geographies-harmonisees-des-le-schema.md).
 
+`parent_id` suit l'emboîtement le plus utile au contrôle des totaux : dans une
+RMR, une aire de diffusion a pour parent son **secteur de recensement**, bien
+que `niveau_geo` place l'aire sous la subdivision. Les deux emboîtements sont
+exacts ; hors RMR, sans secteurs, le parent sera la subdivision (phase 2).
+
+Les géométries sont dans `territoire_geometrie`, pas dans `territoire`.
+
 `tnr_questionnaire_abrege` / `tnr_questionnaire_long` : taux globaux de
 non-réponse publiés par la source. Statistique Canada recommande la prudence
 au-delà de 25 % — critère objectif d'avertissement, distinct du seuil de faible
 population.
+
+### `territoire_geometrie`
+Les limites d'un territoire, en WKB, WGS 84 (EPSG:4326), avec l'extraction du
+fichier de limites dont elles viennent.
+
+Elles ont leur propre table parce qu'on les recharge (nouvelle version des
+fichiers, autre généralisation), et que DuckDB interdit de modifier une colonne
+portant une clé étrangère sur une ligne référencée. Un territoire est référencé
+par ses enfants et ses observations : sa géométrie et sa provenance ne
+pourraient plus changer. Rien ne référence `territoire_geometrie`, qui accepte
+donc un vrai upsert.
 
 ### `niveau_geo`
 Hiérarchie propre à chaque pays, ordonnée par `rang` (0 = pays, croissant vers le
@@ -101,8 +119,6 @@ comment la source numérote ses variables.
 
 ## Ce que le schéma ne fait pas encore
 
-- **Géométries** : la colonne `territoire.geometrie` existe, vide. Les fichiers de
-  limites ne s'obtiennent pas par API et restent à télécharger (phase 1).
 - **Indices calculés** (diversité de Greenberg ou Shannon) : ce sont des vues ou
   des colonnes dérivées, à ajouter quand les modes d'affichage existeront.
 - **Projections** (phase 5) : elles produiront des observations d'un genre

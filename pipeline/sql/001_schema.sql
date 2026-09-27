@@ -82,8 +82,6 @@ CREATE TABLE IF NOT EXISTS territoire (
     -- distinct du seuil de faible population.
     tnr_questionnaire_abrege DOUBLE,        -- données intégrales (100 %) : langue maternelle, PLOP
     tnr_questionnaire_long   DOUBLE,        -- échantillon 25 % : connaissance des langues, langue au travail
-    geometrie       BLOB,                   -- WKB ; extension spatiale DuckDB au besoin
-    geom_source_ext TEXT REFERENCES extraction(id),
     extraction_id   TEXT REFERENCES extraction(id)
 );
 
@@ -99,6 +97,17 @@ CREATE TABLE IF NOT EXISTS territoire_lien (
     methode             TEXT NOT NULL,      -- 'identite', 'tongfen', 'clctd', 'aire', 'population'
     extraction_id       TEXT REFERENCES extraction(id),
     PRIMARY KEY (territoire_source, territoire_cible, methode)
+);
+
+-- Limites d'un territoire, à part de la ligne du territoire : c'est une donnée
+-- qu'on recharge, et DuckDB interdit de modifier une colonne à clé étrangère
+-- (extraction_id) sur une ligne référencée — or un territoire l'est par ses
+-- enfants et ses observations. Rien ne référence cette table-ci : elle accepte
+-- un vrai upsert.
+CREATE TABLE IF NOT EXISTS territoire_geometrie (
+    territoire_id   TEXT PRIMARY KEY REFERENCES territoire(id),
+    geometrie       BLOB NOT NULL,          -- WKB, WGS 84 (EPSG:4326)
+    extraction_id   TEXT NOT NULL REFERENCES extraction(id)
 );
 
 ------------------------------------------------------------------ axes et langues

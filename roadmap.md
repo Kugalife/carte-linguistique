@@ -44,7 +44,7 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 
 ### Non fait, et pourquoi
 
-- [ ] **Géométries.** Les fichiers de limites cartographiques ne s'obtiennent pas par API ; la colonne `territoire.geometrie` existe, vide. Premier travail de la phase 1.
+- [x] **Géométries.** Faites en phase 1 (27 septembre), voir ci-dessous.
 - [x] **Licence du dépôt.** Réglée le 27 septembre (décision 0005) : MIT pour le code, CC BY 4.0 pour les données et la documentation.
 
 ---
@@ -62,7 +62,7 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 
 ### Données
 - [ ] Récupérer, pour la RMR 462 et le recensement 2021, la langue maternelle et la PLOP aux niveaux secteur de recensement et aire de diffusion
-- [ ] Récupérer les limites cartographiques correspondantes
+- [x] Récupérer les limites cartographiques correspondantes → `04_charger_limites_rmr.py` : 1 004 secteurs, 6 574 aires de diffusion, emboîtement et superficies vérifiés (27 septembre)
 - [ ] Contrôler la cohérence : totaux des aires de diffusion vs secteurs vs RMR
 - [ ] Marquer les territoires à données supprimées ou à faible population
 

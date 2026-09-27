@@ -40,6 +40,12 @@ Les réponses d'observations sont écrites telles que reçues sous
 `data/raw/<source>/<id>.bin`. Sans elles, `reponse_sha256` ne serait vérifiable
 contre rien. Ce répertoire n'est pas versionné : le pipeline le reconstruit.
 
+Exception : les fichiers de limites cartographiques (jusqu'à 197 Mo) sont
+conservés sous leur nom d'origine, `data/raw/statcan_limites/<fichier>.zip`, et
+ne sont téléchargés qu'une fois. Chaque chargement recalcule leur empreinte et
+crée une extraction : si Statistique Canada republie un fichier, l'empreinte
+change.
+
 Les réponses de *structure* (définitions, codelists) sont mises en cache sous
 `data/interim/sdmx/` pour ne pas solliciter inutilement le service — elles
 pèsent près de 700 Ko et sont demandées plusieurs fois par exécution. Ce cache
