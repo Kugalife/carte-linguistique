@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Atlas des langues — Montréal</title>
+    <meta name="description" content="Langue maternelle et première langue officielle parlée, par aire de diffusion, recensement de 2021." />
+  </head>
+  <body>
+    <div id="carte" role="region" aria-label="Carte"></div>
+
+    <aside id="panneau">
+      <header>
+        <h1 data-t="titre"></h1>
+        <button id="bouton-langue" type="button"></button>
+      </header>
+      <p class="discret" data-t="sousTitre"></p>
+
+      <fieldset>
+        <legend data-t="carte"></legend>
+        <label><input type="radio" name="carte" value="lm" checked /> <span data-t="lm"></span></label>
+        <label><input type="radio" name="carte" value="plop" /> <span data-t="plop"></span></label>
+      </fieldset>
+
+      <div id="option-sans">
+        <label class="interrupteur">
+          <input type="checkbox" id="sans-officielles" /> <span data-t="sansOfficielles"></span>
+        </label>
+      </div>
+
+      <fieldset id="option-denominateur" hidden>
+        <legend data-t="intensite"></legend>
+        <label><input type="radio" name="denominateur" value="population" checked /> <span data-t="population"></span></label>
+        <label><input type="radio" name="denominateur" value="allophones" /> <span data-t="allophones"></span></label>
+      </fieldset>
+
+      <div id="legende"></div>
+
+      <p class="discret" data-t="cliquez"></p>
+      <p class="avertissement" data-t="avertissement"></p>
+
+      <details>
+        <summary data-t="sources"></summary>
+        <ul id="sources-liste"></ul>
+      </details>
+    </aside>
+
+    <section id="detail" hidden aria-live="polite"></section>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

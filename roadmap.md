@@ -68,19 +68,20 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 
 ### Carte
 - [x] Générer les tuiles vectorielles (tippecanoe → PMTiles) → `06_exporter_carte.py` : 7,7 Mo, plus les compositions par secteur pour le panneau de détail (27 septembre)
-- [ ] Afficher la carte avec MapLibre, bascule secteur / aire de diffusion selon le zoom
-- [ ] Deux cartes (27 septembre) : PLOP (français ou anglais dominant) et langue maternelle ; sélecteur entre les deux
-- [ ] Mode par défaut : langue dominante × intensité (teinte = langue, clarté = part), voir PRD 6.6
-- [ ] Légende en matrice (langues × paliers < 40 / 40–60 / 60–80 / ≥ 80 %), entrées cliquables
+- [x] Afficher la carte avec MapLibre, bascule secteur / aire de diffusion selon le zoom (zoom 12)
+- [x] Deux cartes (27 septembre) : PLOP (français ou anglais dominant) et langue maternelle ; sélecteur entre les deux
+- [x] Mode par défaut : langue dominante × intensité (teinte = langue, clarté = part, mélange OKLab), voir PRD 6.6
+- [x] Légende en matrice (langues × paliers < 40 / 40–60 / 60–80 / ≥ 80 %)
+- [ ] Légende : entrées cliquables, effectifs de la zone visible
 - [x] Palette fixe (6 teintes validées, voir décision 0004) : français, anglais, espagnol, arabe, mandarin, italien — confirmée sur les données (27 septembre)
 - [ ] Tester les paliers d'intensité de chaque teinte pour le daltonisme, pas seulement les couleurs de base
 - [ ] Mode « part d'une langue choisie » (une teinte, échelle logarithmique en option)
-- [ ] Carte de la langue maternelle : option « retirer le français et l'anglais » (mode « langue non officielle dominante », avancé de la phase 2 le 27 septembre : c'est là que la diversité se voit)
-- [ ] Fond de carte OpenFreeMap (gratuit, sans clé)
-- [ ] Traitement des aires à faible population (hachures) et des données supprimées
-- [ ] Info-bulle et panneau de détail (composition complète, population, source)
-- [ ] Légende, mention des sources, avertissement sur les petites populations
-- [ ] Interface en français et en anglais
+- [x] Carte de la langue maternelle : option « retirer le français et l'anglais » (mode « langue non officielle dominante », avancé de la phase 2 le 27 septembre : c'est là que la diversité se voit)
+- [x] Fond de carte OpenFreeMap (gratuit, sans clé)
+- [x] Traitement des aires à faible population (hachures) et des données supprimées (points)
+- [x] Info-bulle et panneau de détail (composition complète des deux axes, population, non-réponse)
+- [x] Légende, mention des sources, avertissement sur les petites populations
+- [x] Interface en français et en anglais
 
 **Critère de fin :** un utilisateur peut trouver son quartier, basculer entre les deux axes et comprendre d'où viennent les chiffres.
 

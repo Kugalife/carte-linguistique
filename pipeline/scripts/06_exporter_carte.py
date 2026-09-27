@@ -156,6 +156,10 @@ def main(*args: str) -> int:
     secteurs, aires = ids("CA.CT"), ids("CA.DA")
     reglages = indicateurs.Reglages.lire()
     props = indicateurs.proprietes(con, secteurs + aires, reglages)
+    # Le panneau de détail d'une aire lit le fichier de son secteur.
+    for aire, secteur in con.execute(
+            "SELECT id, parent_id FROM territoire WHERE id IN (SELECT unnest(?))", [aires]).fetchall():
+        props[aire]["ct"] = secteur
 
     TRAVAIL.mkdir(parents=True, exist_ok=True)
     SORTIE.mkdir(parents=True, exist_ok=True)

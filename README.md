@@ -44,6 +44,18 @@ vingtaine de secondes.
 .venv/bin/python pipeline/scripts/06_exporter_carte.py
 ```
 
+## La carte
+
+```bash
+cd web
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # site statique dans web/dist/, à publier sur GitHub Pages
+```
+
+Le site lit les fichiers produits par `06_exporter_carte.py` sous
+`web/public/donnees/` (non versionnés) et les réglages de `config/carte.json`.
+
 Copier `.env.example` vers `.env` pour configurer une clé CensusMapper — utile
 seulement pour les recensements antérieurs à 2021 (phase 3).
 
@@ -72,7 +84,7 @@ docs/
   sources-canada.md    inventaire des sources, pièges des API
   decisions/           décisions d'architecture
 data/                  produit par le pipeline, non versionné
-web/                   phase 1
+web/                   la carte : Vite + TypeScript + MapLibre, site statique
 ```
 
 ## Ce que la phase 0 a établi
