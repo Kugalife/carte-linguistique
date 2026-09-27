@@ -1,0 +1,3026 @@
+{
+ "ca.langue.total": {
+  "fr": "Total - Langue maternelle pour la population totale à l'exclusion des résidents d'un établissement institutionnel - Données intégrales (100 %)",
+  "en": "Total - Mother tongue for the total population excluding institutional residents - 100% data",
+  "type": "total",
+  "parent": null,
+  "famille": null,
+  "ordre": 0,
+  "iso639_3": null
+ },
+ "ca.langue.reponses-uniques": {
+  "fr": "Réponses uniques",
+  "en": "Single responses",
+  "type": "regroupement",
+  "parent": "ca.langue.total",
+  "famille": null,
+  "ordre": 1,
+  "iso639_3": null
+ },
+ "ca.langue.langues-officielles": {
+  "fr": "Langues officielles",
+  "en": "Official languages",
+  "type": "regroupement",
+  "parent": "ca.langue.reponses-uniques",
+  "famille": null,
+  "ordre": 2,
+  "iso639_3": null
+ },
+ "ca.langue.anglais": {
+  "fr": "Anglais",
+  "en": "English",
+  "type": "langue",
+  "parent": "ca.langue.langues-officielles",
+  "famille": "ca.langue.anglais",
+  "ordre": 3,
+  "iso639_3": "eng"
+ },
+ "ca.langue.francais": {
+  "fr": "Français",
+  "en": "French",
+  "type": "langue",
+  "parent": "ca.langue.langues-officielles",
+  "famille": "ca.langue.francais",
+  "ordre": 4,
+  "iso639_3": "fra"
+ },
+ "ca.langue.langues-non-officielles": {
+  "fr": "Langues non officielles",
+  "en": "Non-official languages",
+  "type": "regroupement",
+  "parent": "ca.langue.reponses-uniques",
+  "famille": null,
+  "ordre": 5,
+  "iso639_3": null
+ },
+ "ca.langue.langues-autochtones": {
+  "fr": "Langues autochtones",
+  "en": "Indigenous languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-officielles",
+  "famille": null,
+  "ordre": 6,
+  "iso639_3": null
+ },
+ "ca.langue.langues-algonquiennes": {
+  "fr": "Langues algonquiennes",
+  "en": "Algonquian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 7,
+  "iso639_3": null
+ },
+ "ca.langue.pied-noir": {
+  "fr": "Pied-noir",
+  "en": "Blackfoot",
+  "type": "langue",
+  "parent": "ca.langue.langues-algonquiennes",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 8,
+  "iso639_3": null
+ },
+ "ca.langue.langues-cries-innues": {
+  "fr": "Langues cries-innues",
+  "en": "Cree-Innu languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-algonquiennes",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 9,
+  "iso639_3": null
+ },
+ "ca.langue.atikamekw": {
+  "fr": "Atikamekw",
+  "en": "Atikamekw",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries-innues",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 10,
+  "iso639_3": "atj"
+ },
+ "ca.langue.langues-cries": {
+  "fr": "Langues cries",
+  "en": "Cree languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-cries-innues",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 11,
+  "iso639_3": null
+ },
+ "ca.langue.ililimowin-cri-de-moose": {
+  "fr": "Ililimowin (cri de Moose)",
+  "en": "Ililimowin (Moose Cree)",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 12,
+  "iso639_3": null
+ },
+ "ca.langue.inu-ayimun-cri-du-sud-est": {
+  "fr": "Inu Ayimun (cri du Sud-Est)",
+  "en": "Inu Ayimun (Southern East Cree)",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 13,
+  "iso639_3": null
+ },
+ "ca.langue.iyiyiw-ayimiwin-cri-du-nord-est": {
+  "fr": "Iyiyiw-Ayimiwin (cri du Nord-Est)",
+  "en": "Iyiyiw-Ayimiwin (Northern East Cree)",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 14,
+  "iso639_3": null
+ },
+ "ca.langue.nehinawewin-cri-des-marais": {
+  "fr": "Nehinawewin (cri des marais)",
+  "en": "Nehinawewin (Swampy Cree)",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 15,
+  "iso639_3": null
+ },
+ "ca.langue.nehiyawewin-cri-des-plaines": {
+  "fr": "Nehiyawewin (cri des plaines)",
+  "en": "Nehiyawewin (Plains Cree)",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 16,
+  "iso639_3": null
+ },
+ "ca.langue.nihithawiwin-cri-des-bois": {
+  "fr": "Nihithawiwin (cri des bois)",
+  "en": "Nihithawiwin (Woods Cree)",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 17,
+  "iso639_3": null
+ },
+ "ca.langue.cri-n-d-a": {
+  "fr": "Cri, n.d.a.",
+  "en": "Cree, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-cries",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 18,
+  "iso639_3": null
+ },
+ "ca.langue.innu-montagnais": {
+  "fr": "Innu (montagnais)",
+  "en": "Innu (Montagnais)",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries-innues",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 19,
+  "iso639_3": "moe"
+ },
+ "ca.langue.naskapi": {
+  "fr": "Naskapi",
+  "en": "Naskapi",
+  "type": "langue",
+  "parent": "ca.langue.langues-cries-innues",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 20,
+  "iso639_3": "nsk"
+ },
+ "ca.langue.langues-algonquiennes-de-l-est": {
+  "fr": "Langues algonquiennes de l'Est",
+  "en": "Eastern Algonquian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-algonquiennes",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 21,
+  "iso639_3": null
+ },
+ "ca.langue.mi-kmaq": {
+  "fr": "Mi'kmaq",
+  "en": "Mi'kmaq",
+  "type": "langue",
+  "parent": "ca.langue.langues-algonquiennes-de-l-est",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 22,
+  "iso639_3": null
+ },
+ "ca.langue.wolastoqewi-malecite": {
+  "fr": "Wolastoqewi (malécite)",
+  "en": "Wolastoqewi (Malecite)",
+  "type": "langue",
+  "parent": "ca.langue.langues-algonquiennes-de-l-est",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 23,
+  "iso639_3": null
+ },
+ "ca.langue.langues-ojibwees-potawatomies": {
+  "fr": "Langues ojibwées-potawatomies",
+  "en": "Ojibway-Potawatomi languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-algonquiennes",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 24,
+  "iso639_3": null
+ },
+ "ca.langue.anicinabemowin-algonquin": {
+  "fr": "Anicinabemowin (algonquin)",
+  "en": "Anicinabemowin (Algonquin)",
+  "type": "langue",
+  "parent": "ca.langue.langues-ojibwees-potawatomies",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 25,
+  "iso639_3": "alq"
+ },
+ "ca.langue.oji-cri": {
+  "fr": "Oji-cri",
+  "en": "Oji-Cree",
+  "type": "langue",
+  "parent": "ca.langue.langues-ojibwees-potawatomies",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 26,
+  "iso639_3": "ojs"
+ },
+ "ca.langue.langues-ojibwees": {
+  "fr": "Langues ojibwées",
+  "en": "Ojibway languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-ojibwees-potawatomies",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 27,
+  "iso639_3": null
+ },
+ "ca.langue.anishinaabemowin-chippewa": {
+  "fr": "Anishinaabemowin (chippewa)",
+  "en": "Anishinaabemowin (Chippewa)",
+  "type": "langue",
+  "parent": "ca.langue.langues-ojibwees",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 28,
+  "iso639_3": null
+ },
+ "ca.langue.daawaamwin-odawa": {
+  "fr": "Daawaamwin (odawa)",
+  "en": "Daawaamwin (Odawa)",
+  "type": "langue",
+  "parent": "ca.langue.langues-ojibwees",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 29,
+  "iso639_3": null
+ },
+ "ca.langue.saulteaux-ojibwe-occidental": {
+  "fr": "Saulteaux (ojibwé occidental)",
+  "en": "Saulteau (Western Ojibway)",
+  "type": "langue",
+  "parent": "ca.langue.langues-ojibwees",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 30,
+  "iso639_3": null
+ },
+ "ca.langue.ojibwe-n-d-a": {
+  "fr": "Ojibwé, n.d.a.",
+  "en": "Ojibway, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-ojibwees",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 31,
+  "iso639_3": null
+ },
+ "ca.langue.langues-algonquiennes-n-i-a": {
+  "fr": "Langues algonquiennes, n.i.a.",
+  "en": "Algonquian languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-algonquiennes",
+  "famille": "ca.langue.langues-algonquiennes",
+  "ordre": 32,
+  "iso639_3": null
+ },
+ "ca.langue.langues-athabascanes": {
+  "fr": "Langues athabascanes",
+  "en": "Athabaskan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 33,
+  "iso639_3": null
+ },
+ "ca.langue.langues-athabascanes-du-nord": {
+  "fr": "Langues athabascanes du Nord",
+  "en": "Northern Athabaskan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-athabascanes",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 34,
+  "iso639_3": null
+ },
+ "ca.langue.dakelh-porteur": {
+  "fr": "Dakelh (porteur)",
+  "en": "Dakelh (Carrier)",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 35,
+  "iso639_3": null
+ },
+ "ca.langue.dane-zaa-castor": {
+  "fr": "Dane-zaa (castor)",
+  "en": "Dane-zaa (Beaver)",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 36,
+  "iso639_3": null
+ },
+ "ca.langue.dene-n-d-a": {
+  "fr": "Déné, n.d.a.",
+  "en": "Dene, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 37,
+  "iso639_3": null
+ },
+ "ca.langue.gwich-in": {
+  "fr": "Gwich'in",
+  "en": "Gwich'in",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 38,
+  "iso639_3": null
+ },
+ "ca.langue.langues-esclaves-lievre": {
+  "fr": "Langues esclaves-lièvre",
+  "en": "Slavey-Hare languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 39,
+  "iso639_3": null
+ },
+ "ca.langue.deh-gah-ghotie-zhatie-esclave-du-sud": {
+  "fr": "Deh Gah Ghotie Zhatie (esclave du Sud)",
+  "en": "Deh Gah Ghotie Zhatie (South Slavey)",
+  "type": "langue",
+  "parent": "ca.langue.langues-esclaves-lievre",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 40,
+  "iso639_3": null
+ },
+ "ca.langue.satuotine-yati-esclave-du-nord": {
+  "fr": "Satuotine Yati (esclave du Nord)",
+  "en": "Satuotine Yati (North Slavey)",
+  "type": "langue",
+  "parent": "ca.langue.langues-esclaves-lievre",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 41,
+  "iso639_3": null
+ },
+ "ca.langue.esclave-n-d-a": {
+  "fr": "Esclave, n.d.a.",
+  "en": "Slavey, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-esclaves-lievre",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 42,
+  "iso639_3": null
+ },
+ "ca.langue.langues-tahltanes": {
+  "fr": "Langues tahltanes",
+  "en": "Tahltan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 43,
+  "iso639_3": null
+ },
+ "ca.langue.kaska-nahani": {
+  "fr": "Kaska (nahani)",
+  "en": "Kaska (Nahani)",
+  "type": "langue",
+  "parent": "ca.langue.langues-tahltanes",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 44,
+  "iso639_3": null
+ },
+ "ca.langue.tahltan": {
+  "fr": "Tahltan",
+  "en": "Tahltan",
+  "type": "langue",
+  "parent": "ca.langue.langues-tahltanes",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 45,
+  "iso639_3": null
+ },
+ "ca.langue.tlicho-flanc-de-chien": {
+  "fr": "Tlicho (flanc-de-chien)",
+  "en": "Tlicho (Dogrib)",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 46,
+  "iso639_3": null
+ },
+ "ca.langue.tse-khene-sekani": {
+  "fr": "Tse'khene (sekani)",
+  "en": "Tse'khene (Sekani)",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 47,
+  "iso639_3": null
+ },
+ "ca.langue.tsilhqot-in-chilcotin": {
+  "fr": "Tsilhqot'in (chilcotin)",
+  "en": "Tsilhqot'in (Chilcotin)",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 48,
+  "iso639_3": null
+ },
+ "ca.langue.tsuu-t-ina-sarsi": {
+  "fr": "Tsuu T'ina (sarsi)",
+  "en": "Tsuu T'ina (Sarsi)",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 49,
+  "iso639_3": null
+ },
+ "ca.langue.langues-tutchones": {
+  "fr": "Langues tutchones",
+  "en": "Tutchone languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 50,
+  "iso639_3": null
+ },
+ "ca.langue.tutchone-du-nord": {
+  "fr": "Tutchone du Nord",
+  "en": "Northern Tutchone",
+  "type": "langue",
+  "parent": "ca.langue.langues-tutchones",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 51,
+  "iso639_3": null
+ },
+ "ca.langue.tutchone-du-sud": {
+  "fr": "Tutchone du Sud",
+  "en": "Southern Tutchone",
+  "type": "langue",
+  "parent": "ca.langue.langues-tutchones",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 52,
+  "iso639_3": null
+ },
+ "ca.langue.tutchone-n-d-a": {
+  "fr": "Tutchone, n.d.a.",
+  "en": "Tutchone, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-tutchones",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 53,
+  "iso639_3": null
+ },
+ "ca.langue.wetsuwet-en-babine": {
+  "fr": "Wetsuwet'en-babine",
+  "en": "Wetsuwet'en-Babine",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes-du-nord",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 54,
+  "iso639_3": null
+ },
+ "ca.langue.tlingit": {
+  "fr": "Tlingit",
+  "en": "Tlingit",
+  "type": "langue",
+  "parent": "ca.langue.langues-athabascanes",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 55,
+  "iso639_3": null
+ },
+ "ca.langue.langues-athabascanes-n-i-a": {
+  "fr": "Langues athabascanes, n.i.a.",
+  "en": "Athabaskan languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-athabascanes",
+  "famille": "ca.langue.langues-athabascanes",
+  "ordre": 56,
+  "iso639_3": null
+ },
+ "ca.langue.haida": {
+  "fr": "Haïda",
+  "en": "Haida",
+  "type": "langue",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.haida",
+  "ordre": 57,
+  "iso639_3": null
+ },
+ "ca.langue.langues-inuktutes-inuites": {
+  "fr": "Langues inuktutes (inuites)",
+  "en": "Inuktut (Inuit) languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-inuktutes-inuites",
+  "ordre": 58,
+  "iso639_3": null
+ },
+ "ca.langue.inuinnaqtun-inuvialuktun": {
+  "fr": "Inuinnaqtun (Inuvialuktun)",
+  "en": "Inuinnaqtun (Inuvialuktun)",
+  "type": "famille",
+  "parent": "ca.langue.langues-inuktutes-inuites",
+  "famille": "ca.langue.langues-inuktutes-inuites",
+  "ordre": 59,
+  "iso639_3": null
+ },
+ "ca.langue.inuinnaqtun": {
+  "fr": "Inuinnaqtun",
+  "en": "Inuinnaqtun",
+  "type": "langue",
+  "parent": "ca.langue.inuinnaqtun-inuvialuktun",
+  "famille": "ca.langue.langues-inuktutes-inuites",
+  "ordre": 60,
+  "iso639_3": null
+ },
+ "ca.langue.inuvialuktun": {
+  "fr": "Inuvialuktun",
+  "en": "Inuvialuktun",
+  "type": "langue",
+  "parent": "ca.langue.inuinnaqtun-inuvialuktun",
+  "famille": "ca.langue.langues-inuktutes-inuites",
+  "ordre": 61,
+  "iso639_3": null
+ },
+ "ca.langue.inuktitut": {
+  "fr": "Inuktitut",
+  "en": "Inuktitut",
+  "type": "langue",
+  "parent": "ca.langue.langues-inuktutes-inuites",
+  "famille": "ca.langue.langues-inuktutes-inuites",
+  "ordre": 62,
+  "iso639_3": "iku"
+ },
+ "ca.langue.langues-inuktutes-inuites-n-i-a": {
+  "fr": "Langues inuktutes (inuites), n.i.a.",
+  "en": "Inuktut (Inuit) languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-inuktutes-inuites",
+  "famille": "ca.langue.langues-inuktutes-inuites",
+  "ordre": 63,
+  "iso639_3": null
+ },
+ "ca.langue.langues-iroquoiennes": {
+  "fr": "Langues iroquoiennes",
+  "en": "Iroquoian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-iroquoiennes",
+  "ordre": 64,
+  "iso639_3": null
+ },
+ "ca.langue.cayuga": {
+  "fr": "Cayuga",
+  "en": "Cayuga",
+  "type": "langue",
+  "parent": "ca.langue.langues-iroquoiennes",
+  "famille": "ca.langue.langues-iroquoiennes",
+  "ordre": 65,
+  "iso639_3": null
+ },
+ "ca.langue.mohawk": {
+  "fr": "Mohawk",
+  "en": "Mohawk",
+  "type": "langue",
+  "parent": "ca.langue.langues-iroquoiennes",
+  "famille": "ca.langue.langues-iroquoiennes",
+  "ordre": 66,
+  "iso639_3": "moh"
+ },
+ "ca.langue.oneida": {
+  "fr": "Oneida",
+  "en": "Oneida",
+  "type": "langue",
+  "parent": "ca.langue.langues-iroquoiennes",
+  "famille": "ca.langue.langues-iroquoiennes",
+  "ordre": 67,
+  "iso639_3": null
+ },
+ "ca.langue.langues-iroquoiennes-n-i-a": {
+  "fr": "Langues iroquoiennes, n.i.a.",
+  "en": "Iroquoian languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-iroquoiennes",
+  "famille": "ca.langue.langues-iroquoiennes",
+  "ordre": 68,
+  "iso639_3": null
+ },
+ "ca.langue.ktunaxa-kutenai": {
+  "fr": "Ktunaxa (kutenai)",
+  "en": "Ktunaxa (Kutenai)",
+  "type": "langue",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.ktunaxa-kutenai",
+  "ordre": 69,
+  "iso639_3": null
+ },
+ "ca.langue.michif": {
+  "fr": "Michif",
+  "en": "Michif",
+  "type": "langue",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.michif",
+  "ordre": 70,
+  "iso639_3": "crg"
+ },
+ "ca.langue.langues-salishennes": {
+  "fr": "Langues salishennes",
+  "en": "Salish languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 71,
+  "iso639_3": null
+ },
+ "ca.langue.halkomelem": {
+  "fr": "Halkomelem",
+  "en": "Halkomelem",
+  "type": "langue",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 72,
+  "iso639_3": null
+ },
+ "ca.langue.lillooet": {
+  "fr": "Lillooet",
+  "en": "Lillooet",
+  "type": "langue",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 73,
+  "iso639_3": null
+ },
+ "ca.langue.ntlakapamux-thompson": {
+  "fr": "Ntlakapamux (thompson)",
+  "en": "Ntlakapamux (Thompson)",
+  "type": "langue",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 74,
+  "iso639_3": null
+ },
+ "ca.langue.secwepemctsin-shuswap": {
+  "fr": "Secwepemctsin (shuswap)",
+  "en": "Secwepemctsin (Shuswap)",
+  "type": "langue",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 75,
+  "iso639_3": null
+ },
+ "ca.langue.squamish": {
+  "fr": "Squamish",
+  "en": "Squamish",
+  "type": "langue",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 76,
+  "iso639_3": null
+ },
+ "ca.langue.straits": {
+  "fr": "Straits",
+  "en": "Straits",
+  "type": "langue",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 77,
+  "iso639_3": null
+ },
+ "ca.langue.syilx-okanagan": {
+  "fr": "Syilx (okanagan)",
+  "en": "Syilx (Okanagan)",
+  "type": "langue",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 78,
+  "iso639_3": null
+ },
+ "ca.langue.langues-salishennes-n-i-a": {
+  "fr": "Langues salishennes, n.i.a.",
+  "en": "Salish languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-salishennes",
+  "famille": "ca.langue.langues-salishennes",
+  "ordre": 79,
+  "iso639_3": null
+ },
+ "ca.langue.langues-siouennes": {
+  "fr": "Langues siouennes",
+  "en": "Siouan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-siouennes",
+  "ordre": 80,
+  "iso639_3": null
+ },
+ "ca.langue.assiniboine": {
+  "fr": "Assiniboine",
+  "en": "Assiniboine",
+  "type": "langue",
+  "parent": "ca.langue.langues-siouennes",
+  "famille": "ca.langue.langues-siouennes",
+  "ordre": 81,
+  "iso639_3": null
+ },
+ "ca.langue.dakota": {
+  "fr": "Dakota",
+  "en": "Dakota",
+  "type": "langue",
+  "parent": "ca.langue.langues-siouennes",
+  "famille": "ca.langue.langues-siouennes",
+  "ordre": 82,
+  "iso639_3": null
+ },
+ "ca.langue.stoney": {
+  "fr": "Stoney",
+  "en": "Stoney",
+  "type": "langue",
+  "parent": "ca.langue.langues-siouennes",
+  "famille": "ca.langue.langues-siouennes",
+  "ordre": 83,
+  "iso639_3": null
+ },
+ "ca.langue.langues-siouennes-n-i-a": {
+  "fr": "Langues siouennes, n.i.a.",
+  "en": "Siouan languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-siouennes",
+  "famille": "ca.langue.langues-siouennes",
+  "ordre": 84,
+  "iso639_3": null
+ },
+ "ca.langue.langues-tsimshennes": {
+  "fr": "Langues tsimshennes",
+  "en": "Tsimshian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-tsimshennes",
+  "ordre": 85,
+  "iso639_3": null
+ },
+ "ca.langue.gitxsan-gitksan": {
+  "fr": "Gitxsan (gitksan)",
+  "en": "Gitxsan (Gitksan)",
+  "type": "langue",
+  "parent": "ca.langue.langues-tsimshennes",
+  "famille": "ca.langue.langues-tsimshennes",
+  "ordre": 86,
+  "iso639_3": null
+ },
+ "ca.langue.nisga-a": {
+  "fr": "Nisga'a",
+  "en": "Nisga'a",
+  "type": "langue",
+  "parent": "ca.langue.langues-tsimshennes",
+  "famille": "ca.langue.langues-tsimshennes",
+  "ordre": 87,
+  "iso639_3": null
+ },
+ "ca.langue.tsimshian": {
+  "fr": "Tsimshian",
+  "en": "Tsimshian",
+  "type": "langue",
+  "parent": "ca.langue.langues-tsimshennes",
+  "famille": "ca.langue.langues-tsimshennes",
+  "ordre": 88,
+  "iso639_3": null
+ },
+ "ca.langue.langues-wakashanes": {
+  "fr": "Langues wakashanes",
+  "en": "Wakashan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-wakashanes",
+  "ordre": 89,
+  "iso639_3": null
+ },
+ "ca.langue.haisla": {
+  "fr": "Haisla",
+  "en": "Haisla",
+  "type": "langue",
+  "parent": "ca.langue.langues-wakashanes",
+  "famille": "ca.langue.langues-wakashanes",
+  "ordre": 90,
+  "iso639_3": null
+ },
+ "ca.langue.heiltsuk": {
+  "fr": "Heiltsuk",
+  "en": "Heiltsuk",
+  "type": "langue",
+  "parent": "ca.langue.langues-wakashanes",
+  "famille": "ca.langue.langues-wakashanes",
+  "ordre": 91,
+  "iso639_3": null
+ },
+ "ca.langue.kwak-wala-kwakiutl": {
+  "fr": "Kwak'wala (kwakiutl)",
+  "en": "Kwak'wala (Kwakiutl)",
+  "type": "langue",
+  "parent": "ca.langue.langues-wakashanes",
+  "famille": "ca.langue.langues-wakashanes",
+  "ordre": 92,
+  "iso639_3": null
+ },
+ "ca.langue.nuu-chah-nulth-nootka": {
+  "fr": "Nuu-chah-nulth (nootka)",
+  "en": "Nuu-chah-nulth (Nootka)",
+  "type": "langue",
+  "parent": "ca.langue.langues-wakashanes",
+  "famille": "ca.langue.langues-wakashanes",
+  "ordre": 93,
+  "iso639_3": null
+ },
+ "ca.langue.langues-wakashanes-n-i-a": {
+  "fr": "Langues wakashanes, n.i.a.",
+  "en": "Wakashan languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-wakashanes",
+  "famille": "ca.langue.langues-wakashanes",
+  "ordre": 94,
+  "iso639_3": null
+ },
+ "ca.langue.langues-autochtones-n-i-a": {
+  "fr": "Langues autochtones, n.i.a.",
+  "en": "Indigenous languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-autochtones-n-i-a",
+  "ordre": 95,
+  "iso639_3": null
+ },
+ "ca.langue.langues-autochtones-n-d-a": {
+  "fr": "Langues autochtones, n.d.a.",
+  "en": "Indigenous languages, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-autochtones",
+  "famille": "ca.langue.langues-autochtones-n-d-a",
+  "ordre": 96,
+  "iso639_3": null
+ },
+ "ca.langue.langues-non-autochtones": {
+  "fr": "Langues non autochtones",
+  "en": "Non-Indigenous languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-officielles",
+  "famille": null,
+  "ordre": 97,
+  "iso639_3": null
+ },
+ "ca.langue.langues-afro-asiatiques": {
+  "fr": "Langues afro-asiatiques",
+  "en": "Afro-Asiatic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 98,
+  "iso639_3": null
+ },
+ "ca.langue.langues-berberes": {
+  "fr": "Langues berbères",
+  "en": "Berber languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-afro-asiatiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 99,
+  "iso639_3": null
+ },
+ "ca.langue.kabyle": {
+  "fr": "Kabyle",
+  "en": "Kabyle",
+  "type": "langue",
+  "parent": "ca.langue.langues-berberes",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 100,
+  "iso639_3": null
+ },
+ "ca.langue.tamazight": {
+  "fr": "Tamazight",
+  "en": "Tamazight",
+  "type": "langue",
+  "parent": "ca.langue.langues-berberes",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 101,
+  "iso639_3": null
+ },
+ "ca.langue.langues-berberes-n-i-a": {
+  "fr": "Langues berbères, n.i.a.",
+  "en": "Berber languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-berberes",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 102,
+  "iso639_3": null
+ },
+ "ca.langue.langues-tchadiques": {
+  "fr": "Langues tchadiques",
+  "en": "Chadic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-afro-asiatiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 103,
+  "iso639_3": null
+ },
+ "ca.langue.haoussa": {
+  "fr": "Haoussa",
+  "en": "Hausa",
+  "type": "langue",
+  "parent": "ca.langue.langues-tchadiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 104,
+  "iso639_3": "hau"
+ },
+ "ca.langue.mina": {
+  "fr": "Mina",
+  "en": "Mina",
+  "type": "langue",
+  "parent": "ca.langue.langues-tchadiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 105,
+  "iso639_3": null
+ },
+ "ca.langue.copte": {
+  "fr": "Copte",
+  "en": "Coptic",
+  "type": "langue",
+  "parent": "ca.langue.langues-afro-asiatiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 106,
+  "iso639_3": null
+ },
+ "ca.langue.langues-couchitiques": {
+  "fr": "Langues couchitiques",
+  "en": "Cushitic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-afro-asiatiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 107,
+  "iso639_3": null
+ },
+ "ca.langue.bilen": {
+  "fr": "Bilen",
+  "en": "Bilen",
+  "type": "langue",
+  "parent": "ca.langue.langues-couchitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 108,
+  "iso639_3": null
+ },
+ "ca.langue.oromo": {
+  "fr": "Oromo",
+  "en": "Oromo",
+  "type": "langue",
+  "parent": "ca.langue.langues-couchitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 109,
+  "iso639_3": null
+ },
+ "ca.langue.somali": {
+  "fr": "Somali",
+  "en": "Somali",
+  "type": "langue",
+  "parent": "ca.langue.langues-couchitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 110,
+  "iso639_3": "som"
+ },
+ "ca.langue.langues-couchitiques-n-i-a": {
+  "fr": "Langues couchitiques, n.i.a.",
+  "en": "Cushitic languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-couchitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 111,
+  "iso639_3": null
+ },
+ "ca.langue.langues-semitiques": {
+  "fr": "Langues sémitiques",
+  "en": "Semitic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-afro-asiatiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 112,
+  "iso639_3": null
+ },
+ "ca.langue.amharique": {
+  "fr": "Amharique",
+  "en": "Amharic",
+  "type": "langue",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 113,
+  "iso639_3": "amh"
+ },
+ "ca.langue.arabe": {
+  "fr": "Arabe",
+  "en": "Arabic",
+  "type": "langue",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 114,
+  "iso639_3": "ara"
+ },
+ "ca.langue.langues-arameennes": {
+  "fr": "Langues araméennes",
+  "en": "Aramaic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 115,
+  "iso639_3": null
+ },
+ "ca.langue.assyrien-neo-arameen": {
+  "fr": "Assyrien néo-araméen",
+  "en": "Assyrian Neo-Aramaic",
+  "type": "langue",
+  "parent": "ca.langue.langues-arameennes",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 116,
+  "iso639_3": null
+ },
+ "ca.langue.chaldeen-neo-arameen": {
+  "fr": "Chaldéen néo-araméen",
+  "en": "Chaldean Neo-Aramaic",
+  "type": "langue",
+  "parent": "ca.langue.langues-arameennes",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 117,
+  "iso639_3": null
+ },
+ "ca.langue.arameen-n-d-a": {
+  "fr": "Araméen, n.d.a.",
+  "en": "Aramaic, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-arameennes",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 118,
+  "iso639_3": null
+ },
+ "ca.langue.harari": {
+  "fr": "Harari",
+  "en": "Harari",
+  "type": "langue",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 119,
+  "iso639_3": null
+ },
+ "ca.langue.hebreu": {
+  "fr": "Hébreu",
+  "en": "Hebrew",
+  "type": "langue",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 120,
+  "iso639_3": "heb"
+ },
+ "ca.langue.maltais": {
+  "fr": "Maltais",
+  "en": "Maltese",
+  "type": "langue",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 121,
+  "iso639_3": null
+ },
+ "ca.langue.tigrigna": {
+  "fr": "Tigrigna",
+  "en": "Tigrigna",
+  "type": "langue",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 122,
+  "iso639_3": "tir"
+ },
+ "ca.langue.langues-semitiques-n-i-a": {
+  "fr": "Langues sémitiques, n.i.a.",
+  "en": "Semitic languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-semitiques",
+  "famille": "ca.langue.langues-afro-asiatiques",
+  "ordre": 123,
+  "iso639_3": null
+ },
+ "ca.langue.langues-austro-asiatiques": {
+  "fr": "Langues austro-asiatiques",
+  "en": "Austro-Asiatic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-austro-asiatiques",
+  "ordre": 124,
+  "iso639_3": null
+ },
+ "ca.langue.khmer-cambodgien": {
+  "fr": "Khmer (cambodgien)",
+  "en": "Khmer (Cambodian)",
+  "type": "langue",
+  "parent": "ca.langue.langues-austro-asiatiques",
+  "famille": "ca.langue.langues-austro-asiatiques",
+  "ordre": 125,
+  "iso639_3": "khm"
+ },
+ "ca.langue.vietnamien": {
+  "fr": "Vietnamien",
+  "en": "Vietnamese",
+  "type": "langue",
+  "parent": "ca.langue.langues-austro-asiatiques",
+  "famille": "ca.langue.langues-austro-asiatiques",
+  "ordre": 126,
+  "iso639_3": "vie"
+ },
+ "ca.langue.langues-austro-asiatiques-n-i-a": {
+  "fr": "Langues austro-asiatiques, n.i.a.",
+  "en": "Austro-Asiatic languages, n.i.e",
+  "type": "residuel",
+  "parent": "ca.langue.langues-austro-asiatiques",
+  "famille": "ca.langue.langues-austro-asiatiques",
+  "ordre": 127,
+  "iso639_3": null
+ },
+ "ca.langue.langues-austronesiennes": {
+  "fr": "Langues austronésiennes",
+  "en": "Austronesian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 128,
+  "iso639_3": null
+ },
+ "ca.langue.bicol": {
+  "fr": "Bicol",
+  "en": "Bikol",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 129,
+  "iso639_3": null
+ },
+ "ca.langue.bisaya-n-d-a": {
+  "fr": "Bisaya, n.d.a.",
+  "en": "Bisaya, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 130,
+  "iso639_3": null
+ },
+ "ca.langue.cebuano": {
+  "fr": "Cebuano",
+  "en": "Cebuano",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 131,
+  "iso639_3": null
+ },
+ "ca.langue.fidjien": {
+  "fr": "Fidjien",
+  "en": "Fijian",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 132,
+  "iso639_3": null
+ },
+ "ca.langue.hiligainon": {
+  "fr": "Hiligaïnon",
+  "en": "Hiligaynon",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 133,
+  "iso639_3": null
+ },
+ "ca.langue.ilocano": {
+  "fr": "Ilocano",
+  "en": "Ilocano",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 134,
+  "iso639_3": null
+ },
+ "ca.langue.indonesien": {
+  "fr": "Indonésien",
+  "en": "Indonesian",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 135,
+  "iso639_3": "ind"
+ },
+ "ca.langue.kankanaey": {
+  "fr": "Kankanaey",
+  "en": "Kankanaey",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 136,
+  "iso639_3": null
+ },
+ "ca.langue.kinaray-a": {
+  "fr": "Kinaray-a",
+  "en": "Kinaray-a",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 137,
+  "iso639_3": null
+ },
+ "ca.langue.langues-malgaches": {
+  "fr": "Langues malgaches",
+  "en": "Malagasy languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 138,
+  "iso639_3": null
+ },
+ "ca.langue.merina": {
+  "fr": "Merina",
+  "en": "Merina",
+  "type": "langue",
+  "parent": "ca.langue.langues-malgaches",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 139,
+  "iso639_3": null
+ },
+ "ca.langue.malgache-n-d-a": {
+  "fr": "Malgache, n.d.a.",
+  "en": "Malagasy, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-malgaches",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 140,
+  "iso639_3": null
+ },
+ "ca.langue.malais": {
+  "fr": "Malais",
+  "en": "Malay",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 141,
+  "iso639_3": null
+ },
+ "ca.langue.pampangan-kapampangan-pampango": {
+  "fr": "Pampangan (kapampangan, pampango)",
+  "en": "Pampangan (Kapampangan, Pampango)",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 142,
+  "iso639_3": null
+ },
+ "ca.langue.pangasinan": {
+  "fr": "Pangasinan",
+  "en": "Pangasinan",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 143,
+  "iso639_3": null
+ },
+ "ca.langue.tagalog-pilipino-filipino": {
+  "fr": "Tagalog (pilipino, filipino)",
+  "en": "Tagalog (Pilipino, Filipino)",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 144,
+  "iso639_3": "tgl"
+ },
+ "ca.langue.waray-waray": {
+  "fr": "Waray-waray",
+  "en": "Waray-Waray",
+  "type": "langue",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 145,
+  "iso639_3": null
+ },
+ "ca.langue.langues-austronesiennes-n-i-a": {
+  "fr": "Langues austronésiennes, n.i.a.",
+  "en": "Austronesian languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-austronesiennes",
+  "famille": "ca.langue.langues-austronesiennes",
+  "ordre": 146,
+  "iso639_3": null
+ },
+ "ca.langue.langues-creoles": {
+  "fr": "Langues créoles",
+  "en": "Creole languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 147,
+  "iso639_3": null
+ },
+ "ca.langue.creole-haitien": {
+  "fr": "Créole haïtien",
+  "en": "Haitian Creole",
+  "type": "langue",
+  "parent": "ca.langue.langues-creoles",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 148,
+  "iso639_3": "hat"
+ },
+ "ca.langue.creole-jamaicain-anglais": {
+  "fr": "Créole jamaïcain anglais",
+  "en": "Jamaican English Creole",
+  "type": "langue",
+  "parent": "ca.langue.langues-creoles",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 149,
+  "iso639_3": null
+ },
+ "ca.langue.krio": {
+  "fr": "Krio",
+  "en": "Krio",
+  "type": "langue",
+  "parent": "ca.langue.langues-creoles",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 150,
+  "iso639_3": null
+ },
+ "ca.langue.mauricien": {
+  "fr": "Mauricien",
+  "en": "Morisyen",
+  "type": "langue",
+  "parent": "ca.langue.langues-creoles",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 151,
+  "iso639_3": null
+ },
+ "ca.langue.sango": {
+  "fr": "Sango",
+  "en": "Sango",
+  "type": "langue",
+  "parent": "ca.langue.langues-creoles",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 152,
+  "iso639_3": null
+ },
+ "ca.langue.creole-n-d-a": {
+  "fr": "Créole, n.d.a.",
+  "en": "Creole, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-creoles",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 153,
+  "iso639_3": null
+ },
+ "ca.langue.langues-creoles-n-i-a": {
+  "fr": "Langues créoles, n.i.a.",
+  "en": "Creole languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-creoles",
+  "famille": "ca.langue.langues-creoles",
+  "ordre": 154,
+  "iso639_3": null
+ },
+ "ca.langue.langues-dravidiennes": {
+  "fr": "Langues dravidiennes",
+  "en": "Dravidian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-dravidiennes",
+  "ordre": 155,
+  "iso639_3": null
+ },
+ "ca.langue.kannada": {
+  "fr": "Kannada",
+  "en": "Kannada",
+  "type": "langue",
+  "parent": "ca.langue.langues-dravidiennes",
+  "famille": "ca.langue.langues-dravidiennes",
+  "ordre": 156,
+  "iso639_3": null
+ },
+ "ca.langue.malayalam": {
+  "fr": "Malayalam",
+  "en": "Malayalam",
+  "type": "langue",
+  "parent": "ca.langue.langues-dravidiennes",
+  "famille": "ca.langue.langues-dravidiennes",
+  "ordre": 157,
+  "iso639_3": "mal"
+ },
+ "ca.langue.tamoul": {
+  "fr": "Tamoul",
+  "en": "Tamil",
+  "type": "langue",
+  "parent": "ca.langue.langues-dravidiennes",
+  "famille": "ca.langue.langues-dravidiennes",
+  "ordre": 158,
+  "iso639_3": "tam"
+ },
+ "ca.langue.telougou": {
+  "fr": "Telougou",
+  "en": "Telugu",
+  "type": "langue",
+  "parent": "ca.langue.langues-dravidiennes",
+  "famille": "ca.langue.langues-dravidiennes",
+  "ordre": 159,
+  "iso639_3": "tel"
+ },
+ "ca.langue.tulu": {
+  "fr": "Tulu",
+  "en": "Tulu",
+  "type": "langue",
+  "parent": "ca.langue.langues-dravidiennes",
+  "famille": "ca.langue.langues-dravidiennes",
+  "ordre": 160,
+  "iso639_3": null
+ },
+ "ca.langue.langues-dravidiennes-n-i-a": {
+  "fr": "Langues dravidiennes, n.i.a.",
+  "en": "Dravidian languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-dravidiennes",
+  "famille": "ca.langue.langues-dravidiennes",
+  "ordre": 161,
+  "iso639_3": null
+ },
+ "ca.langue.georgien": {
+  "fr": "Géorgien",
+  "en": "Georgian",
+  "type": "langue",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.georgien",
+  "ordre": 162,
+  "iso639_3": "kat"
+ },
+ "ca.langue.langues-hmong-mien": {
+  "fr": "Langues hmong-mien",
+  "en": "Hmong-Mien languages",
+  "type": "langue",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-hmong-mien",
+  "ordre": 163,
+  "iso639_3": null
+ },
+ "ca.langue.langues-indo-europeennes": {
+  "fr": "Langues indo-européennes",
+  "en": "Indo-European languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": null,
+  "ordre": 164,
+  "iso639_3": null
+ },
+ "ca.langue.albanais": {
+  "fr": "Albanais",
+  "en": "Albanian",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": "ca.langue.albanais",
+  "ordre": 165,
+  "iso639_3": "sqi"
+ },
+ "ca.langue.armenien": {
+  "fr": "Arménien",
+  "en": "Armenian",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": "ca.langue.armenien",
+  "ordre": 166,
+  "iso639_3": "hye"
+ },
+ "ca.langue.langues-balto-slaves": {
+  "fr": "Langues balto-slaves",
+  "en": "Balto-Slavic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": null,
+  "ordre": 167,
+  "iso639_3": null
+ },
+ "ca.langue.langues-baltes": {
+  "fr": "Langues baltes",
+  "en": "Baltic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-balto-slaves",
+  "famille": "ca.langue.langues-baltes",
+  "ordre": 168,
+  "iso639_3": null
+ },
+ "ca.langue.letton": {
+  "fr": "Letton",
+  "en": "Latvian",
+  "type": "langue",
+  "parent": "ca.langue.langues-baltes",
+  "famille": "ca.langue.langues-baltes",
+  "ordre": 169,
+  "iso639_3": null
+ },
+ "ca.langue.lituanien": {
+  "fr": "Lituanien",
+  "en": "Lithuanian",
+  "type": "langue",
+  "parent": "ca.langue.langues-baltes",
+  "famille": "ca.langue.langues-baltes",
+  "ordre": 170,
+  "iso639_3": null
+ },
+ "ca.langue.langues-slaves": {
+  "fr": "Langues slaves",
+  "en": "Slavic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-balto-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 171,
+  "iso639_3": null
+ },
+ "ca.langue.bielorusse": {
+  "fr": "Biélorusse",
+  "en": "Belarusian",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 172,
+  "iso639_3": null
+ },
+ "ca.langue.bulgare": {
+  "fr": "Bulgare",
+  "en": "Bulgarian",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 173,
+  "iso639_3": null
+ },
+ "ca.langue.tcheque": {
+  "fr": "Tchèque",
+  "en": "Czech",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 174,
+  "iso639_3": null
+ },
+ "ca.langue.macedonien": {
+  "fr": "Macédonien",
+  "en": "Macedonian",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 175,
+  "iso639_3": null
+ },
+ "ca.langue.polonais": {
+  "fr": "Polonais",
+  "en": "Polish",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 176,
+  "iso639_3": "pol"
+ },
+ "ca.langue.russe": {
+  "fr": "Russe",
+  "en": "Russian",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 177,
+  "iso639_3": "rus"
+ },
+ "ca.langue.russine": {
+  "fr": "Russine",
+  "en": "Rusyn",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 178,
+  "iso639_3": null
+ },
+ "ca.langue.serbo-croate": {
+  "fr": "Serbo-croate",
+  "en": "Serbo-Croatian",
+  "type": "famille",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 179,
+  "iso639_3": null
+ },
+ "ca.langue.bosniaque": {
+  "fr": "Bosniaque",
+  "en": "Bosnian",
+  "type": "langue",
+  "parent": "ca.langue.serbo-croate",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 180,
+  "iso639_3": null
+ },
+ "ca.langue.croate": {
+  "fr": "Croate",
+  "en": "Croatian",
+  "type": "langue",
+  "parent": "ca.langue.serbo-croate",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 181,
+  "iso639_3": null
+ },
+ "ca.langue.serbe": {
+  "fr": "Serbe",
+  "en": "Serbian",
+  "type": "langue",
+  "parent": "ca.langue.serbo-croate",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 182,
+  "iso639_3": null
+ },
+ "ca.langue.serbo-croate-n-i-a": {
+  "fr": "Serbo-croate, n.i.a.",
+  "en": "Serbo-Croatian, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.serbo-croate",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 183,
+  "iso639_3": null
+ },
+ "ca.langue.slovaque": {
+  "fr": "Slovaque",
+  "en": "Slovak",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 184,
+  "iso639_3": null
+ },
+ "ca.langue.slovene": {
+  "fr": "Slovène",
+  "en": "Slovene (Slovenian)",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 185,
+  "iso639_3": null
+ },
+ "ca.langue.ukrainien": {
+  "fr": "Ukrainien",
+  "en": "Ukrainian",
+  "type": "langue",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 186,
+  "iso639_3": "ukr"
+ },
+ "ca.langue.langues-slaves-n-i-a": {
+  "fr": "Langues slaves, n.i.a.",
+  "en": "Slavic languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-slaves",
+  "famille": "ca.langue.langues-slaves",
+  "ordre": 187,
+  "iso639_3": null
+ },
+ "ca.langue.langues-celtiques": {
+  "fr": "Langues celtiques",
+  "en": "Celtic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": "ca.langue.langues-celtiques",
+  "ordre": 188,
+  "iso639_3": null
+ },
+ "ca.langue.irlandais": {
+  "fr": "Irlandais",
+  "en": "Irish",
+  "type": "langue",
+  "parent": "ca.langue.langues-celtiques",
+  "famille": "ca.langue.langues-celtiques",
+  "ordre": 189,
+  "iso639_3": null
+ },
+ "ca.langue.gaelique-ecossais": {
+  "fr": "Gaélique écossais",
+  "en": "Scottish Gaelic",
+  "type": "langue",
+  "parent": "ca.langue.langues-celtiques",
+  "famille": "ca.langue.langues-celtiques",
+  "ordre": 190,
+  "iso639_3": null
+ },
+ "ca.langue.gallois": {
+  "fr": "Gallois",
+  "en": "Welsh",
+  "type": "langue",
+  "parent": "ca.langue.langues-celtiques",
+  "famille": "ca.langue.langues-celtiques",
+  "ordre": 191,
+  "iso639_3": null
+ },
+ "ca.langue.langues-celtiques-n-i-a": {
+  "fr": "Langues celtiques, n.i.a.",
+  "en": "Celtic languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-celtiques",
+  "famille": "ca.langue.langues-celtiques",
+  "ordre": 192,
+  "iso639_3": null
+ },
+ "ca.langue.langues-germaniques": {
+  "fr": "Langues germaniques",
+  "en": "Germanic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 193,
+  "iso639_3": null
+ },
+ "ca.langue.frison": {
+  "fr": "Frison",
+  "en": "Frisian",
+  "type": "langue",
+  "parent": "ca.langue.langues-germaniques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 194,
+  "iso639_3": null
+ },
+ "ca.langue.langues-haut-allemandes": {
+  "fr": "Langues haut-allemandes",
+  "en": "High German languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-germaniques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 195,
+  "iso639_3": null
+ },
+ "ca.langue.allemand": {
+  "fr": "Allemand",
+  "en": "German",
+  "type": "langue",
+  "parent": "ca.langue.langues-haut-allemandes",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 196,
+  "iso639_3": "deu"
+ },
+ "ca.langue.allemand-pennsylvanien": {
+  "fr": "Allemand pennsylvanien",
+  "en": "Pennsylvania German",
+  "type": "langue",
+  "parent": "ca.langue.langues-haut-allemandes",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 197,
+  "iso639_3": null
+ },
+ "ca.langue.allemand-suisse": {
+  "fr": "Allemand suisse",
+  "en": "Swiss German",
+  "type": "langue",
+  "parent": "ca.langue.langues-haut-allemandes",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 198,
+  "iso639_3": null
+ },
+ "ca.langue.yiddish": {
+  "fr": "Yiddish",
+  "en": "Yiddish",
+  "type": "langue",
+  "parent": "ca.langue.langues-haut-allemandes",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 199,
+  "iso639_3": "yid"
+ },
+ "ca.langue.langues-bas-saxonnes-bas-franciques": {
+  "fr": "Langues bas-saxonnes–bas-franciques",
+  "en": "Low Saxon-Low Franconian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-germaniques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 200,
+  "iso639_3": null
+ },
+ "ca.langue.afrikaans": {
+  "fr": "Afrikaans",
+  "en": "Afrikaans",
+  "type": "langue",
+  "parent": "ca.langue.langues-bas-saxonnes-bas-franciques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 201,
+  "iso639_3": null
+ },
+ "ca.langue.neerlandais": {
+  "fr": "Néerlandais",
+  "en": "Dutch",
+  "type": "langue",
+  "parent": "ca.langue.langues-bas-saxonnes-bas-franciques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 202,
+  "iso639_3": "nld"
+ },
+ "ca.langue.bas-allemand-n-d-a": {
+  "fr": "Bas-allemand, n.d.a.",
+  "en": "Low German, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-bas-saxonnes-bas-franciques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 203,
+  "iso639_3": null
+ },
+ "ca.langue.bas-saxon": {
+  "fr": "Bas-saxon",
+  "en": "Low Saxon",
+  "type": "langue",
+  "parent": "ca.langue.langues-bas-saxonnes-bas-franciques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 204,
+  "iso639_3": null
+ },
+ "ca.langue.bas-allemand-mennonite": {
+  "fr": "Bas-allemand mennonite",
+  "en": "Plautdietsch",
+  "type": "langue",
+  "parent": "ca.langue.langues-bas-saxonnes-bas-franciques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 205,
+  "iso639_3": null
+ },
+ "ca.langue.vlaams-flamand": {
+  "fr": "Vlaams (flamand)",
+  "en": "Vlaams (Flemish)",
+  "type": "langue",
+  "parent": "ca.langue.langues-bas-saxonnes-bas-franciques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 206,
+  "iso639_3": null
+ },
+ "ca.langue.langues-scandinaves": {
+  "fr": "Langues scandinaves",
+  "en": "Scandinavian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-germaniques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 207,
+  "iso639_3": null
+ },
+ "ca.langue.danois": {
+  "fr": "Danois",
+  "en": "Danish",
+  "type": "langue",
+  "parent": "ca.langue.langues-scandinaves",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 208,
+  "iso639_3": null
+ },
+ "ca.langue.islandais": {
+  "fr": "Islandais",
+  "en": "Icelandic",
+  "type": "langue",
+  "parent": "ca.langue.langues-scandinaves",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 209,
+  "iso639_3": null
+ },
+ "ca.langue.norvegien": {
+  "fr": "Norvégien",
+  "en": "Norwegian",
+  "type": "langue",
+  "parent": "ca.langue.langues-scandinaves",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 210,
+  "iso639_3": null
+ },
+ "ca.langue.suedois": {
+  "fr": "Suédois",
+  "en": "Swedish",
+  "type": "langue",
+  "parent": "ca.langue.langues-scandinaves",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 211,
+  "iso639_3": null
+ },
+ "ca.langue.langues-germaniques-n-i-a": {
+  "fr": "Langues germaniques, n.i.a.",
+  "en": "Germanic languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-germaniques",
+  "famille": "ca.langue.langues-germaniques",
+  "ordre": 212,
+  "iso639_3": null
+ },
+ "ca.langue.grec": {
+  "fr": "Grec",
+  "en": "Greek",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": "ca.langue.grec",
+  "ordre": 213,
+  "iso639_3": "ell"
+ },
+ "ca.langue.langues-indo-iraniennes": {
+  "fr": "Langues indo-iraniennes",
+  "en": "Indo-Iranian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": null,
+  "ordre": 214,
+  "iso639_3": null
+ },
+ "ca.langue.langues-indo-aryennes": {
+  "fr": "Langues indo-aryennes",
+  "en": "Indo-Aryan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-iraniennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 215,
+  "iso639_3": null
+ },
+ "ca.langue.assamais": {
+  "fr": "Assamais",
+  "en": "Assamese",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 216,
+  "iso639_3": null
+ },
+ "ca.langue.bengali": {
+  "fr": "Bengali",
+  "en": "Bengali",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 217,
+  "iso639_3": "ben"
+ },
+ "ca.langue.gujarati": {
+  "fr": "Gujarati",
+  "en": "Gujarati",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 218,
+  "iso639_3": "guj"
+ },
+ "ca.langue.hindi": {
+  "fr": "Hindi",
+  "en": "Hindi",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 219,
+  "iso639_3": "hin"
+ },
+ "ca.langue.kacchi": {
+  "fr": "Kacchi",
+  "en": "Kacchi",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 220,
+  "iso639_3": null
+ },
+ "ca.langue.cachemiri": {
+  "fr": "Cachemiri",
+  "en": "Kashmiri",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 221,
+  "iso639_3": null
+ },
+ "ca.langue.konkani": {
+  "fr": "Konkani",
+  "en": "Konkani",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 222,
+  "iso639_3": null
+ },
+ "ca.langue.marathi": {
+  "fr": "Marathi",
+  "en": "Marathi",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 223,
+  "iso639_3": null
+ },
+ "ca.langue.nepalais": {
+  "fr": "Népalais",
+  "en": "Nepali",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 224,
+  "iso639_3": "nep"
+ },
+ "ca.langue.langues-oriyas": {
+  "fr": "Langues oriyas",
+  "en": "Oriya languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 225,
+  "iso639_3": null
+ },
+ "ca.langue.odia": {
+  "fr": "Odia",
+  "en": "Odia",
+  "type": "langue",
+  "parent": "ca.langue.langues-oriyas",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 226,
+  "iso639_3": null
+ },
+ "ca.langue.oriya-n-d-a": {
+  "fr": "Oriya, n.d.a.",
+  "en": "Oriya, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-oriyas",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 227,
+  "iso639_3": null
+ },
+ "ca.langue.pendjabi-panjabi": {
+  "fr": "Pendjabi (panjabi)",
+  "en": "Punjabi (Panjabi)",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 228,
+  "iso639_3": "pan"
+ },
+ "ca.langue.rohingya": {
+  "fr": "Rohingya",
+  "en": "Rohingya",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 229,
+  "iso639_3": null
+ },
+ "ca.langue.sindhi": {
+  "fr": "Sindhi",
+  "en": "Sindhi",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 230,
+  "iso639_3": null
+ },
+ "ca.langue.singhalais": {
+  "fr": "Singhalais",
+  "en": "Sinhala (Sinhalese)",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 231,
+  "iso639_3": null
+ },
+ "ca.langue.ourdou": {
+  "fr": "Ourdou",
+  "en": "Urdu",
+  "type": "langue",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 232,
+  "iso639_3": "urd"
+ },
+ "ca.langue.langues-indo-aryennes-n-i-a": {
+  "fr": "Langues indo-aryennes, n.i.a.",
+  "en": "Indo-Aryan languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-indo-aryennes",
+  "famille": "ca.langue.langues-indo-aryennes",
+  "ordre": 233,
+  "iso639_3": null
+ },
+ "ca.langue.langues-iraniennes": {
+  "fr": "Langues iraniennes",
+  "en": "Iranian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-iraniennes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 234,
+  "iso639_3": null
+ },
+ "ca.langue.baloutche": {
+  "fr": "Baloutche",
+  "en": "Baluchi",
+  "type": "langue",
+  "parent": "ca.langue.langues-iraniennes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 235,
+  "iso639_3": null
+ },
+ "ca.langue.kurde": {
+  "fr": "Kurde",
+  "en": "Kurdish",
+  "type": "langue",
+  "parent": "ca.langue.langues-iraniennes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 236,
+  "iso639_3": "kur"
+ },
+ "ca.langue.parsi": {
+  "fr": "Parsi",
+  "en": "Parsi",
+  "type": "langue",
+  "parent": "ca.langue.langues-iraniennes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 237,
+  "iso639_3": null
+ },
+ "ca.langue.pachto": {
+  "fr": "Pachto",
+  "en": "Pashto",
+  "type": "langue",
+  "parent": "ca.langue.langues-iraniennes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 238,
+  "iso639_3": "pus"
+ },
+ "ca.langue.langues-persanes": {
+  "fr": "Langues persanes",
+  "en": "Persian languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-iraniennes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 239,
+  "iso639_3": null
+ },
+ "ca.langue.dari": {
+  "fr": "Dari",
+  "en": "Dari",
+  "type": "langue",
+  "parent": "ca.langue.langues-persanes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 240,
+  "iso639_3": null
+ },
+ "ca.langue.persan-iranien": {
+  "fr": "Persan iranien",
+  "en": "Iranian Persian",
+  "type": "langue",
+  "parent": "ca.langue.langues-persanes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 241,
+  "iso639_3": null
+ },
+ "ca.langue.persan-farsi-n-d-a": {
+  "fr": "Persan (farsi), n.d.a.",
+  "en": "Persian (Farsi), n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-persanes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 242,
+  "iso639_3": null
+ },
+ "ca.langue.langues-iraniennes-n-i-a": {
+  "fr": "Langues iraniennes, n.i.a.",
+  "en": "Iranian languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-iraniennes",
+  "famille": "ca.langue.langues-iraniennes",
+  "ordre": 243,
+  "iso639_3": null
+ },
+ "ca.langue.langues-indo-iraniennes-n-i-a": {
+  "fr": "Langues indo-iraniennes, n.i.a.",
+  "en": "Indo-Iranian languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-indo-iraniennes",
+  "famille": "ca.langue.langues-indo-iraniennes-n-i-a",
+  "ordre": 244,
+  "iso639_3": null
+ },
+ "ca.langue.langues-italiques-romanes": {
+  "fr": "Langues italiques (romanes)",
+  "en": "Italic (Romance) languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": "ca.langue.langues-italiques-romanes",
+  "ordre": 245,
+  "iso639_3": null
+ },
+ "ca.langue.catalan": {
+  "fr": "Catalan",
+  "en": "Catalan",
+  "type": "langue",
+  "parent": "ca.langue.langues-italiques-romanes",
+  "famille": "ca.langue.langues-italiques-romanes",
+  "ordre": 246,
+  "iso639_3": null
+ },
+ "ca.langue.italien": {
+  "fr": "Italien",
+  "en": "Italian",
+  "type": "langue",
+  "parent": "ca.langue.langues-italiques-romanes",
+  "famille": "ca.langue.langues-italiques-romanes",
+  "ordre": 247,
+  "iso639_3": "ita"
+ },
+ "ca.langue.portugais": {
+  "fr": "Portugais",
+  "en": "Portuguese",
+  "type": "langue",
+  "parent": "ca.langue.langues-italiques-romanes",
+  "famille": "ca.langue.langues-italiques-romanes",
+  "ordre": 248,
+  "iso639_3": "por"
+ },
+ "ca.langue.roumain": {
+  "fr": "Roumain",
+  "en": "Romanian",
+  "type": "langue",
+  "parent": "ca.langue.langues-italiques-romanes",
+  "famille": "ca.langue.langues-italiques-romanes",
+  "ordre": 249,
+  "iso639_3": "ron"
+ },
+ "ca.langue.espagnol": {
+  "fr": "Espagnol",
+  "en": "Spanish",
+  "type": "langue",
+  "parent": "ca.langue.langues-italiques-romanes",
+  "famille": "ca.langue.langues-italiques-romanes",
+  "ordre": 250,
+  "iso639_3": "spa"
+ },
+ "ca.langue.langues-italiques-romanes-n-i-a": {
+  "fr": "Langues italiques (romanes), n.i.a.",
+  "en": "Italic (Romance) languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-italiques-romanes",
+  "famille": "ca.langue.langues-italiques-romanes",
+  "ordre": 251,
+  "iso639_3": null
+ },
+ "ca.langue.langues-indo-europeennes-n-i-a": {
+  "fr": "Langues indo-européennes, n.i.a.",
+  "en": "Indo-European languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-indo-europeennes",
+  "famille": "ca.langue.langues-indo-europeennes-n-i-a",
+  "ordre": 252,
+  "iso639_3": null
+ },
+ "ca.langue.japonais": {
+  "fr": "Japonais",
+  "en": "Japanese",
+  "type": "langue",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.japonais",
+  "ordre": 253,
+  "iso639_3": "jpn"
+ },
+ "ca.langue.coreen": {
+  "fr": "Coréen",
+  "en": "Korean",
+  "type": "langue",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.coreen",
+  "ordre": 254,
+  "iso639_3": "kor"
+ },
+ "ca.langue.mongol": {
+  "fr": "Mongol",
+  "en": "Mongolian",
+  "type": "langue",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.mongol",
+  "ordre": 255,
+  "iso639_3": "mon"
+ },
+ "ca.langue.langues-nigero-congolaises": {
+  "fr": "Langues nigéro-congolaises",
+  "en": "Niger-Congo languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 256,
+  "iso639_3": null
+ },
+ "ca.langue.akan-twi": {
+  "fr": "Akan (twi)",
+  "en": "Akan (Twi)",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 257,
+  "iso639_3": "aka"
+ },
+ "ca.langue.bamanankan": {
+  "fr": "Bamanankan",
+  "en": "Bamanankan",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 258,
+  "iso639_3": null
+ },
+ "ca.langue.edo": {
+  "fr": "Edo",
+  "en": "Edo",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 259,
+  "iso639_3": null
+ },
+ "ca.langue.ewe": {
+  "fr": "Éwé",
+  "en": "Éwé",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 260,
+  "iso639_3": null
+ },
+ "ca.langue.fulah-peul-pular-pulaar-fulfulde": {
+  "fr": "Fulah (peul, pular, pulaar, fulfulde)",
+  "en": "Fulah (Pular, Pulaar, Fulfulde)",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 261,
+  "iso639_3": null
+ },
+ "ca.langue.ga": {
+  "fr": "Ga",
+  "en": "Ga",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 262,
+  "iso639_3": null
+ },
+ "ca.langue.ganda": {
+  "fr": "Ganda",
+  "en": "Ganda",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 263,
+  "iso639_3": null
+ },
+ "ca.langue.gikuyu": {
+  "fr": "Gikuyu",
+  "en": "Gikuyu",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 264,
+  "iso639_3": null
+ },
+ "ca.langue.igbo": {
+  "fr": "Igbo",
+  "en": "Igbo",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 265,
+  "iso639_3": "ibo"
+ },
+ "ca.langue.kinyarwanda-rwanda": {
+  "fr": "Kinyarwanda (rwanda)",
+  "en": "Kinyarwanda (Rwanda)",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 266,
+  "iso639_3": null
+ },
+ "ca.langue.lingala": {
+  "fr": "Lingala",
+  "en": "Lingala",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 267,
+  "iso639_3": "lin"
+ },
+ "ca.langue.luba-kasai": {
+  "fr": "Luba-kasaï",
+  "en": "Luba-Kasai",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 268,
+  "iso639_3": null
+ },
+ "ca.langue.moore": {
+  "fr": "Mòoré",
+  "en": "Mòoré",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 269,
+  "iso639_3": null
+ },
+ "ca.langue.mwani": {
+  "fr": "Mwani",
+  "en": "Mwani",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 270,
+  "iso639_3": null
+ },
+ "ca.langue.ndebele": {
+  "fr": "Ndébélé",
+  "en": "Ndebele",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 271,
+  "iso639_3": null
+ },
+ "ca.langue.rundi-kiroundi": {
+  "fr": "Rundi (kiroundi)",
+  "en": "Rundi (Kirundi)",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 272,
+  "iso639_3": null
+ },
+ "ca.langue.shona": {
+  "fr": "Shona",
+  "en": "Shona",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 273,
+  "iso639_3": null
+ },
+ "ca.langue.soninke": {
+  "fr": "Soninké",
+  "en": "Soninke",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 274,
+  "iso639_3": null
+ },
+ "ca.langue.langues-sotho-tswana": {
+  "fr": "Langues sotho-tswana",
+  "en": "Sotho-Tswana languages",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 275,
+  "iso639_3": null
+ },
+ "ca.langue.swahili": {
+  "fr": "Swahili",
+  "en": "Swahili",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 276,
+  "iso639_3": "swa"
+ },
+ "ca.langue.wojenaka": {
+  "fr": "Wojenaka",
+  "en": "Wojenaka",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 277,
+  "iso639_3": null
+ },
+ "ca.langue.wolof": {
+  "fr": "Wolof",
+  "en": "Wolof",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 278,
+  "iso639_3": "wol"
+ },
+ "ca.langue.yoruba": {
+  "fr": "Yoruba",
+  "en": "Yoruba",
+  "type": "langue",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 279,
+  "iso639_3": "yor"
+ },
+ "ca.langue.langues-nigero-congolaises-n-i-a": {
+  "fr": "Langues nigéro-congolaises, n.i.a.",
+  "en": "Niger-Congo languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-nigero-congolaises",
+  "famille": "ca.langue.langues-nigero-congolaises",
+  "ordre": 280,
+  "iso639_3": null
+ },
+ "ca.langue.langues-nilo-sahariennes": {
+  "fr": "Langues nilo-sahariennes",
+  "en": "Nilo-Saharan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-nilo-sahariennes",
+  "ordre": 281,
+  "iso639_3": null
+ },
+ "ca.langue.dinka": {
+  "fr": "Dinka",
+  "en": "Dinka",
+  "type": "langue",
+  "parent": "ca.langue.langues-nilo-sahariennes",
+  "famille": "ca.langue.langues-nilo-sahariennes",
+  "ordre": 282,
+  "iso639_3": null
+ },
+ "ca.langue.nuer": {
+  "fr": "Nuer",
+  "en": "Nuer",
+  "type": "langue",
+  "parent": "ca.langue.langues-nilo-sahariennes",
+  "famille": "ca.langue.langues-nilo-sahariennes",
+  "ordre": 283,
+  "iso639_3": null
+ },
+ "ca.langue.langues-nilo-sahariennes-n-i-a": {
+  "fr": "Langues nilo-sahariennes, n.i.a.",
+  "en": "Nilo-Saharan languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-nilo-sahariennes",
+  "famille": "ca.langue.langues-nilo-sahariennes",
+  "ordre": 284,
+  "iso639_3": null
+ },
+ "ca.langue.africain-n-d-a": {
+  "fr": "Africain, n.d.a.",
+  "en": "African, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-nilo-sahariennes",
+  "famille": "ca.langue.langues-nilo-sahariennes",
+  "ordre": 285,
+  "iso639_3": null
+ },
+ "ca.langue.langues-des-signes": {
+  "fr": "Langues des signes",
+  "en": "Sign languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-des-signes",
+  "ordre": 286,
+  "iso639_3": null
+ },
+ "ca.langue.langue-des-signes-americaine": {
+  "fr": "Langue des signes américaine",
+  "en": "American Sign Language",
+  "type": "langue",
+  "parent": "ca.langue.langues-des-signes",
+  "famille": "ca.langue.langues-des-signes",
+  "ordre": 287,
+  "iso639_3": null
+ },
+ "ca.langue.langue-des-signes-quebecoise": {
+  "fr": "Langue des signes québécoise",
+  "en": "Quebec Sign Language",
+  "type": "langue",
+  "parent": "ca.langue.langues-des-signes",
+  "famille": "ca.langue.langues-des-signes",
+  "ordre": 288,
+  "iso639_3": null
+ },
+ "ca.langue.langues-des-signes-n-i-a": {
+  "fr": "Langues des signes, n.i.a.",
+  "en": "Sign languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-des-signes",
+  "famille": "ca.langue.langues-des-signes",
+  "ordre": 289,
+  "iso639_3": null
+ },
+ "ca.langue.langues-sino-tibetaines": {
+  "fr": "Langues sino-tibétaines",
+  "en": "Sino-Tibetan languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 290,
+  "iso639_3": null
+ },
+ "ca.langue.langues-chinoises": {
+  "fr": "Langues chinoises",
+  "en": "Chinese languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-sino-tibetaines",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 291,
+  "iso639_3": null
+ },
+ "ca.langue.hakka": {
+  "fr": "Hakka",
+  "en": "Hakka",
+  "type": "langue",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 292,
+  "iso639_3": null
+ },
+ "ca.langue.mandarin": {
+  "fr": "Mandarin",
+  "en": "Mandarin",
+  "type": "langue",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 293,
+  "iso639_3": "cmn"
+ },
+ "ca.langue.min-dong": {
+  "fr": "Min dong",
+  "en": "Min Dong",
+  "type": "langue",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 294,
+  "iso639_3": null
+ },
+ "ca.langue.min-nan-chaochow-teochow-fou-kien-taiwanais": {
+  "fr": "Min nan (chaochow, teochow, fou-kien, taïwanais)",
+  "en": "Min Nan (Chaochow, Teochow, Fukien, Taiwanese)",
+  "type": "langue",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 295,
+  "iso639_3": null
+ },
+ "ca.langue.wu-shanghaien": {
+  "fr": "Wu (shanghaïen)",
+  "en": "Wu (Shanghainese)",
+  "type": "langue",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 296,
+  "iso639_3": null
+ },
+ "ca.langue.yue-cantonais": {
+  "fr": "Yue (cantonais)",
+  "en": "Yue (Cantonese)",
+  "type": "langue",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 297,
+  "iso639_3": null
+ },
+ "ca.langue.chinois-n-d-a": {
+  "fr": "Chinois, n.d.a.",
+  "en": "Chinese, n.o.s.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 298,
+  "iso639_3": null
+ },
+ "ca.langue.langues-chinoises-n-i-a": {
+  "fr": "Langues chinoises, n.i.a.",
+  "en": "Chinese languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-chinoises",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 299,
+  "iso639_3": null
+ },
+ "ca.langue.langues-tibeto-birmanes": {
+  "fr": "Langues tibéto-birmanes",
+  "en": "Tibeto-Burman languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-sino-tibetaines",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 300,
+  "iso639_3": null
+ },
+ "ca.langue.birman": {
+  "fr": "Birman",
+  "en": "Burmese",
+  "type": "langue",
+  "parent": "ca.langue.langues-tibeto-birmanes",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 301,
+  "iso639_3": "mya"
+ },
+ "ca.langue.langues-kuki-chin": {
+  "fr": "Langues kuki-chin",
+  "en": "Kuki-Chin languages",
+  "type": "langue",
+  "parent": "ca.langue.langues-tibeto-birmanes",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 302,
+  "iso639_3": null
+ },
+ "ca.langue.langues-kareniques": {
+  "fr": "Langues karéniques",
+  "en": "Karenic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-tibeto-birmanes",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 303,
+  "iso639_3": null
+ },
+ "ca.langue.karen-s-gaw": {
+  "fr": "Karen s’gaw",
+  "en": "S'gaw Karen",
+  "type": "langue",
+  "parent": "ca.langue.langues-kareniques",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 304,
+  "iso639_3": null
+ },
+ "ca.langue.langues-kareniques-n-i-a": {
+  "fr": "Langues karéniques, n.i.a.",
+  "en": "Karenic languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-kareniques",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 305,
+  "iso639_3": null
+ },
+ "ca.langue.tibetain": {
+  "fr": "Tibétain",
+  "en": "Tibetan",
+  "type": "langue",
+  "parent": "ca.langue.langues-tibeto-birmanes",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 306,
+  "iso639_3": null
+ },
+ "ca.langue.langues-tibeto-birmanes-n-i-a": {
+  "fr": "Langues tibéto-birmanes, n.i.a.",
+  "en": "Tibeto-Burman languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-tibeto-birmanes",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 307,
+  "iso639_3": null
+ },
+ "ca.langue.langues-sino-tibetaines-n-i-a": {
+  "fr": "Langues sino-tibétaines, n.i.a.",
+  "en": "Sino-Tibetan languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-sino-tibetaines",
+  "famille": "ca.langue.langues-sino-tibetaines",
+  "ordre": 308,
+  "iso639_3": null
+ },
+ "ca.langue.langues-tai-kadai": {
+  "fr": "Langues taï-kadaï",
+  "en": "Tai-Kadai languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-tai-kadai",
+  "ordre": 309,
+  "iso639_3": null
+ },
+ "ca.langue.lao": {
+  "fr": "Lao",
+  "en": "Lao",
+  "type": "langue",
+  "parent": "ca.langue.langues-tai-kadai",
+  "famille": "ca.langue.langues-tai-kadai",
+  "ordre": 310,
+  "iso639_3": "lao"
+ },
+ "ca.langue.thai": {
+  "fr": "Thaï",
+  "en": "Thai",
+  "type": "langue",
+  "parent": "ca.langue.langues-tai-kadai",
+  "famille": "ca.langue.langues-tai-kadai",
+  "ordre": 311,
+  "iso639_3": "tha"
+ },
+ "ca.langue.langues-tai-kadai-n-i-a": {
+  "fr": "Langues taï-kadaï, n.i.a.",
+  "en": "Tai-Kadai languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-tai-kadai",
+  "famille": "ca.langue.langues-tai-kadai",
+  "ordre": 312,
+  "iso639_3": null
+ },
+ "ca.langue.langues-turques": {
+  "fr": "Langues turques",
+  "en": "Turkic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-turques",
+  "ordre": 313,
+  "iso639_3": null
+ },
+ "ca.langue.azerbaidjanais": {
+  "fr": "Azerbaïdjanais",
+  "en": "Azerbaijani",
+  "type": "langue",
+  "parent": "ca.langue.langues-turques",
+  "famille": "ca.langue.langues-turques",
+  "ordre": 314,
+  "iso639_3": "aze"
+ },
+ "ca.langue.kazakh": {
+  "fr": "Kazakh",
+  "en": "Kazakh",
+  "type": "langue",
+  "parent": "ca.langue.langues-turques",
+  "famille": "ca.langue.langues-turques",
+  "ordre": 315,
+  "iso639_3": null
+ },
+ "ca.langue.turc": {
+  "fr": "Turc",
+  "en": "Turkish",
+  "type": "langue",
+  "parent": "ca.langue.langues-turques",
+  "famille": "ca.langue.langues-turques",
+  "ordre": 316,
+  "iso639_3": "tur"
+ },
+ "ca.langue.ouighour": {
+  "fr": "Ouïghour",
+  "en": "Uyghur",
+  "type": "langue",
+  "parent": "ca.langue.langues-turques",
+  "famille": "ca.langue.langues-turques",
+  "ordre": 317,
+  "iso639_3": null
+ },
+ "ca.langue.ouzbek": {
+  "fr": "Ouzbek",
+  "en": "Uzbek",
+  "type": "langue",
+  "parent": "ca.langue.langues-turques",
+  "famille": "ca.langue.langues-turques",
+  "ordre": 318,
+  "iso639_3": "uzb"
+ },
+ "ca.langue.langues-turques-n-i-a": {
+  "fr": "Langues turques, n.i.a.",
+  "en": "Turkic languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-turques",
+  "famille": "ca.langue.langues-turques",
+  "ordre": 319,
+  "iso639_3": null
+ },
+ "ca.langue.langues-ouraliennes": {
+  "fr": "Langues ouraliennes",
+  "en": "Uralic languages",
+  "type": "famille",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.langues-ouraliennes",
+  "ordre": 320,
+  "iso639_3": null
+ },
+ "ca.langue.estonien": {
+  "fr": "Estonien",
+  "en": "Estonian",
+  "type": "langue",
+  "parent": "ca.langue.langues-ouraliennes",
+  "famille": "ca.langue.langues-ouraliennes",
+  "ordre": 321,
+  "iso639_3": "est"
+ },
+ "ca.langue.finnois": {
+  "fr": "Finnois",
+  "en": "Finnish",
+  "type": "langue",
+  "parent": "ca.langue.langues-ouraliennes",
+  "famille": "ca.langue.langues-ouraliennes",
+  "ordre": 322,
+  "iso639_3": "fin"
+ },
+ "ca.langue.hongrois": {
+  "fr": "Hongrois",
+  "en": "Hungarian",
+  "type": "langue",
+  "parent": "ca.langue.langues-ouraliennes",
+  "famille": "ca.langue.langues-ouraliennes",
+  "ordre": 323,
+  "iso639_3": "hun"
+ },
+ "ca.langue.autres-langues-n-i-a": {
+  "fr": "Autres langues, n.i.a.",
+  "en": "Other languages, n.i.e.",
+  "type": "residuel",
+  "parent": "ca.langue.langues-non-autochtones",
+  "famille": "ca.langue.autres-langues-n-i-a",
+  "ordre": 324,
+  "iso639_3": null
+ },
+ "ca.langue.reponses-multiples": {
+  "fr": "Réponses multiples",
+  "en": "Multiple responses",
+  "type": "regroupement",
+  "parent": "ca.langue.total",
+  "famille": null,
+  "ordre": 325,
+  "iso639_3": null
+ },
+ "ca.langue.francais-et-anglais": {
+  "fr": "Français et anglais",
+  "en": "English and French",
+  "type": "multiple",
+  "parent": "ca.langue.reponses-multiples",
+  "famille": "ca.langue.francais-et-anglais",
+  "ordre": 326,
+  "iso639_3": null
+ },
+ "ca.langue.anglais-et-langue-s-non-officielle-s": {
+  "fr": "Anglais et langue(s) non officielle(s)",
+  "en": "English and non-official language(s)",
+  "type": "multiple",
+  "parent": "ca.langue.reponses-multiples",
+  "famille": "ca.langue.anglais-et-langue-s-non-officielle-s",
+  "ordre": 327,
+  "iso639_3": null
+ },
+ "ca.langue.francais-et-langue-s-non-officielle-s": {
+  "fr": "Français et langue(s) non officielle(s)",
+  "en": "French and non-official language(s)",
+  "type": "multiple",
+  "parent": "ca.langue.reponses-multiples",
+  "famille": "ca.langue.francais-et-langue-s-non-officielle-s",
+  "ordre": 328,
+  "iso639_3": null
+ },
+ "ca.langue.francais-anglais-et-langue-s-non-officielle-s": {
+  "fr": "Français, anglais et langue(s) non officielle(s)",
+  "en": "English, French and non-official language(s)",
+  "type": "multiple",
+  "parent": "ca.langue.reponses-multiples",
+  "famille": "ca.langue.francais-anglais-et-langue-s-non-officielle-s",
+  "ordre": 329,
+  "iso639_3": null
+ },
+ "ca.langue.langues-non-officielles-multiples": {
+  "fr": "Langues non officielles multiples",
+  "en": "Multiple non-official languages",
+  "type": "multiple",
+  "parent": "ca.langue.reponses-multiples",
+  "famille": "ca.langue.langues-non-officielles-multiples",
+  "ordre": 330,
+  "iso639_3": null
+ },
+ "ca.plop.total": {
+  "fr": "Total - Première langue officielle parlée pour la population totale à l'exclusion des résidents d'un établissement institutionnel - Données intégrales (100 %)",
+  "en": "Total - First official language spoken for the total population excluding institutional residents - 100% data",
+  "type": "total",
+  "parent": null,
+  "famille": null,
+  "ordre": 0,
+  "iso639_3": null
+ },
+ "ca.plop.anglais": {
+  "fr": "Anglais",
+  "en": "English",
+  "type": "langue",
+  "parent": "ca.plop.total",
+  "famille": "ca.plop.anglais",
+  "ordre": 1,
+  "iso639_3": "eng"
+ },
+ "ca.plop.francais": {
+  "fr": "Français",
+  "en": "French",
+  "type": "langue",
+  "parent": "ca.plop.total",
+  "famille": "ca.plop.francais",
+  "ordre": 2,
+  "iso639_3": "fra"
+ },
+ "ca.plop.francais-et-anglais": {
+  "fr": "Français et anglais",
+  "en": "English and French",
+  "type": "multiple",
+  "parent": "ca.plop.total",
+  "famille": "ca.plop.francais-et-anglais",
+  "ordre": 3,
+  "iso639_3": null
+ },
+ "ca.plop.ni-francais-ni-anglais": {
+  "fr": "Ni français ni anglais",
+  "en": "Neither English nor French",
+  "type": "aucune",
+  "parent": "ca.plop.total",
+  "famille": "ca.plop.ni-francais-ni-anglais",
+  "ordre": 4,
+  "iso639_3": null
+ }
+}
