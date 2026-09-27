@@ -22,7 +22,7 @@ alternatives. On change de règle en modifiant ce fichier, sans toucher au code.
 | Seuil de faible population | 100 habitants : l'aire est hachurée en dessous | décidé, à ajuster |
 | Paliers d'intensité | < 40 %, 40-60 %, 60-80 %, ≥ 80 % | décidé (PRD) |
 | Couleurs fixes | Français en bleu, anglais en rouge, espagnol en jaune | décidé |
-| Trois autres couleurs | Arabe, créole haïtien, italien | provisoire |
+| Trois autres couleurs | Arabe, mandarin, italien | décidé (27 septembre, sur les données) |
 | Égalité | Stricte : effectifs identiques seulement | décidé |
 
 ## Pourquoi
@@ -77,3 +77,42 @@ formes de daltonisme.
   significatif, désigne une langue dominante : le palier < 40 % et le seuil de
   faible population signalent déjà cette fragilité. L'option « marge » (égalité
   jusqu'à 5 d'écart) reste documentée dans `config/carte.json`.
+
+## Révision du 27 septembre : les trois couleurs, sur les données
+
+Une fois les 6 574 aires de diffusion chargées, on a compté les langues qui
+dominent au moins une aire de 100 habitants ou plus :
+
+| Langue | Carte par défaut | Mode « langue non officielle » |
+|---|---|---|
+| Français | 5 590 | — |
+| Anglais | 699 | — |
+| Espagnol | 2 | 1 965 |
+| Arabe | 50 | 1 411 |
+| Italien | 45 | 546 |
+| Grec | 41 | 76 |
+| Pendjabi | 26 | 97 |
+| Mandarin | 10 | 298 |
+| Créole haïtien | 0 | 200 |
+
+Le créole haïtien, qui ne domine aucune aire sur la carte par défaut, cède sa
+couleur (rose) au mandarin. La palette elle-même ne change pas : sa validation
+tient toujours.
+
+Conséquence : hors du bleu et du rouge, la diversité ne se voit vraiment qu'en
+mode « langue non officielle dominante ». Ce mode est avancé en phase 1.
+
+## Périmètre de la phase 1 (27 septembre)
+
+Deux cartes seulement :
+
+1. **PLOP** : quelle langue officielle domine, français ou anglais. La catégorie
+   « français et anglais » ne domine aucune aire de la RMR : ses hachures ne
+   servent qu'au panneau de détail.
+2. **Langue maternelle**, avec une option « retirer le français et l'anglais »
+   (mode « langue non officielle dominante »).
+
+Le mode « écart entre axes » est abandonné. L'exemple du PRD (« allophones dont
+la PLOP est le français ») demande un croisement des deux axes que le profil du
+recensement ne publie pas ; seuls des écarts nets étaient calculables.
+

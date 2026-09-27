@@ -46,9 +46,9 @@
       { "langue": "ca.langue.francais",       "couleur": "#2B6CB0", "nom": "bleu",       "statut": "decide" },
       { "langue": "ca.langue.anglais",        "couleur": "#C62828", "nom": "rouge",      "statut": "decide" },
       { "langue": "ca.langue.espagnol",       "couleur": "#C99A00", "nom": "jaune",      "statut": "decide" },
-      { "langue": "ca.langue.arabe",          "couleur": "#0F9D7A", "nom": "vert",       "statut": "provisoire" },
-      { "langue": "ca.langue.creole-haitien", "couleur": "#E377C2", "nom": "rose",       "statut": "provisoire" },
-      { "langue": "ca.langue.italien",        "couleur": "#56B4E9", "nom": "bleu ciel",  "statut": "provisoire" }
+      { "langue": "ca.langue.arabe",          "couleur": "#0F9D7A", "nom": "vert",       "statut": "decide" },
+      { "langue": "ca.langue.mandarin",       "couleur": "#E377C2", "nom": "rose",       "statut": "decide" },
+      { "langue": "ca.langue.italien",        "couleur": "#56B4E9", "nom": "bleu ciel",  "statut": "decide" }
     ],
     "autres_langues": { "couleur": "#8A8F98", "nom": "gris" },
     "plop": {

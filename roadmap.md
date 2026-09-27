@@ -69,12 +69,14 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 ### Carte
 - [ ] Générer les tuiles vectorielles (tippecanoe → PMTiles)
 - [ ] Afficher la carte avec MapLibre, bascule secteur / aire de diffusion selon le zoom
-- [ ] Sélecteur d'axe : langue maternelle / PLOP
+- [ ] Deux cartes (27 septembre) : PLOP (français ou anglais dominant) et langue maternelle ; sélecteur entre les deux
 - [ ] Mode par défaut : langue dominante × intensité (teinte = langue, clarté = part), voir PRD 6.6
 - [ ] Légende en matrice (langues × paliers < 40 / 40–60 / 60–80 / ≥ 80 %), entrées cliquables
-- [ ] Palette fixe (6 teintes validées, voir décision 0004) ; confirmer les 3 couleurs provisoires sur les langues réellement dominantes des aires de diffusion
+- [x] Palette fixe (6 teintes validées, voir décision 0004) : français, anglais, espagnol, arabe, mandarin, italien — confirmée sur les données (27 septembre)
 - [ ] Tester les paliers d'intensité de chaque teinte pour le daltonisme, pas seulement les couleurs de base
 - [ ] Mode « part d'une langue choisie » (une teinte, échelle logarithmique en option)
+- [ ] Carte de la langue maternelle : option « retirer le français et l'anglais » (mode « langue non officielle dominante », avancé de la phase 2 le 27 septembre : c'est là que la diversité se voit)
+- [ ] Fond de carte OpenFreeMap (gratuit, sans clé)
 - [ ] Traitement des aires à faible population (hachures) et des données supprimées
 - [ ] Info-bulle et panneau de détail (composition complète, population, source)
 - [ ] Légende, mention des sources, avertissement sur les petites populations
@@ -92,12 +94,10 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 - [ ] Ajouter les niveaux région économique, division de recensement (≈ MRC) et subdivision de recensement
 - [ ] Gérer les zones hors RMR où il n'existe pas de secteurs de recensement (passage direct de la subdivision à l'aire de diffusion)
 - [ ] Intégrer les arrondissements et quartiers de Montréal (API CKAN de la Ville), par agrégation des aires de diffusion ou via Montréal en statistiques
-- [ ] Ajouter le mode « langue non officielle dominante » (indispensable hors de Montréal)
 - [ ] Ajouter l'indice de diversité linguistique
 - [ ] Ajouter la carte à points dasymétrique (points en zones résidentielles seulement, fond sombre en option)
 - [ ] Légende dépliable par famille de langues
 - [ ] Panneau de détail en treemap
-- [ ] Ajouter le mode « écart entre axes » (ex. : allophones dont la PLOP est le français)
 - [ ] Traitement des réserves autochtones partiellement dénombrées
 - [ ] Recherche par adresse ou par nom de lieu
 - [ ] Export CSV et lien partageable
