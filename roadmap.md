@@ -57,7 +57,7 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 - [x] Règles de la carte par défaut, dans `config/carte.json` : axe, réponses multiples, seuil, paliers, palette
 - [x] Site statique (PMTiles + JSON), Vite + TypeScript, projet ouvert
 - [x] Règle d'égalité : stricte
-- [x] Hébergement : GitHub Pages
+- [x] Hébergement : GitHub Pages → https://kugalife.github.io/carte-linguistique/ (dépôt public, branche gh-pages, `npm run deploy`, requêtes partielles vérifiées), en ligne le 27 septembre
 - [x] Licence : MIT pour le code, CC BY 4.0 pour les données et la documentation
 
 ### Données
@@ -188,7 +188,7 @@ Critères : échelle géographique fine, licence ouverte, API ou téléchargemen
 | Jalon | Contenu |
 |---|---|
 | J1 ✅ | Pipeline de bout en bout sur un secteur de recensement |
-| J2 | Démo publique de la carte de Montréal |
+| J2 ✅ | Démo publique de la carte de Montréal — en ligne le 27 septembre |
 | J3 | Carte du Québec complète |
 | J4 | Curseur historique 2001–2021 |
 | J5 | Intégration du recensement 2026 |

@@ -1,14 +1,16 @@
 # Atlas des langues
 
+**Carte en ligne : https://kugalife.github.io/carte-linguistique/**
+
 Carte mondiale interactive de la répartition des langues, à l'échelle la plus
 fine que permettent les données publiques de chaque pays.
 
 - [`prd.md`](prd.md) — vision, périmètre, conception visuelle
 - [`roadmap.md`](roadmap.md) — phases et livrables
 
-**État : phase 0 (fondations) terminée.** Le pipeline charge un secteur de
-recensement montréalais dans un schéma multi-pays, avec provenance complète et
-contrôles de cohérence. Aucune carte n'existe encore — c'est la phase 1.
+**État : phase 1 (MVP Montréal) en cours, démo publique en ligne.** Langue
+maternelle et première langue officielle parlée pour les 6 574 aires de
+diffusion de la région métropolitaine de Montréal, recensement de 2021.
 
 ## Démarrer
 
