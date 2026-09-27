@@ -34,6 +34,10 @@ vingtaine de secondes.
 # Phase 1 : secteurs et aires de diffusion de la RMR de Montréal, avec leurs
 # limites. Le premier lancement télécharge 225 Mo de fichiers de limites.
 .venv/bin/python pipeline/scripts/04_charger_limites_rmr.py
+
+# Phase 1 : langue maternelle et PLOP de tous ces territoires (environ 20 min ;
+# relancé, il reprend là où il s'était arrêté)
+.venv/bin/python pipeline/scripts/05_charger_donnees_rmr.py
 ```
 
 Copier `.env.example` vers `.env` pour configurer une clé CensusMapper — utile

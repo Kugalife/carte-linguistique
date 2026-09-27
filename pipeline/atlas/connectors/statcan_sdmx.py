@@ -66,6 +66,13 @@ RACINE_AXE = {
 
 CODE_SOURCE = "statcan_sdmx_cp"
 
+# Le service renvoie « 414 Request-URI Too Large » au-delà d'environ 8 000
+# caractères (mesuré : 6 869 accepté, 8 669 refusé).
+LONGUEUR_URL_MAX = 7500
+# Au-delà, le temps de réponse cesse de baisser par territoire : mesuré sur des
+# aires de diffusion, 200 aires en 21 s, 300 en 62 s.
+TERRITOIRES_PAR_LOT = 200
+
 
 @dataclass
 class Reponse:
@@ -185,6 +192,29 @@ class StatCanSdmx:
         ]
 
     # ----------------------------------------------------------------- données
+
+    def lots(self, dguids: list[str], caracteristiques: list[str]) -> list[list[str]]:
+        """Découpe une liste de territoires en requêtes que le service accepte.
+
+        La limite est la longueur de l'URL, où figurent les territoires et les
+        postes énumérés ; et, en deçà, TERRITOIRES_PAR_LOT.
+        """
+        fixe = len(f"{BASE}/data/{AGENCE},DF_XX,9.9/{FREQ_RECENSEMENT}..1..1") + \
+            len("+".join(caracteristiques)) + len("?startPeriod=2021&endPeriod=2021")
+        lots: list[list[str]] = []
+        courant: list[str] = []
+        longueur = fixe
+        for d in dguids:
+            ajout = len(self.ref_area(d)) + 1
+            if courant and (longueur + ajout > LONGUEUR_URL_MAX
+                            or len(courant) >= TERRITOIRES_PAR_LOT):
+                lots.append(courant)
+                courant, longueur = [], fixe
+            courant.append(d)
+            longueur += ajout
+        if courant:
+            lots.append(courant)
+        return lots
 
     @staticmethod
     def ref_area(dguid: str) -> str:

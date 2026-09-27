@@ -59,13 +59,25 @@ GET .../data/STC_CP,DF_CT,1.3/A5.2021S05074620001_00.1.374+375+376+377+378.1
 Accept: application/vnd.sdmx.data+csv
 ```
 
-### Joker plutôt qu'énumération
+### Joker ou énumération : cela dépend du nombre de territoires
 
-Mesuré sur un secteur de Montréal : énumérer les 331 postes de la langue
-maternelle prend **53 s**, le joker qui en rapporte 2631 prend **43 s**. L'URL
-longue coûte plus au service que le volume de données. Une requête joker couvre
-de plus tous les axes d'un coup. Le connecteur bascule automatiquement sur le
-joker au-delà de 100 postes demandés.
+**Un seul territoire : joker.** Mesuré sur un secteur de Montréal (phase 0),
+énumérer les 331 postes de la langue maternelle prend **53 s**, le joker qui en
+rapporte 2 631 prend **43 s**. `charger_observations` garde ce comportement.
+
+**Plusieurs territoires : énumération.** Le joker rapporte 2 631 postes *par
+territoire*. Mesuré sur 10 aires de diffusion (phase 1) : **22 s** en joker,
+**7 s** en énumérant les 337 postes des deux axes. `charger_observations_lot`
+énumère, et une seule requête couvre les deux axes.
+
+**Taille des lots.** Les territoires énumérés allongent l'URL, et le service
+répond **414 Request-URI Too Large** au-delà d'environ 8 000 caractères (6 869
+acceptés, 8 669 refusés). Le connecteur découpe sous 7 500 caractères et au plus
+200 territoires par requête (200 aires en 21 s, 300 en 62 s) : `StatCanSdmx.lots()`.
+
+**Écriture.** `executemany` de DuckDB insère ligne par ligne : 445 s pour les
+67 000 observations d'un lot. Le pipeline écrit un CSV temporaire et l'insère en
+bloc : moins d'une seconde.
 
 ### Colonnes utiles de la réponse
 

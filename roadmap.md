@@ -61,9 +61,9 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 - [x] Licence : MIT pour le code, CC BY 4.0 pour les données et la documentation
 
 ### Données
-- [ ] Récupérer, pour la RMR 462 et le recensement 2021, la langue maternelle et la PLOP aux niveaux secteur de recensement et aire de diffusion
+- [x] Récupérer, pour la RMR 462 et le recensement 2021, la langue maternelle et la PLOP aux niveaux secteur de recensement et aire de diffusion → `05_charger_donnees_rmr.py` : 7 579 territoires, 2,2 millions d'observations, 40 requêtes, environ 20 minutes (27 septembre)
 - [x] Récupérer les limites cartographiques correspondantes → `04_charger_limites_rmr.py` : 1 004 secteurs, 6 574 aires de diffusion, emboîtement et superficies vérifiés (27 septembre)
-- [ ] Contrôler la cohérence : totaux des aires de diffusion vs secteurs vs RMR
+- [x] Contrôler la cohérence : totaux des aires de diffusion vs secteurs vs RMR → tous dans la marge de l'arrondi aléatoire ; 1 anomalie de la source signalée (aire 24710221, PLOP)
 - [ ] Marquer les territoires à données supprimées ou à faible population
 
 ### Carte

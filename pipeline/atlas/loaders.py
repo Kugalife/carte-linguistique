@@ -9,9 +9,13 @@ Voir docs/provenance.md.
 
 from __future__ import annotations
 
+import csv
+import tempfile
+from pathlib import Path
+
 import duckdb
 
-from . import db, provenance
+from . import config, db, provenance
 from .connectors.statcan_limites import FICHIER_PAR_NIVEAU, PROJECTION, StatCanLimites
 from .connectors.statcan_sdmx import DATAFLOW_PAR_NIVEAU, RACINE_AXE, StatCanSdmx
 from .languages import COLONNES_LANGUE, ArbreClassification
@@ -124,6 +128,18 @@ def charger_territoire(
     return dguid_cible
 
 
+def _correspondance(con: duckdb.DuckDBPyConnection, axe_code: str, annee: int) -> dict[str, str]:
+    """Code de variable de la source → code interne de langue, pour un axe."""
+    corr = dict(con.execute(
+        "SELECT code_variable, langue_code FROM variable_source WHERE axe_code = ? AND jeu = ?",
+        [axe_code, f"CP{annee}"],
+    ).fetchall())
+    if not corr:
+        raise RuntimeError(f"aucune correspondance de variables pour {axe_code} : "
+                           "charger_classifications() d'abord")
+    return corr
+
+
 def charger_observations(
     con: duckdb.DuckDBPyConnection,
     connecteur: StatCanSdmx,
@@ -139,29 +155,65 @@ def charger_observations(
     absente est 'supprime' et non zéro. Confondre les deux est l'erreur que la
     carte ne doit jamais commettre (PRD section 10).
     """
-    corr = dict(con.execute(
-        "SELECT code_variable, langue_code FROM variable_source WHERE axe_code = ? AND jeu = ?",
-        [axe_code, f"CP{annee}"],
-    ).fetchall())
-    if not corr:
-        raise RuntimeError(f"aucune correspondance de variables pour {axe_code} : "
-                           "charger_classifications() d'abord")
-
+    corr = _correspondance(con, axe_code, annee)
     reponse = connecteur.observations(
         niveau_code=niveau_code, dguids=dguids,
         caracteristiques=sorted(corr, key=int), annee=annee,
     )
+    return _enregistrer_reponse(con, connecteur, reponse, niveau_code=niveau_code,
+                                nb_territoires=len(dguids), correspondances={axe_code: corr},
+                                annee=annee)[axe_code]
+
+
+def charger_observations_lot(
+    con: duckdb.DuckDBPyConnection,
+    connecteur: StatCanSdmx,
+    *,
+    niveau_code: str,
+    dguids: list[str],
+    axes: list[str],
+    annee: int = 2021,
+) -> dict[str, int]:
+    """Plusieurs territoires et plusieurs axes en une seule requête.
+
+    Les postes des axes sont énumérés plutôt que demandés par joker. Sur un
+    territoire isolé le joker est plus rapide (phase 0), mais il rapporte 2 631
+    postes par territoire : mesuré sur 10 aires de diffusion, 22 s en joker
+    contre 7 s en énumérant les 337 postes utiles. La liste des territoires doit
+    tenir dans une URL : voir StatCanSdmx.lots().
+    """
+    corr = {axe: _correspondance(con, axe, annee) for axe in axes}
+    codes = sorted(set().union(*corr.values()) | {CARACTERISTIQUE_POPULATION}, key=int)
+    reponse = connecteur.observations(
+        niveau_code=niveau_code, dguids=dguids, caracteristiques=codes, annee=annee,
+        seuil_joker=len(codes),
+    )
+    return _enregistrer_reponse(con, connecteur, reponse, niveau_code=niveau_code,
+                                nb_territoires=len(dguids), correspondances=corr, annee=annee)
+
+
+def _enregistrer_reponse(
+    con: duckdb.DuckDBPyConnection,
+    connecteur: StatCanSdmx,
+    reponse,
+    *,
+    niveau_code: str,
+    nb_territoires: int,
+    correspondances: dict[str, dict[str, str]],
+    annee: int,
+) -> dict[str, int]:
+    """Écrit une réponse : une extraction, puis les observations de chaque axe."""
     brutes = connecteur.vers_observations_brutes(reponse)
-    # Une requête joker rapporte tous les postes du territoire : on ne garde que
-    # ceux de l'axe demandé, et l'on en profite pour lire au passage la
-    # population et les taux de non-réponse, qui sont dans la même réponse.
+    # La réponse porte aussi la population et les taux de non-réponse : on les
+    # lit au passage plutôt que de les redemander.
     _completer_depuis_reponse(con, reponse)
 
-    # La date de diffusion est celle des postes de cet axe, non celle de la
-    # première ligne de la réponse : une requête joker mêle plusieurs thèmes,
+    # La date de diffusion est celle des postes des axes chargés, non celle de
+    # la première ligne de la réponse : une requête peut mêler plusieurs thèmes,
     # diffusés à des dates différentes.
-    dates = connecteur.dates_diffusion(reponse, set(corr))
-    notes = f"Axe {axe_code}, {len(dguids)} territoire(s), {annee}."
+    tous = set().union(*correspondances.values())
+    dates = connecteur.dates_diffusion(reponse, tous)
+    notes = f"Axe(s) {', '.join(correspondances)}, {nb_territoires} territoire(s), {annee}."
     if len(dates) > 1:
         notes += f" Dates de diffusion multiples : {', '.join(dates)}."
 
@@ -177,43 +229,70 @@ def charger_observations(
         notes=notes,
     )
 
-    racine = RACINE_AXE[axe_code]
-    totaux = {o.territoire_source: o.valeur for o in brutes if o.code_variable == racine}
+    resultat = {}
+    for axe_code, corr in correspondances.items():
+        racine = RACINE_AXE[axe_code]
+        totaux = {o.territoire_source: o.valeur for o in brutes if o.code_variable == racine}
+        lignes = []
+        for o in brutes:
+            if o.code_variable not in corr:
+                continue
+            if o.valeur is None:
+                qualite = "supprime"
+            elif o.drapeau:
+                qualite = "arrondi"
+            else:
+                qualite = "ok"
+            lignes.append((
+                o.territoire_source.replace("_", "."), o.annee, axe_code, corr[o.code_variable],
+                "T" if o.sexe == "1" else o.sexe,
+                o.valeur, totaux.get(o.territoire_source), qualite, o.drapeau, ext,
+            ))
 
-    lignes = []
-    for o in brutes:
-        if o.code_variable not in corr:
-            continue
-        territoire_id = o.territoire_source.replace("_", ".")
-        if o.valeur is None:
-            qualite = "supprime"
-        elif o.drapeau:
-            qualite = "arrondi"
-        else:
-            qualite = "ok"
-        lignes.append((
-            territoire_id, o.annee, axe_code, corr[o.code_variable],
-            "T" if o.sexe == "1" else o.sexe,
-            o.valeur, totaux.get(o.territoire_source), qualite, o.drapeau, ext,
-        ))
+        _inserer_observations(con, lignes)
+        resultat[axe_code] = len(lignes)
+    return resultat
 
-    # Une observation n'est référencée par rien : elle peut, elle, être mise à
-    # jour. Une réextraction rafraîchit donc la valeur et sa provenance.
-    con.executemany(
-        """INSERT INTO observation
-           (territoire_id, annee, axe_code, langue_code, sexe, effectif,
-            total_reference, qualite, drapeau_source, extraction_id)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-           ON CONFLICT (territoire_id, annee, axe_code, langue_code, sexe) DO UPDATE SET
-             effectif = excluded.effectif,
-             total_reference = excluded.total_reference,
-             qualite = excluded.qualite,
-             drapeau_source = excluded.drapeau_source,
-             extraction_id = excluded.extraction_id""",
-        lignes,
-    )
 
-    return len(lignes)
+COLONNES_OBSERVATION = {
+    "territoire_id": "VARCHAR", "annee": "INTEGER", "axe_code": "VARCHAR",
+    "langue_code": "VARCHAR", "sexe": "VARCHAR", "effectif": "DOUBLE",
+    "total_reference": "DOUBLE", "qualite": "VARCHAR", "drapeau_source": "VARCHAR",
+    "extraction_id": "VARCHAR",
+}
+
+
+def _inserer_observations(con: duckdb.DuckDBPyConnection, lignes: list[tuple]) -> None:
+    """Insère des observations en bloc, par un CSV temporaire.
+
+    executemany insère ligne par ligne : mesuré, 445 s pour les 67 000
+    observations d'un lot de 200 aires de diffusion. Relire un CSV est
+    l'insertion en bloc de DuckDB, sans dépendance supplémentaire.
+
+    Une observation n'est référencée par rien : elle peut, elle, être mise à
+    jour. Une réextraction rafraîchit donc la valeur et sa provenance.
+    """
+    if not lignes:
+        return
+    config.INTERIM.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", suffix=".csv", dir=config.INTERIM,
+                                     newline="", encoding="utf-8", delete=False) as f:
+        csv.writer(f).writerows(lignes)
+        chemin = Path(f.name)
+    try:
+        colonnes = ", ".join(COLONNES_OBSERVATION)
+        types = ", ".join(f"'{c}': '{t}'" for c, t in COLONNES_OBSERVATION.items())
+        con.execute(f"""
+            INSERT INTO observation ({colonnes})
+            SELECT {colonnes} FROM read_csv(?, header = false, columns = {{{types}}})
+            ON CONFLICT (territoire_id, annee, axe_code, langue_code, sexe) DO UPDATE SET
+              effectif = excluded.effectif,
+              total_reference = excluded.total_reference,
+              qualite = excluded.qualite,
+              drapeau_source = excluded.drapeau_source,
+              extraction_id = excluded.extraction_id""", [str(chemin)])
+    finally:
+        chemin.unlink()
 
 
 CARACTERISTIQUE_POPULATION = "1"
