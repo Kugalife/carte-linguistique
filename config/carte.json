@@ -25,7 +25,7 @@
       "stricte": "Égalité seulement si les deux premiers effectifs sont identiques.",
       "marge_arrondi": "Égalité si l'écart entre les deux premiers est inférieur ou égal à 5, soit l'amplitude de l'arrondi aléatoire de Statistique Canada."
     },
-    "rendu": "Gris neutre, distinct de « autres langues »."
+    "rendu": "Rayures aux couleurs des deux langues à égalité, à la clarté de leur part (décidé le 27 septembre). Les langues qui ont une couleur passent d'abord ; au-delà de deux, les autres ne figurent que dans l'info-bulle et le panneau."
   },
 
   "seuil_faible_population": {

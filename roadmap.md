@@ -72,10 +72,10 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 - [x] Deux cartes (27 septembre) : PLOP (français ou anglais dominant) et langue maternelle ; sélecteur entre les deux
 - [x] Mode par défaut : langue dominante × intensité (teinte = langue, clarté = part, mélange OKLab), voir PRD 6.6
 - [x] Légende en matrice (langues × paliers < 40 / 40–60 / 60–80 / ≥ 80 %)
-- [ ] Légende : entrées cliquables, effectifs de la zone visible
+- [ ] Légende : effectifs de la zone visible
+- [x] Égalités en rayures des deux langues (27 septembre, décision 0004)
 - [x] Palette fixe (6 teintes validées, voir décision 0004) : français, anglais, espagnol, arabe, mandarin, italien — confirmée sur les données (27 septembre)
 - [ ] Tester les paliers d'intensité de chaque teinte pour le daltonisme, pas seulement les couleurs de base
-- [ ] Mode « part d'une langue choisie » (une teinte, échelle logarithmique en option)
 - [x] Carte de la langue maternelle : option « retirer le français et l'anglais » (mode « langue non officielle dominante », avancé de la phase 2 le 27 septembre : c'est là que la diversité se voit)
 - [x] Fond de carte OpenFreeMap (gratuit, sans clé)
 - [x] Traitement des aires à faible population (hachures) et des données supprimées (points)
@@ -95,6 +95,7 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 - [ ] Ajouter les niveaux région économique, division de recensement (≈ MRC) et subdivision de recensement
 - [ ] Gérer les zones hors RMR où il n'existe pas de secteurs de recensement (passage direct de la subdivision à l'aire de diffusion)
 - [ ] Intégrer les arrondissements et quartiers de Montréal (API CKAN de la Ville), par agrégation des aires de diffusion ou via Montréal en statistiques
+- [ ] Mode « part d'une langue choisie » (une teinte, échelle logarithmique en option), par légende cliquable — reporté de la phase 1 le 27 septembre
 - [ ] Ajouter l'indice de diversité linguistique
 - [ ] Ajouter la carte à points dasymétrique (points en zones résidentielles seulement, fond sombre en option)
 - [ ] Légende dépliable par famille de langues

@@ -23,7 +23,7 @@ alternatives. On change de règle en modifiant ce fichier, sans toucher au code.
 | Paliers d'intensité | < 40 %, 40-60 %, 60-80 %, ≥ 80 % | décidé (PRD) |
 | Couleurs fixes | Français en bleu, anglais en rouge, espagnol en jaune | décidé |
 | Trois autres couleurs | Arabe, mandarin, italien | décidé (27 septembre, sur les données) |
-| Égalité | Stricte : effectifs identiques seulement | décidé |
+| Égalité | Stricte : effectifs identiques seulement ; rendu en rayures des deux langues | décidé |
 
 ## Pourquoi
 
@@ -121,4 +121,19 @@ généraux laisseraient toute la carte au palier le plus clair.
 Le mode « écart entre axes » est abandonné. L'exemple du PRD (« allophones dont
 la PLOP est le français ») demande un croisement des deux axes que le profil du
 recensement ne publie pas ; seuls des écarts nets étaient calculables.
+
+## Révision du 27 septembre : égalités en rayures, paliers conservés
+
+Sur la carte sans français ni anglais, 1 159 aires de diffusion sur 6 574
+étaient en égalité stricte : de petits effectifs arrondis à 5 (10 contre 10)
+se départagent rarement. En gris, près d'une aire sur cinq ne disait rien.
+
+- **Une égalité est dessinée en rayures des deux langues à égalité**, à la
+  clarté de leur part. Les langues qui ont une couleur passent d'abord ; au-delà
+  de deux langues à égalité (328 aires), les autres figurent dans l'info-bulle.
+  L'égalité reste une égalité : aucune langue n'est désignée à tort.
+- **Les 4 paliers sont conservés.** Une clarté continue, proportionnelle au
+  pourcentage, a été envisagée puis écartée.
+- **Le mode « part d'une langue choisie »** (légende cliquable) est reporté à
+  une phase ultérieure : la phase 1 s'en tient à deux cartes.
 

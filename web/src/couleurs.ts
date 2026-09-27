@@ -5,12 +5,11 @@
 // perçue varie régulièrement : un mélange en RGB éclaircirait inégalement les
 // teintes (le jaune paraîtrait délavé bien avant le bleu).
 import type { ExpressionSpecification } from "maplibre-gl";
-import { AUTRES, EGALITE, entrees, paliersDe, proprietes, type Vue } from "./reglages";
+import { AUTRES, EGALITE, entrees, paliersDe, proprietes, reglages, type Vue } from "./reglages";
 
 /** Part de la couleur de base à chaque palier, du plus clair au plus foncé. */
 const INTENSITES = [0.3, 0.52, 0.76, 1];
 
-export const COULEUR_EGALITE = "#b9bcc2";
 export const COULEUR_NON_DISPONIBLE = "#ffffff";
 
 type Lab = [number, number, number];
@@ -71,7 +70,8 @@ export function expressionRemplissage(v: Vue): ExpressionSpecification {
   return [
     "case",
     ["==", ["get", "nd"], true], COULEUR_NON_DISPONIBLE,
-    ["==", ["get", p.cle], EGALITE], COULEUR_EGALITE,
+    // Égalité : le remplissage reste vide, la couche de rayures le dessine.
+    ["==", ["get", p.langue], EGALITE], "rgba(0,0,0,0)",
     ["!", ["has", p.cle]], COULEUR_NON_DISPONIBLE,
     ["==", ["get", p.cle], null], COULEUR_NON_DISPONIBLE,
     ["match", ["get", p.cle], ...branches, degrade(entrees(v).find((e) => e.cle === AUTRES)?.couleur ?? "#8a8f98")[1]],
@@ -104,5 +104,51 @@ export function motifPoints(couleur: string, taille = 6): ImageData {
   ctx.beginPath();
   ctx.arc(taille / 2, taille / 2, 1, 0, 2 * Math.PI);
   ctx.fill();
+  return ctx.getImageData(0, 0, taille, taille);
+}
+
+/** Couleur de base de chaque clé de couleur, toutes cartes confondues. */
+function couleurDeCle(cle: string): string {
+  if (cle === AUTRES) return reglages.autres;
+  const langue = reglages.couleurs.find((c) => c.langue === cle);
+  if (langue) return langue.couleur;
+  const plop = reglages.plop[cle];
+  return plop && plop.startsWith("#") ? plop : reglages.autres;
+}
+
+/** Nom d'image des rayures d'une égalité, construit dans le style MapLibre. */
+export function expressionRayures(v: Vue): ExpressionSpecification {
+  const p = proprietes(v);
+  const c2 = p.cle.replace(/_c$/, "_c2");
+  return ["concat", "rayures|", ["get", p.cle], "|", ["get", c2], "|",
+    ["to-string", ["to-number", ["get", p.palier], 0]]] as ExpressionSpecification;
+}
+
+export const PREFIXE_RAYURES = "rayures|";
+
+/**
+ * Rayures des deux langues à égalité, à la clarté du palier (décision 0004).
+ * Créées à la demande : il y a une image par paire de couleurs et par palier.
+ */
+export function motifRayures(nom: string, taille = 16): ImageData | null {
+  const [, cle1, cle2, palier] = nom.split("|");
+  if (!cle1 || !cle2) return null;
+  const i = Math.min(Number(palier) || 0, INTENSITES.length - 1);
+  const [a, b] = [degrade(couleurDeCle(cle1))[i], degrade(couleurDeCle(cle2))[i]];
+  const c = document.createElement("canvas");
+  c.width = c.height = taille;
+  const ctx = c.getContext("2d")!;
+  ctx.fillStyle = a;
+  ctx.fillRect(0, 0, taille, taille);
+  // Rayures à 45°, deux bandes de même largeur par période ; trois segments
+  // pour que le motif se raccorde d'une tuile à l'autre.
+  ctx.strokeStyle = b;
+  ctx.lineWidth = taille / (2 * Math.SQRT2);
+  ctx.beginPath();
+  for (const d of [-taille, 0, taille]) {
+    ctx.moveTo(d, taille);
+    ctx.lineTo(d + taille, 0);
+  }
+  ctx.stroke();
   return ctx.getImageData(0, 0, taille, taille);
 }

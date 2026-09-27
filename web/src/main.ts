@@ -1,13 +1,15 @@
 import {
   addProtocol, Map as Carte, NavigationControl, Popup, setWorkerUrl,
-  type MapGeoJSONFeature, type MapLayerMouseEvent,
+  type FilterSpecification, type MapGeoJSONFeature, type MapLayerMouseEvent,
 } from "maplibre-gl";
 // MapLibre cherche son worker à côté de son propre fichier, que Vite déplace :
 // on fait regrouper le worker (et ses imports) par Vite, puis on donne son URL.
 import urlWorker from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Protocol } from "pmtiles";
-import { expressionRemplissage, motifHachures, motifPoints } from "./couleurs";
+import {
+  expressionRayures, expressionRemplissage, motifHachures, motifPoints, motifRayures, PREFIXE_RAYURES,
+} from "./couleurs";
 import { afficherDetail } from "./detail";
 import { chargerPostes, chargerSources, nomPoste, URL_TUILES } from "./donnees";
 import { choisirLangue, langue, nombre, pourcentage, t, type Langue } from "./i18n";
@@ -65,6 +67,11 @@ function ajouterCouches(): void {
       paint: { "fill-color": expressionRemplissage(vue), "fill-opacity": 0.88 },
     }, avant);
     carte.addLayer({
+      id: `${couche}-egalite`, type: "fill", source: "atlas", "source-layer": couche,
+      minzoom: min, maxzoom: max, filter: filtreEgalite(),
+      paint: { "fill-pattern": expressionRayures(vue), "fill-opacity": 0.88 },
+    }, avant);
+    carte.addLayer({
       id: `${couche}-faible`, type: "fill", source: "atlas", "source-layer": couche,
       minzoom: min, maxzoom: max, filter: ["all", ["==", ["get", "fp"], true], ["==", ["get", "nd"], false]],
       paint: { "fill-pattern": "hachures" },
@@ -95,9 +102,16 @@ function ajouterCouches(): void {
   }, avant);
 }
 
+function filtreEgalite(): FilterSpecification {
+  return ["==", ["get", proprietes(vue).langue], EGALITE];
+}
+
 function appliquerVue(): void {
   for (const c of ["secteurs", "aires"]) {
-    if (carte.getLayer(`${c}-remplissage`)) carte.setPaintProperty(`${c}-remplissage`, "fill-color", expressionRemplissage(vue));
+    if (!carte.getLayer(`${c}-remplissage`)) continue;
+    carte.setPaintProperty(`${c}-remplissage`, "fill-color", expressionRemplissage(vue));
+    carte.setPaintProperty(`${c}-egalite`, "fill-pattern", expressionRayures(vue));
+    carte.setFilter(`${c}-egalite`, filtreEgalite());
   }
   dessinerLegende($("#legende"), vue);
   $("#option-sans").hidden = vue.carte !== "lm";
@@ -116,7 +130,13 @@ function texteBulle(f: MapGeoJSONFeature): string {
   if (p.nd) return `${entete}<br>${t("nonDisponible")}`;
   const l = p[k.langue];
   if (l == null) return entete;
-  if (l === EGALITE) return `${entete}<br>${t("egalite")}`;
+  if (l === EGALITE) {
+    const pre = k.langue.replace(/_l$/, "");
+    const noms = [p[`${pre}_l1`], p[`${pre}_l2`]].map((c: string) => nomPoste(c)).join(t("et"));
+    const reste = p[`${pre}_n`] - 2;
+    const plus = reste > 1 ? t("etAutres", { n: reste }) : reste === 1 ? t("etAutre") : "";
+    return `${entete}<br>${t("egalite")} : ${noms}${plus}, <strong>${pourcentage(p[k.part])}</strong> (${nombre(p[k.effectif])} ${t("chacune")})`;
+  }
   const avert = p.fp ? `<br><em class="discret">${t("faiblePop", { n: reglages.seuilFaiblePopulation })}</em>` : "";
   return `${entete}<br>${nomPoste(l)} : <strong>${pourcentage(p[k.part])}</strong> (${nombre(p[k.effectif])})${avert}`;
 }
@@ -185,6 +205,14 @@ textes();
 brancherInterface();
 await chargerPostes();
 sources();
+// Les rayures d'égalité sont dessinées à la demande, une image par paire de
+// couleurs et par palier.
+carte.on("styleimagemissing", (e) => {
+  if (!e.id.startsWith(PREFIXE_RAYURES) || carte.hasImage(e.id)) return;
+  const image = motifRayures(e.id);
+  if (image) carte.addImage(e.id, image);
+});
+
 carte.on("load", () => {
   ajouterCouches();
   appliquerVue();

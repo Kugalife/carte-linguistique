@@ -76,9 +76,10 @@ def dominance(
 ) -> dict[str, dict]:
     """Langue dominante de chaque territoire, avec son effectif et sa part.
 
-    Renvoie {territoire_id: {langue, effectif, total, allophones}} ; langue vaut
-    EGALITE si plusieurs langues partagent le premier rang (règle stricte :
-    effectifs identiques), None si aucune langue candidate n'a d'effectif.
+    Renvoie {territoire_id: {langue, ex_aequo, effectif, total, allophones}} ;
+    langue vaut EGALITE si plusieurs langues partagent le premier rang (règle
+    stricte : effectifs identiques), et ex_aequo liste alors ces langues ; None
+    si aucune langue candidate n'a d'effectif.
     Un territoire à total supprimé est absent du résultat.
     """
     reglages = reglages or Reglages.lire()
@@ -103,16 +104,29 @@ def dominance(
                CASE WHEN max(c.maxi) IS NULL OR max(c.maxi) = 0 THEN NULL
                     WHEN count(*) FILTER (WHERE c.effectif = c.maxi) > 1 THEN ?
                     ELSE any_value(c.langue_code) FILTER (WHERE c.effectif = c.maxi) END,
-               max(c.maxi), any_value(a.allophones)
+               max(c.maxi), any_value(a.allophones),
+               list(c.langue_code ORDER BY c.langue_code) FILTER (WHERE c.effectif = c.maxi)
         FROM cand c LEFT JOIN allo a USING (territoire_id)
         GROUP BY c.territoire_id""",
         [axe_code, territoires, _types_candidats(reglages),
          axe_code, POSTE_ALLOPHONES, EGALITE]).fetchall()
     return {
         tid: {"langue": langue if maxi else None, "effectif": maxi or 0,
-              "total": total, "allophones": allo}
-        for tid, total, langue, maxi, allo in lignes
+              "total": total, "allophones": allo,
+              "ex_aequo": ex_aequo if langue == EGALITE else []}
+        for tid, total, langue, maxi, allo, ex_aequo in lignes
     }
+
+
+def deux_premieres(ex_aequo: list[str], reglages: Reglages) -> list[str]:
+    """Les deux langues à égalité que la carte montre en rayures.
+
+    Les langues qui ont une couleur passent d'abord, dans l'ordre de la
+    palette : deux rayures grises ne diraient rien. Au-delà de deux langues à
+    égalité, les autres ne figurent que dans l'info-bulle et le panneau.
+    """
+    ordre = {code: i for i, code in enumerate(reglages.couleurs)}
+    return sorted(ex_aequo, key=lambda c: (ordre.get(c, len(ordre)), c))[:2]
 
 
 def palier(part: float | None, paliers_pct: list[float]) -> int | None:
@@ -155,9 +169,19 @@ def proprietes(
                     f"{prefixe}_p": None, f"{prefixe}_i": None}
         base = d[denom]
         part = d["effectif"] / base if base else None
-        return {
+        if d["langue"] == EGALITE:
+            # Égalité : rayures des deux langues (décision du 27 septembre).
+            # _l reste EGALITE ; _c et _c2 portent les deux couleurs, _n le
+            # nombre de langues à égalité.
+            l1, l2 = deux_premieres(d["ex_aequo"], reglages)
+            egal = {f"{prefixe}_l1": l1, f"{prefixe}_l2": l2,
+                    f"{prefixe}_c": cle_couleur(l1, reglages),
+                    f"{prefixe}_c2": cle_couleur(l2, reglages),
+                    f"{prefixe}_n": len(d["ex_aequo"])}
+        else:
+            egal = {f"{prefixe}_c": cle_couleur(d["langue"], reglages)}
+        return egal | {
             f"{prefixe}_l": d["langue"],
-            f"{prefixe}_c": cle_couleur(d["langue"], reglages),
             f"{prefixe}_e": d["effectif"],
             f"{prefixe}_p": round(part, 4) if part is not None else None,
             f"{prefixe}_i": palier(part, paliers),
