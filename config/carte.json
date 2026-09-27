@@ -40,6 +40,25 @@
     "pourquoi": "PRD 6.6 : < 40 %, 40-60 %, 60-80 %, >= 80 %."
   },
 
+  "sans_francais_anglais": {
+    "_note": "Carte de la langue maternelle avec l'option « retirer le français et l'anglais ». Deux façons de mesurer l'intensité, au choix du lecteur par un interrupteur.",
+    "denominateurs": {
+      "population": {
+        "paliers": [5, 10, 20],
+        "par_defaut": true,
+        "libelle": "Part de la population",
+        "pourquoi": "La première langue non officielle pèse 4 % de la population dans l'aire médiane, 14 % au 9e décile : les paliers 40/60/80 n'y distingueraient rien."
+      },
+      "allophones": {
+        "paliers": [40, 60, 80],
+        "par_defaut": false,
+        "libelle": "Part parmi les allophones",
+        "pourquoi": "Dénominateur : les réponses uniques en langue non officielle. Une aire de quelques allophones peut sortir très foncée : l'effectif est toujours affiché."
+      }
+    },
+    "statut": "decide"
+  },
+
   "palette": {
     "_note": "L'ordre est fixe : une langue garde sa couleur quel que soit le filtre. Palette vérifiée pour les personnes daltoniennes, toutes paires confondues (voir la décision 0004). Toute modification doit être revérifiée.",
     "couleurs": [

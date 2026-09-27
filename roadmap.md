@@ -67,7 +67,7 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 - [ ] Marquer les territoires à données supprimées ou à faible population
 
 ### Carte
-- [ ] Générer les tuiles vectorielles (tippecanoe → PMTiles)
+- [x] Générer les tuiles vectorielles (tippecanoe → PMTiles) → `06_exporter_carte.py` : 7,7 Mo, plus les compositions par secteur pour le panneau de détail (27 septembre)
 - [ ] Afficher la carte avec MapLibre, bascule secteur / aire de diffusion selon le zoom
 - [ ] Deux cartes (27 septembre) : PLOP (français ou anglais dominant) et langue maternelle ; sélecteur entre les deux
 - [ ] Mode par défaut : langue dominante × intensité (teinte = langue, clarté = part), voir PRD 6.6

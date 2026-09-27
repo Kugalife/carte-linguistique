@@ -112,6 +112,12 @@ Deux cartes seulement :
 2. **Langue maternelle**, avec une option « retirer le français et l'anglais »
    (mode « langue non officielle dominante »).
 
+**Intensité sans français ni anglais.** Le lecteur choisit le dénominateur :
+la part de la population (par défaut, paliers < 5 / 5-10 / 10-20 / ≥ 20 %) ou la
+part parmi les allophones (paliers 40 / 60 / 80 %). La première langue non
+officielle ne pèse que 4 % de la population dans l'aire médiane : les paliers
+généraux laisseraient toute la carte au palier le plus clair.
+
 Le mode « écart entre axes » est abandonné. L'exemple du PRD (« allophones dont
 la PLOP est le français ») demande un croisement des deux axes que le profil du
 recensement ne publie pas ; seuls des écarts nets étaient calculables.

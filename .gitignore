@@ -14,3 +14,4 @@ data/db/
 
 # Sorties de travail
 *.log
+web/public/donnees/

@@ -38,6 +38,10 @@ vingtaine de secondes.
 # Phase 1 : langue maternelle et PLOP de tous ces territoires (environ 20 min ;
 # relancé, il reprend là où il s'était arrêté)
 .venv/bin/python pipeline/scripts/05_charger_donnees_rmr.py
+
+# Phase 1 : tuiles et fichiers de la carte, sous web/public/donnees/
+# (exige tippecanoe : https://github.com/felt/tippecanoe)
+.venv/bin/python pipeline/scripts/06_exporter_carte.py
 ```
 
 Copier `.env.example` vers `.env` pour configurer une clé CensusMapper — utile
@@ -53,6 +57,7 @@ pipeline/
     provenance.py      journal des extractions
     languages.py       construction de la table des langues
     loaders.py         traduction source → modèle générique
+    indicateurs.py     ce que la carte affiche, selon config/carte.json
     connectors/
       statcan_sdmx.py  source primaire des effectifs 2021
       censusmapper.py  recensements 1996-2016, contrôle croisé
