@@ -1,0 +1,16 @@
+# Environnement
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# Données : jamais versionnées, le pipeline les reconstruit
+data/raw/
+data/interim/
+data/db/
+*.duckdb
+*.duckdb.wal
+*.pmtiles
+
+# Sorties de travail
+*.log

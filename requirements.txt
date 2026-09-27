@@ -1,0 +1,3 @@
+# Pipeline Atlas des langues — phase 0
+duckdb>=1.5
+requests>=2.32
