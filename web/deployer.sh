@@ -7,7 +7,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-if [ ! -f public/donnees/rmr-462.pmtiles ]; then
+if ! ls public/donnees/*.pmtiles >/dev/null 2>&1; then
   echo "données absentes : lancer pipeline/scripts/06_exporter_carte.py" >&2
   exit 1
 fi
