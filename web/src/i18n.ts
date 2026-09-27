@@ -10,6 +10,9 @@ const textes = {
     niveauER: "Région économique",
     niveauCD: "Division de recensement (MRC)",
     niveauCSD: "Municipalité",
+    niveauARR: "Arrondissement",
+    noteArrondissement: "Somme des aires de diffusion de l'arrondissement, chacune arrondie à 5 par Statistique Canada. Contour : réunion de ces aires.",
+    attributionVille: "Arrondissements : <a href=\"https://donnees.montreal.ca/dataset/limites-administratives-agglomeration\">Ville de Montréal</a> (CC BY 4.0)",
     carte: "Carte",
     lm: "Langue maternelle",
     plop: "Première langue officielle parlée",
@@ -53,6 +56,9 @@ const textes = {
     niveauER: "Economic region",
     niveauCD: "Census division",
     niveauCSD: "Municipality",
+    niveauARR: "Borough",
+    noteArrondissement: "Sum of the borough's dissemination areas, each rounded to 5 by Statistics Canada. Outline: union of those areas.",
+    attributionVille: "Boroughs: <a href=\"https://donnees.montreal.ca/dataset/limites-administratives-agglomeration\">City of Montréal</a> (CC BY 4.0)",
     carte: "Map",
     lm: "Mother tongue",
     plop: "First official language spoken",
@@ -122,6 +128,7 @@ export function nomNiveau(niveau: string): string {
     case "CA.ER": return t("niveauER");
     case "CA.CD": return t("niveauCD");
     case "CA.CSD": return t("niveauCSD");
+    case "CA.ARR": return t("niveauARR");
     case "CA.CT": return t("secteur");
     default: return t("aire");
   }

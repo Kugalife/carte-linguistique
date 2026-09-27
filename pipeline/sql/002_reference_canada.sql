@@ -50,6 +50,28 @@ INSERT INTO source (code, nom, organisme, licence, licence_url, url_base, remarq
    'Version cartographique (découpée selon le littoral), à préférer à la version numérique pour l''affichage.')
 ON CONFLICT (code) DO NOTHING;
 
+INSERT INTO source (code, nom, organisme, licence, licence_url, url_base, remarques) VALUES
+  ('ville_montreal',
+   'Limites administratives de l''agglomération de Montréal',
+   'Ville de Montréal',
+   'Creative Commons Attribution 4.0 International',
+   'https://creativecommons.org/licenses/by/4.0/deed.fr',
+   'https://donnees.montreal.ca/dataset/limites-administratives-agglomeration',
+   'Arrondissements et villes liées, en WGS 84. Le serveur refuse les requêtes sans User-Agent explicite (« RBAC: access denied »).')
+ON CONFLICT (code) DO NOTHING;
+
+-- Les territoires que le pipeline construit (arrondissements par addition
+-- d'aires de diffusion) ont aussi une provenance : la méthode, datée.
+INSERT INTO source (code, nom, organisme, licence, licence_url, url_base, remarques) VALUES
+  ('atlas_agregation',
+   'Agrégation d''aires de diffusion',
+   'Atlas des langues (calcul du pipeline)',
+   'CC BY 4.0 (données dérivées) ; données sources sous Licence du gouvernement ouvert — Canada',
+   'https://creativecommons.org/licenses/by/4.0/deed.fr',
+   NULL,
+   'Somme des effectifs des aires de diffusion rattachées à un territoire par leur point intérieur. Chaque effectif étant arrondi au multiple de 5, la somme hérite de ces arrondis.')
+ON CONFLICT (code) DO NOTHING;
+
 ------------------------------------------------------------------ pays
 
 INSERT INTO pays (code, nom_fr, nom_en) VALUES
@@ -96,6 +118,12 @@ ON CONFLICT (code) DO NOTHING;
 
 INSERT INTO niveau_geo (code, pays_code, code_local, nom_fr, nom_en, rang, parent_code, couverture_partielle, zoom_min, zoom_max) VALUES
   ('CA.DA',    'CA', 'DA',    'Aire de diffusion',        'Dissemination area',        7, 'CA.CSD',   FALSE, 13,   22)
+ON CONFLICT (code) DO NOTHING;
+
+-- Découpage construit par le pipeline : arrondissements de la ville de
+-- Montréal, par addition d'aires de diffusion (phase 2).
+INSERT INTO niveau_geo (code, pays_code, code_local, nom_fr, nom_en, rang, parent_code, couverture_partielle, zoom_min, zoom_max) VALUES
+  ('CA.ARR',   'CA', 'ARR',   'Arrondissement',           'Borough',                   5, 'CA.CSD',   TRUE,  NULL, NULL)
 ON CONFLICT (code) DO NOTHING;
 
 ------------------------------------------------ classifications linguistiques

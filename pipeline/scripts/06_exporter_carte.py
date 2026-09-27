@@ -46,6 +46,9 @@ COUCHES = {
     "regions": ("CA.ER", 3, 7),
     "mrc": ("CA.CD", 5, 9),
     "municipalites": ("CA.CSD", 7, 11),
+    # Découpage construit (07_charger_arrondissements.py) : remplace, au même
+    # zoom, la municipalité qu'il subdivise (propriété « subdivise »).
+    "arrondissements": ("CA.ARR", 7, 11),
     "secteurs": ("CA.CT", 9, 12),
     "aires": ("CA.DA", 9, 12),
 }
@@ -98,10 +101,10 @@ def ecrire_couche(con, chemin: Path, ids: list[str], props: dict[str, dict],
 
 def compositions(con, ids: list[str]) -> int:
     """Composition de chaque territoire, postes non nuls, en NB_FICHIERS fichiers."""
+    # Écraser plutôt que supprimer le dossier : le serveur de développement de
+    # Vite ne voit plus les fichiers d'un dossier supprimé puis recréé.
     dossier = SORTIE / "composition"
-    if dossier.exists():
-        shutil.rmtree(dossier)
-    dossier.mkdir(parents=True)
+    dossier.mkdir(parents=True, exist_ok=True)
 
     fiches: dict[str, dict] = {
         tid: {"id": tid, "niveau": niv, "nom": nom, "population": pop,
@@ -126,6 +129,9 @@ def compositions(con, ids: list[str]) -> int:
     for nom, contenu in lots.items():
         (dossier / f"{nom}.json").write_text(
             json.dumps(contenu, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    for perime in dossier.glob("*.json"):
+        if perime.stem not in lots:
+            perime.unlink()
     return len(lots)
 
 
@@ -191,8 +197,12 @@ def main(*args: str) -> int:
     for tid, nom, niveau in con.execute(
             "SELECT id, nom, niveau_code FROM territoire WHERE id IN (SELECT unnest(?))",
             [tous]).fetchall():
-        if niveau in ("CA.ER", "CA.CD", "CA.CSD") and nom:
+        if niveau in ("CA.ER", "CA.CD", "CA.CSD", "CA.ARR") and nom:
             props[tid]["nom"] = nom
+    for (csd,) in con.execute("""
+            SELECT DISTINCT parent_id FROM territoire WHERE niveau_code = 'CA.ARR'""").fetchall():
+        if csd in props:
+            props[csd]["subdivise"] = True
     # Communautés autochtones : la subdivision et ses aires.
     fichier_csd = StatCanLimites().fichier("CA.CSD")
     autochtones = {r[0] for r in con.execute(f"""
@@ -229,7 +239,7 @@ def main(*args: str) -> int:
         # ensemble évite les interstices et les chevauchements.
         "--no-simplification-of-shared-nodes",
         "--name", f"Atlas des langues, province {code_pr}",
-        "--attribution", "Statistique Canada, Recensement de 2021",
+        "--attribution", "Statistique Canada, Recensement de 2021 ; Ville de Montréal (arrondissements)",
         "--quiet",
     ]
     for couche in COUCHES:

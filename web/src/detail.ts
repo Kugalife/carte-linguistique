@@ -48,6 +48,7 @@ export async function afficherDetail(racine: HTMLElement, id: string, v: Vue): P
     ${barres(fiche, "lm", v)}
     <h3>${t("plop")}</h3>
     ${barres(fiche, "plop", v)}
-    <p class="discret">${t("reponsesUniques")}</p>`;
+    <p class="discret">${t("reponsesUniques")}</p>
+    ${fiche.niveau === "CA.ARR" ? `<p class="discret">${t("noteArrondissement")}</p>` : ""}`;
   racine.querySelector(".fermer")!.addEventListener("click", () => (racine.hidden = true));
 }

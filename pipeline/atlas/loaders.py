@@ -10,6 +10,7 @@ Voir docs/provenance.md.
 from __future__ import annotations
 
 import csv
+import json
 import tempfile
 from pathlib import Path
 
@@ -18,6 +19,7 @@ import duckdb
 from . import config, db, provenance
 from .connectors.statcan_limites import FICHIER_PAR_NIVEAU, PROJECTION, StatCanLimites
 from .connectors.statcan_sdmx import DATAFLOW_PAR_NIVEAU, RACINE_AXE, StatCanSdmx
+from .connectors.ville_montreal import VilleMontreal
 from .languages import COLONNES_LANGUE, ArbreClassification
 
 # DGUID : l'année et le schéma géographique sont en préfixe.
@@ -435,3 +437,125 @@ def charger_limites_province(
 
     return {n: con.execute(f"SELECT count(*) FROM {TABLE_TEMP[n]}").fetchone()[0]
             for n in NIVEAUX_PROVINCE}
+
+
+DISTANCE_MAX_M = 1000
+
+
+def charger_arrondissements(
+    con: duckdb.DuckDBPyConnection,
+    connecteur: VilleMontreal,
+    *,
+    csd_id: str = "2021A00052466023",
+    annee: int = 2021,
+) -> dict[str, int]:
+    """Arrondissements de la ville de Montréal, par addition d'aires de diffusion.
+
+    Une aire appartient à l'arrondissement qui contient son point intérieur. Le
+    contour dessiné est la réunion de ces aires, pas la limite officielle : ce
+    qu'on voit est exactement ce qu'on compte (décision du 27 septembre).
+    Les effectifs sont la somme de ceux des aires ; une aire à données
+    supprimées n'apporte rien, ce que le nombre d'aires supprimées signale.
+
+    L'identifiant est construit ('MTL-' + code du ministère des Affaires
+    municipales, ex. MTL-REM21 pour le Plateau) ; l'année des limites est celle
+    des aires qui les composent, 2021.
+    """
+    db.charger_spatial(con)
+    limites = connecteur.limites()
+    arr = [f for f in limites.entites if f["properties"]["TYPE"] == "Arrondissement"]
+
+    con.begin()
+    ext_limites = provenance.enregistrer(
+        con, source_code=connecteur.code_source, requete=limites.url,
+        reponse=limites.octets, nb_lignes=len(arr), tableau_source="limites-administratives-agglomeration",
+        notes=f"{len(arr)} arrondissements retenus sur {len(limites.entites)} entités.")
+    ext_calcul = provenance.enregistrer(
+        con, source_code="atlas_agregation",
+        requete=(f"aires de diffusion de {csd_id} rattachées par ST_PointOnSurface aux "
+                 f"arrondissements de l'extraction {ext_limites} ; somme des effectifs par poste"),
+        nb_lignes=len(arr), notes="Arrondissements de Montréal.", conserver_brut=False)
+
+    con.execute("CREATE OR REPLACE TEMP TABLE _arr (id VARCHAR, nom VARCHAR, geom GEOMETRY)")
+    con.executemany("INSERT INTO _arr VALUES (?, ?, ST_GeomFromGeoJSON(?))", [
+        (f"MTL-{f['properties']['CODEMAMH']}", f["properties"]["NOM"], json.dumps(f["geometry"]))
+        for f in arr])
+
+    con.execute("""
+        CREATE OR REPLACE TEMP TABLE _arr_aires AS
+        SELECT a.id AS arr_id, t.id AS aire_id, t.superficie_km2, t.population,
+               ST_GeomFromWKB(g.geometrie) AS geom
+        FROM territoire t
+        JOIN territoire_geometrie g ON g.territoire_id = t.id
+        JOIN _arr a ON ST_Within(ST_PointOnSurface(ST_GeomFromWKB(g.geometrie)), a.geom)
+        WHERE t.parent_id = ? AND t.niveau_code = 'CA.DA'""", [csd_id])
+    # Seconde passe : les limites de la Ville ne suivent pas exactement le rivage
+    # de Statistique Canada, et une aire riveraine peut avoir son point intérieur
+    # hors de tout arrondissement (observé : 24660984, à 200 m de LaSalle). Elle
+    # va à l'arrondissement le plus proche, jusqu'à DISTANCE_MAX_M.
+    con.execute(f"""
+        INSERT INTO _arr_aires
+        SELECT arg_min(a.id, d), t.id, any_value(t.superficie_km2), any_value(t.population),
+               any_value(ST_GeomFromWKB(g.geometrie))
+        FROM territoire t
+        JOIN territoire_geometrie g ON g.territoire_id = t.id,
+        LATERAL (SELECT a.id, ST_Distance(
+                     ST_Transform(ST_PointOnSurface(ST_GeomFromWKB(g.geometrie)), 'EPSG:4326',
+                                  '{PROJECTION}', always_xy := true),
+                     ST_Transform(a.geom, 'EPSG:4326', '{PROJECTION}', always_xy := true)) AS d
+                 FROM _arr a) a
+        WHERE t.parent_id = ? AND t.niveau_code = 'CA.DA'
+          AND t.id NOT IN (SELECT aire_id FROM _arr_aires)
+          AND a.d <= ?
+        GROUP BY t.id""", [csd_id, DISTANCE_MAX_M])
+
+    con.execute("""
+        INSERT INTO territoire
+          (id, pays_code, niveau_code, code_local, nom, parent_id, annee_limites,
+           population, superficie_km2, extraction_id)
+        SELECT a.id, 'CA', 'CA.ARR', a.id, a.nom, ?, ?, sum(x.population), sum(x.superficie_km2), ?
+        FROM _arr a JOIN _arr_aires x ON x.arr_id = a.id
+        GROUP BY a.id, a.nom
+        ON CONFLICT (id) DO NOTHING""", [csd_id, annee, ext_calcul])
+    # population et superficie : colonnes ordinaires, reposées si la ligne existait.
+    con.execute("""
+        UPDATE territoire t SET population = s.pop, superficie_km2 = s.sup
+        FROM (SELECT arr_id, sum(population) AS pop, sum(superficie_km2) AS sup
+              FROM _arr_aires GROUP BY arr_id) s
+        WHERE t.id = s.arr_id""")
+    con.execute("""
+        INSERT OR REPLACE INTO territoire_geometrie (territoire_id, geometrie, extraction_id)
+        SELECT arr_id, ST_AsWKB(ST_Union_Agg(geom)), ? FROM _arr_aires GROUP BY arr_id""",
+        [ext_calcul])
+    con.execute("""
+        INSERT OR REPLACE INTO territoire_inclusion (territoire_id, englobant_id, extraction_id)
+        SELECT aire_id, arr_id, ? FROM _arr_aires""", [ext_calcul])
+
+    # Observations : somme par axe et par poste. total_reference est la somme des
+    # totaux des aires qui en ont un ; une aire supprimée n'apporte rien.
+    con.execute("""
+        INSERT INTO observation
+          (territoire_id, annee, axe_code, langue_code, sexe, effectif, total_reference,
+           qualite, drapeau_source, extraction_id)
+        SELECT x.arr_id, o.annee, o.axe_code, o.langue_code, o.sexe,
+               sum(o.effectif), any_value(tot.total), 'agrege', NULL, ?
+        FROM _arr_aires x
+        JOIN observation o ON o.territoire_id = x.aire_id AND o.annee = ?
+        JOIN (SELECT x2.arr_id, o2.axe_code, sum(o2.total_reference) AS total
+              FROM _arr_aires x2 JOIN observation o2 ON o2.territoire_id = x2.aire_id
+              -- sur l'axe aussi : ca.langue.total sert à deux axes (langue
+              -- maternelle, langue parlée à la maison), qui doubleraient la somme.
+              JOIN variable_source v ON v.langue_code = o2.langue_code
+                                    AND v.axe_code = o2.axe_code AND v.est_total
+              WHERE o2.annee = ?
+              GROUP BY x2.arr_id, o2.axe_code) tot
+          ON tot.arr_id = x.arr_id AND tot.axe_code = o.axe_code
+        GROUP BY x.arr_id, o.annee, o.axe_code, o.langue_code, o.sexe
+        ON CONFLICT (territoire_id, annee, axe_code, langue_code, sexe) DO UPDATE SET
+          effectif = excluded.effectif, total_reference = excluded.total_reference,
+          qualite = excluded.qualite, extraction_id = excluded.extraction_id""",
+        [ext_calcul, annee, annee])
+    con.commit()
+
+    return {"arrondissements": con.execute("SELECT count(DISTINCT arr_id) FROM _arr_aires").fetchone()[0],
+            "aires": con.execute("SELECT count(*) FROM _arr_aires").fetchone()[0]}

@@ -34,7 +34,10 @@ interface Couche {
 const COUCHES: Couche[] = [
   { id: "regions", source: "regions", min: 0, max: 6.5 },
   { id: "mrc", source: "mrc", min: 6.5, max: 8.5 },
-  { id: "municipalites", source: "municipalites", min: 8.5, max: 10 },
+  // Une municipalité découpée en arrondissements (Montréal) cède la place à
+  // ceux-ci au même zoom.
+  { id: "municipalites", source: "municipalites", min: 8.5, max: 10, filtre: ["!", ["has", "subdivise"]] },
+  { id: "arrondissements", source: "arrondissements", min: 8.5, max: 10 },
   { id: "secteurs", source: "secteurs", min: 10, max: 12 },
   { id: "aires-hors-secteur", source: "aires", min: 10, max: 24, filtre: ["!", ["has", "ct"]] },
   { id: "aires", source: "aires", min: 12, max: 24, filtre: ["has", "ct"] },
@@ -74,7 +77,8 @@ function ajouterCouches(): void {
   carte.addSource("atlas", {
     type: "vector",
     url: `pmtiles://${URL_TUILES}`,
-    attribution: `© <a href="https://www.statcan.gc.ca/">Statistique Canada</a>, ${t("licence")}`,
+    attribution: `© <a href="https://www.statcan.gc.ca/">Statistique Canada</a>, ${t("licence")} · `
+      + `${t("attributionVille")}`,
   });
   carte.addImage("hachures", motifHachures("rgba(40,40,40,0.55)"));
   carte.addImage("points", motifPoints("rgba(40,40,40,0.6)"));
@@ -155,7 +159,8 @@ function texteBulle(f: MapGeoJSONFeature): string {
 }
 
 const NIVEAU_DE_COUCHE: Record<string, string> = {
-  regions: "CA.ER", mrc: "CA.CD", municipalites: "CA.CSD", secteurs: "CA.CT", aires: "CA.DA",
+  regions: "CA.ER", mrc: "CA.CD", municipalites: "CA.CSD", arrondissements: "CA.ARR",
+  secteurs: "CA.CT", aires: "CA.DA",
 };
 
 let survole: string | null = null;

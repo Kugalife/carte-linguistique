@@ -41,6 +41,10 @@ vingtaine de secondes.
 # relancé, il reprend là où il s'était arrêté)
 .venv/bin/python pipeline/scripts/05_charger_donnees.py
 
+# Arrondissements de Montréal : limites de la Ville (CC BY 4.0), chiffres par
+# addition des aires de diffusion
+.venv/bin/python pipeline/scripts/07_charger_arrondissements.py
+
 # Tuiles et fichiers de la carte, sous web/public/donnees/
 # (exige tippecanoe : https://github.com/felt/tippecanoe)
 .venv/bin/python pipeline/scripts/06_exporter_carte.py
@@ -76,6 +80,7 @@ pipeline/
     connectors/
       statcan_sdmx.py  source primaire des effectifs 2021
       censusmapper.py  recensements 1996-2016, contrôle croisé
+      ville_montreal.py  limites des arrondissements (données ouvertes)
       statcan_limites.py  géométries (fichiers de limites cartographiques)
   sql/
     001_schema.sql            schéma générique multi-pays
