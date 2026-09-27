@@ -87,8 +87,15 @@ Trois résultats modifient ce que prévoyait le PRD. Ils sont détaillés dans
 
 ## Ce qui reste ouvert
 
-- **Licence du dépôt.** Le PRD laisse la question ouverte (« projet ouvert ou
-  produit fermé ? »). Aucun fichier de licence n'est posé : c'est une décision à
-  prendre avant toute diffusion, pas un oubli.
 - **Géométries.** Les fichiers de limites cartographiques ne s'obtiennent pas par
   API. La colonne `territoire.geometrie` existe, vide.
+
+## Licence
+
+Projet ouvert (décision 0005).
+
+- Code : MIT, voir [`LICENSE`](LICENSE).
+- Documentation, réglages éditoriaux, données produites et cartes : CC BY 4.0,
+  voir [`LICENSE-DONNEES`](LICENSE-DONNEES).
+- Données sources : Statistique Canada, sous la Licence du gouvernement ouvert —
+  Canada, dont la mention est obligatoire.

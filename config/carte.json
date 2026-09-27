@@ -1,0 +1,62 @@
+{
+  "_lisez_moi": "Réglages éditoriaux de la carte. Chaque choix porte son statut ('decide' = tranché par le porteur du projet, 'provisoire' = proposé, à confirmer sur les données). Modifier ce fichier suffit : le pipeline et le site le lisent, rien n'est codé en dur ailleurs. Justifications : docs/decisions/0004-regles-de-la-carte-par-defaut.md.",
+
+  "axe_par_defaut": {
+    "valeur": "CA.langue_maternelle",
+    "statut": "decide",
+    "pourquoi": "Montre la diversité ; la PLOP n'a que 4 catégories."
+  },
+
+  "reponses_multiples": {
+    "valeur": "exclues_de_la_dominance",
+    "statut": "decide",
+    "alternatives": {
+      "exclues_de_la_dominance": "« Français et anglais » ne peut pas être langue dominante ; visible dans le panneau de détail.",
+      "categorie_candidate": "Les réponses multiples concourent comme une catégorie à part, avec sa propre couleur.",
+      "reparties_explicitement": "Chaque réponse multiple est répartie à parts égales entre ses langues, et la carte le signale."
+    },
+    "pourquoi": "Retenu, mais laissé ouvert : on pourra trancher autrement."
+  },
+
+  "egalite": {
+    "valeur": "stricte",
+    "statut": "decide",
+    "alternatives": {
+      "stricte": "Égalité seulement si les deux premiers effectifs sont identiques.",
+      "marge_arrondi": "Égalité si l'écart entre les deux premiers est inférieur ou égal à 5, soit l'amplitude de l'arrondi aléatoire de Statistique Canada."
+    },
+    "rendu": "Gris neutre, distinct de « autres langues »."
+  },
+
+  "seuil_faible_population": {
+    "valeur": 100,
+    "statut": "decide",
+    "pourquoi": "En dessous, l'arrondi aléatoire à 5 rend les pourcentages instables : l'aire est hachurée. À ajuster sur les données."
+  },
+
+  "paliers_intensite": {
+    "valeur": [40, 60, 80],
+    "statut": "decide",
+    "pourquoi": "PRD 6.6 : < 40 %, 40-60 %, 60-80 %, >= 80 %."
+  },
+
+  "palette": {
+    "_note": "L'ordre est fixe : une langue garde sa couleur quel que soit le filtre. Palette vérifiée pour les personnes daltoniennes, toutes paires confondues (voir la décision 0004). Toute modification doit être revérifiée.",
+    "couleurs": [
+      { "langue": "ca.langue.francais",       "couleur": "#2B6CB0", "nom": "bleu",       "statut": "decide" },
+      { "langue": "ca.langue.anglais",        "couleur": "#C62828", "nom": "rouge",      "statut": "decide" },
+      { "langue": "ca.langue.espagnol",       "couleur": "#C99A00", "nom": "jaune",      "statut": "decide" },
+      { "langue": "ca.langue.arabe",          "couleur": "#0F9D7A", "nom": "vert",       "statut": "provisoire" },
+      { "langue": "ca.langue.creole-haitien", "couleur": "#E377C2", "nom": "rose",       "statut": "provisoire" },
+      { "langue": "ca.langue.italien",        "couleur": "#56B4E9", "nom": "bleu ciel",  "statut": "provisoire" }
+    ],
+    "autres_langues": { "couleur": "#8A8F98", "nom": "gris" },
+    "plop": {
+      "_note": "« Français et anglais » en hachures bleu/rouge (provisoire) : un violet échoue au test de daltonisme face au bleu, et toute autre teinte reprendrait celle d'une langue maternelle quand on change d'axe.",
+      "ca.plop.francais":            "#2B6CB0",
+      "ca.plop.anglais":             "#C62828",
+      "ca.plop.francais-et-anglais": "hachures #2B6CB0 / #C62828",
+      "ca.plop.ni-francais-ni-anglais": "#8A8F98"
+    }
+  }
+}

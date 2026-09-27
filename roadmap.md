@@ -45,13 +45,20 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 ### Non fait, et pourquoi
 
 - [ ] **Géométries.** Les fichiers de limites cartographiques ne s'obtiennent pas par API ; la colonne `territoire.geometrie` existe, vide. Premier travail de la phase 1.
-- [ ] **Licence du dépôt.** Dépend d'une question ouverte du PRD (« projet ouvert ou produit fermé ? »). Aucun fichier de licence n'est posé : décision à prendre avant diffusion.
+- [x] **Licence du dépôt.** Réglée le 27 septembre (décision 0005) : MIT pour le code, CC BY 4.0 pour les données et la documentation.
 
 ---
 
 ## Phase 1 — MVP Montréal
 
 **But :** une carte fonctionnelle et fiable de la région métropolitaine de Montréal.
+
+### Décisions préalables (27 septembre, décisions 0004 et 0005)
+- [x] Règles de la carte par défaut, dans `config/carte.json` : axe, réponses multiples, seuil, paliers, palette
+- [x] Site statique (PMTiles + JSON), Vite + TypeScript, projet ouvert
+- [x] Règle d'égalité : stricte
+- [x] Hébergement : GitHub Pages
+- [x] Licence : MIT pour le code, CC BY 4.0 pour les données et la documentation
 
 ### Données
 - [ ] Récupérer, pour la RMR 462 et le recensement 2021, la langue maternelle et la PLOP aux niveaux secteur de recensement et aire de diffusion
@@ -65,7 +72,8 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 - [ ] Sélecteur d'axe : langue maternelle / PLOP
 - [ ] Mode par défaut : langue dominante × intensité (teinte = langue, clarté = part), voir PRD 6.6
 - [ ] Légende en matrice (langues × paliers < 40 / 40–60 / 60–80 / ≥ 80 %), entrées cliquables
-- [ ] Palette fixe de 8 couleurs maximum, regroupement des autres langues par famille
+- [ ] Palette fixe (6 teintes validées, voir décision 0004) ; confirmer les 3 couleurs provisoires sur les langues réellement dominantes des aires de diffusion
+- [ ] Tester les paliers d'intensité de chaque teinte pour le daltonisme, pas seulement les couleurs de base
 - [ ] Mode « part d'une langue choisie » (une teinte, échelle logarithmique en option)
 - [ ] Traitement des aires à faible population (hachures) et des données supprimées
 - [ ] Info-bulle et panneau de détail (composition complète, population, source)

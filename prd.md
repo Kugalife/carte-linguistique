@@ -214,10 +214,10 @@ Composition linguistique complète du territoire sous forme de treemap ou de bar
 
 ## 11. Questions ouvertes
 
-- Quel indicateur afficher par défaut à l'ouverture de la carte ?
+- ~~Quel indicateur afficher par défaut à l'ouverture de la carte ?~~ → langue dominante × intensité, langue maternelle (décision 0004).
 - Faut-il agréger les aires de diffusion par arrondissement nous-mêmes, ou utiliser les profils de Montréal en statistiques ?
 - Quels pays pilotes pour l'international (critères : échelle fine disponible, licence ouverte, axe de mesure) ?
-- Modèle de publication : projet ouvert (code et données) ou produit fermé ?
+- ~~Modèle de publication : projet ouvert (code et données) ou produit fermé ?~~ → projet ouvert, MIT + CC BY 4.0 (décision 0005).
 - Hébergement et coûts pour la version mondiale.
 
 ## 12. Sources de référence
