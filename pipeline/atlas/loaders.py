@@ -320,60 +320,80 @@ def _completer_depuis_reponse(con, reponse) -> None:
         )
 
 
-def charger_limites(
+# Chaîne administrative, du plus large au plus fin, puis chaîne métropolitaine.
+# Voir docs/decisions/0006-deux-emboitements.md.
+NIVEAUX_PROVINCE = ["CA.PR", "CA.ER", "CA.CD", "CA.CSD", "CA.CMACA", "CA.CT", "CA.DA"]
+TABLE_TEMP = {n: "_" + n.split(".")[1].lower() for n in NIVEAUX_PROVINCE}
+
+
+def charger_limites_province(
     con: duckdb.DuckDBPyConnection,
     connecteur: StatCanLimites,
     *,
-    rmr_id: str,
+    code_province: str,
     annee_limites: int = 2021,
 ) -> dict[str, int]:
-    """Crée les secteurs et aires de diffusion d'une RMR et pose leurs géométries.
+    """Crée les territoires d'une province, tous niveaux, et pose leurs géométries.
 
-    La RMR doit déjà exister (charger_territoire), puisqu'elle est le parent des
-    secteurs. Ses propres limites sont posées au passage.
+    Rattachements (décision 0006) :
 
-    Les aires de diffusion sont rattachées à leur secteur par position : le
-    fichier des aires ne porte ni le secteur ni la RMR (voir le connecteur). Une
-    aire appartient au secteur qui contient un point intérieur de son polygone
+      parent_id    province ← région économique ← division ← subdivision ← aire
+                   province ← RMR ← secteur
+      inclusion    aire ∈ secteur, subdivision ∈ RMR
+
+    Par code quand le code le dit (une subdivision 2466023 est dans la division
+    2466, un secteur 4620001.00 dans la RMR 462), par position sinon : un
+    territoire appartient à celui qui contient un point intérieur de son polygone
     (ST_PointOnSurface, toujours dans le polygone, contrairement au centroïde).
-    Les aires de diffusion s'emboîtent exactement dans les secteurs, donc chaque
-    aire doit trouver un secteur et un seul : c'est vérifié par l'appelant.
-
-    Les géométries sont stockées en WGS 84 (EPSG:4326), la projection des tuiles
-    vectorielles. Le calcul de position se fait avant, dans la projection
-    d'origine, en mètres.
+    La position se calcule dans la projection d'origine, en mètres ; les
+    géométries sont stockées en WGS 84, la projection des tuiles.
     """
     db.charger_spatial(con)
-    con.begin()   # tout ou rien : un échec ne laisse pas une RMR à moitié chargée
-    code_rmr = con.execute(
-        "SELECT code_local FROM territoire WHERE id = ?", [rmr_id]).fetchone()[0]
-    f = {n: connecteur.fichier(n) for n in FICHIER_PAR_NIVEAU}
+    f = {n: connecteur.fichier(n) for n in NIVEAUX_PROVINCE}
 
-    con.execute(f"""
-        CREATE OR REPLACE TEMP TABLE _rmr AS
-        -- Une RMR à cheval sur deux provinces (Ottawa-Gatineau) a une ligne par
-        -- partie provinciale : on les réunit.
-        SELECT any_value(DGUID) AS id, sum(LANDAREA) AS superficie,
-               ST_Union_Agg(geom) AS geom
-        FROM ST_Read('{f["CA.CMACA"].couche}') WHERE CMAUID = ?
-        GROUP BY CMAUID""", [code_rmr])
-    con.execute(f"""
-        CREATE OR REPLACE TEMP TABLE _ct AS
-        SELECT DGUID AS id, CTUID AS code_local, LANDAREA AS superficie, PRUID, geom
-        FROM ST_Read('{f["CA.CT"].couche}') WHERE CTUID LIKE ? || '%'""", [code_rmr])
-    # Filtre par province d'abord : il réduit de 57 000 à quelques milliers les
-    # aires à situer.
-    con.execute(f"""
-        CREATE OR REPLACE TEMP TABLE _da AS
-        SELECT da.DGUID AS id, da.DAUID AS code_local, da.LANDAREA AS superficie,
-               da.geom, ct.id AS parent_id
-        FROM ST_Read('{f["CA.DA"].couche}') da
-        JOIN _ct ct ON ST_Within(ST_PointOnSurface(da.geom), ct.geom)
-        WHERE da.PRUID IN (SELECT DISTINCT PRUID FROM _ct)""")
+    con.begin()   # tout ou rien : un échec ne laisse pas une province à moitié chargée
+    for niveau in NIVEAUX_PROVINCE:
+        fi = f[niveau]
+        nom = fi.colonne_nom or fi.colonne_code
+        # Une RMR à cheval sur deux provinces a une ligne par partie : on ne
+        # garde que celle de la province, sous l'identifiant de la RMR entière.
+        con.execute(f"""
+            CREATE OR REPLACE TEMP TABLE {TABLE_TEMP[niveau]} AS
+            SELECT any_value(DGUID) AS id, {fi.colonne_code} AS code_local,
+                   any_value({nom}) AS nom, sum(LANDAREA) AS superficie,
+                   ST_Union_Agg(geom) AS geom,
+                   CAST(NULL AS VARCHAR) AS parent_id
+            FROM ST_Read('{fi.couche}') WHERE PRUID = ?
+            GROUP BY {fi.colonne_code}""", [code_province])
+
+    # --- parents : chaîne administrative
+    con.execute("UPDATE _er SET parent_id = (SELECT id FROM _pr)")
+    con.execute("UPDATE _cmaca SET parent_id = (SELECT id FROM _pr)")
+    con.execute("""
+        UPDATE _cd SET parent_id = er.id FROM _er er
+        WHERE ST_Within(ST_PointOnSurface(_cd.geom), er.geom)""")
+    con.execute("""
+        UPDATE _csd SET parent_id = cd.id FROM _cd cd
+        WHERE cd.code_local = left(_csd.code_local, 4)""")
+    con.execute("""
+        UPDATE _da SET parent_id = csd.id FROM _csd csd
+        WHERE ST_Within(ST_PointOnSurface(_da.geom), csd.geom)""")
+    con.execute("""
+        UPDATE _ct SET parent_id = cma.id FROM _cmaca cma
+        WHERE cma.code_local = left(_ct.code_local, 3)""")
+
+    # --- inclusions : chaîne métropolitaine
+    con.execute("""
+        CREATE OR REPLACE TEMP TABLE _inclusion AS
+        SELECT da.id AS territoire_id, ct.id AS englobant_id, 'CA.CT' AS niveau
+        FROM _da da JOIN _ct ct ON ST_Within(ST_PointOnSurface(da.geom), ct.geom)
+        UNION ALL
+        SELECT csd.id, cma.id, 'CA.CMACA'
+        FROM _csd csd JOIN _cmaca cma ON ST_Within(ST_PointOnSurface(csd.geom), cma.geom)""")
 
     ext = {}
-    for niveau, table in (("CA.CMACA", "_rmr"), ("CA.CT", "_ct"), ("CA.DA", "_da")):
-        n = con.execute(f"SELECT count(*) FROM {table}").fetchone()[0]
+    for niveau in NIVEAUX_PROVINCE:
+        n = con.execute(f"SELECT count(*) FROM {TABLE_TEMP[niveau]}").fetchone()[0]
         ext[niveau] = provenance.enregistrer(
             con,
             source_code=connecteur.code_source,
@@ -382,42 +402,36 @@ def charger_limites(
             nb_lignes=n,
             tableau_source=f[niveau].nom,
             version_source=str(annee_limites),
-            notes=(f"Limites cartographiques, RMR {code_rmr}. Archive conservée sous "
-                   f"data/raw/statcan_limites/{f[niveau].nom}.zip."),
+            notes=(f"Limites cartographiques, province {code_province}. Archive conservée "
+                   f"sous data/raw/statcan_limites/{f[niveau].nom}.zip."),
             conserver_brut=False,
         )
 
-    # Secteurs, puis aires : un parent doit exister avant son enfant.
-    # DO NOTHING : un territoire déjà chargé (par 02_charger_secteur.py) garde sa
-    # ligne ; seule sa géométrie est posée ci-dessous.
-    con.execute("""
-        INSERT INTO territoire
-          (id, pays_code, niveau_code, code_local, nom, parent_id, annee_limites, extraction_id)
-        SELECT id, 'CA', 'CA.CT', code_local, code_local, ?, ?, ?
-        FROM _ct
-        ON CONFLICT (id) DO NOTHING""", [rmr_id, annee_limites, ext["CA.CT"]])
-    con.execute("""
-        INSERT INTO territoire
-          (id, pays_code, niveau_code, code_local, nom, parent_id, annee_limites, extraction_id)
-        SELECT id, 'CA', 'CA.DA', code_local, code_local, parent_id, ?, ?
-        FROM _da
-        ON CONFLICT (id) DO NOTHING""", [annee_limites, ext["CA.DA"]])
-
-    # superficie_km2 : colonne ordinaire, qu'un UPDATE peut poser même sur une
-    # ligne référencée. La géométrie et sa provenance vont dans leur propre table.
-    for niveau, table in (("CA.CMACA", "_rmr"), ("CA.CT", "_ct"), ("CA.DA", "_da")):
+    # Dans l'ordre de NIVEAUX_PROVINCE : un parent existe avant son enfant.
+    # DO NOTHING : un territoire déjà chargé garde sa ligne ; sa géométrie et sa
+    # superficie sont reposées ci-dessous.
+    for niveau in NIVEAUX_PROVINCE:
         con.execute(f"""
-            UPDATE territoire t SET superficie_km2 = s.superficie
-            FROM {table} s WHERE t.id = s.id""")
+            INSERT INTO territoire
+              (id, pays_code, niveau_code, code_local, nom, parent_id, annee_limites,
+               superficie_km2, extraction_id)
+            SELECT id, 'CA', ?, code_local, nom, parent_id, ?, superficie, ?
+            FROM {TABLE_TEMP[niveau]}
+            ON CONFLICT (id) DO NOTHING""", [niveau, annee_limites, ext[niveau]])
+        # ST_MakeValid : les fichiers source contiennent des polygones invalides
+        # (ex. secteur 4620732.04). La correction ne change pas la superficie.
         con.execute(f"""
             INSERT OR REPLACE INTO territoire_geometrie (territoire_id, geometrie, extraction_id)
-            -- ST_MakeValid : le fichier source contient des polygones invalides
-            -- (secteur 4620732.04 et une de ses aires). La correction ne
-            -- change pas la superficie.
             SELECT id, ST_AsWKB(ST_Transform(ST_MakeValid(geom), '{PROJECTION}', 'EPSG:4326',
                                              always_xy := true)), ?
-            FROM {table}""", [ext[niveau]])
+            FROM {TABLE_TEMP[niveau]}""", [ext[niveau]])
 
+    for niveau in ("CA.CT", "CA.CMACA"):
+        con.execute("""
+            INSERT OR REPLACE INTO territoire_inclusion (territoire_id, englobant_id, extraction_id)
+            SELECT territoire_id, englobant_id, ? FROM _inclusion WHERE niveau = ?""",
+            [ext[niveau], niveau])
     con.commit()
-    return {niveau: con.execute(f"SELECT count(*) FROM {t}").fetchone()[0]
-            for niveau, t in (("CA.CMACA", "_rmr"), ("CA.CT", "_ct"), ("CA.DA", "_da"))}
+
+    return {n: con.execute(f"SELECT count(*) FROM {TABLE_TEMP[n]}").fetchone()[0]
+            for n in NIVEAUX_PROVINCE}

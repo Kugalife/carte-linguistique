@@ -91,17 +91,17 @@ Les durées sont indicatives, pour une petite équipe (1 à 2 personnes). Chaque
 
 **But :** étendre à tout le Québec avec une navigation multi-échelle.
 
-- [ ] Étendre la collecte à toutes les aires de diffusion du Québec
-- [ ] Ajouter les niveaux région économique, division de recensement (≈ MRC) et subdivision de recensement
-- [ ] Gérer les zones hors RMR où il n'existe pas de secteurs de recensement (passage direct de la subdivision à l'aire de diffusion)
+- [x] Étendre la collecte à toutes les aires de diffusion du Québec (13 805 aires, 1 480 secteurs, 27 septembre)
+- [x] Ajouter les niveaux région économique, division de recensement (≈ MRC) et subdivision de recensement (17, 98 et 1 282)
+- [x] Gérer les zones hors RMR où il n'existe pas de secteurs de recensement (passage direct de la subdivision à l'aire de diffusion) → décision 0006 : deux emboîtements
 - [ ] Intégrer les arrondissements et quartiers de Montréal (API CKAN de la Ville), par agrégation des aires de diffusion ou via Montréal en statistiques
 - [ ] Mode « part d'une langue choisie » (une teinte, échelle logarithmique en option), par légende cliquable — reporté de la phase 1 le 27 septembre
 - [ ] Ajouter l'indice de diversité linguistique
 - [ ] Ajouter la carte à points dasymétrique (points en zones résidentielles seulement, fond sombre en option)
 - [ ] Légende dépliable par famille de langues
 - [ ] Panneau de détail en treemap
-- [ ] Traitement des réserves autochtones partiellement dénombrées
-- [ ] Recherche par adresse ou par nom de lieu
+- [x] Traitement des réserves autochtones partiellement dénombrées (55 communautés repérées par leur type de subdivision ; explication dans l'info-bulle)
+- [x] Recherche par adresse ou par nom de lieu (Photon, autocomplétion limitée au Québec)
 - [ ] Export CSV et lien partageable
 
 **Critère de fin :** navigation fluide du Québec entier jusqu'à l'aire de diffusion, sur ordinateur et mobile.

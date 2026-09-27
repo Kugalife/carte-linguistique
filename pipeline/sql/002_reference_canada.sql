@@ -75,7 +75,7 @@ INSERT INTO niveau_geo (code, pays_code, code_local, nom_fr, nom_en, rang, paren
 ON CONFLICT (code) DO NOTHING;
 
 INSERT INTO niveau_geo (code, pays_code, code_local, nom_fr, nom_en, rang, parent_code, couverture_partielle, zoom_min, zoom_max) VALUES
-  ('CA.CD',    'CA', 'CD',    'Division de recensement',  'Census division',           3, 'CA.PR',    FALSE, 7.5,  9)
+  ('CA.CD',    'CA', 'CD',    'Division de recensement',  'Census division',           3, 'CA.ER',    FALSE, 7.5,  9)
 ON CONFLICT (code) DO NOTHING;
 
 INSERT INTO niveau_geo (code, pays_code, code_local, nom_fr, nom_en, rang, parent_code, couverture_partielle, zoom_min, zoom_max) VALUES

@@ -30,10 +30,11 @@ reproductible, et deux extractions sont comparables ligne à ligne.
 `annee_limites` est `NOT NULL` et distincte de l'année d'observation. Voir
 [décision 0002](decisions/0002-geographies-harmonisees-des-le-schema.md).
 
-`parent_id` suit l'emboîtement le plus utile au contrôle des totaux : dans une
-RMR, une aire de diffusion a pour parent son **secteur de recensement**, bien
-que `niveau_geo` place l'aire sous la subdivision. Les deux emboîtements sont
-exacts ; hors RMR, sans secteurs, le parent sera la subdivision (phase 2).
+`parent_id` suit la **chaîne administrative**, qui couvre tout le territoire :
+province → région économique → division de recensement → subdivision →
+aire de diffusion. Les autres appartenances (aire ∈ secteur, subdivision ∈ RMR)
+sont dans `territoire_inclusion`. Voir
+[décision 0006](decisions/0006-deux-emboitements.md).
 
 Les géométries sont dans `territoire_geometrie`, pas dans `territoire`.
 
@@ -41,6 +42,11 @@ Les géométries sont dans `territoire_geometrie`, pas dans `territoire`.
 non-réponse publiés par la source. Statistique Canada recommande la prudence
 au-delà de 25 % — critère objectif d'avertissement, distinct du seuil de faible
 population.
+
+### `territoire_inclusion`
+Appartenances hors de la chaîne principale : une aire de diffusion à son
+secteur de recensement, une subdivision à sa RMR. Rien ne référence cette table,
+qui se recharge librement.
 
 ### `territoire_geometrie`
 Les limites d'un territoire, en WKB, WGS 84 (EPSG:4326), avec l'extraction du

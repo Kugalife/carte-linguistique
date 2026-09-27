@@ -12,17 +12,38 @@ import {
 } from "./couleurs";
 import { afficherDetail } from "./detail";
 import { chargerPostes, chargerSources, nomPoste, URL_TUILES } from "./donnees";
-import { choisirLangue, langue, nombre, pourcentage, t, type Langue } from "./i18n";
+import { choisirLangue, langue, nombre, nomNiveau, pourcentage, t, type Langue } from "./i18n";
 import { dessinerLegende } from "./legende";
+import { brancherRecherche } from "./recherche";
 import { EGALITE, proprietes, reglages, type Vue } from "./reglages";
 import "./style.css";
 
 // Fond de carte OpenFreeMap : gratuit, sans clé (décision du 27 septembre).
 const FOND = "https://tiles.openfreemap.org/styles/positron";
 
-// Bascule secteurs → aires de diffusion selon le zoom (PRD 6.3). Les tuiles
-// portent les aires dès le zoom 11 ; on les affiche à partir de 12.
-const ZOOM_AIRES = 12;
+// Niveau affiché selon le zoom (PRD 6.3, décision 0006). Deux chemins : dans une
+// RMR, municipalité → secteur → aire ; ailleurs, sans secteurs, municipalité →
+// aire directement. Les aires hors secteur s'affichent donc dès le zoom 10.
+interface Couche {
+  id: string;
+  source: string;         // couche des tuiles (06_exporter_carte.py)
+  min: number;
+  max: number;
+  filtre?: FilterSpecification;
+}
+const COUCHES: Couche[] = [
+  { id: "regions", source: "regions", min: 0, max: 6.5 },
+  { id: "mrc", source: "mrc", min: 6.5, max: 8.5 },
+  { id: "municipalites", source: "municipalites", min: 8.5, max: 10 },
+  { id: "secteurs", source: "secteurs", min: 10, max: 12 },
+  { id: "aires-hors-secteur", source: "aires", min: 10, max: 24, filtre: ["!", ["has", "ct"]] },
+  { id: "aires", source: "aires", min: 12, max: 24, filtre: ["has", "ct"] },
+];
+
+/** Combine le filtre propre à une couche et un filtre de sous-couche. */
+function et(c: Couche, f: FilterSpecification): FilterSpecification {
+  return c.filtre ? (["all", c.filtre, f] as FilterSpecification) : f;
+}
 
 const vue: Vue = { carte: "lm", sansOfficielles: false, denominateur: "population" };
 
@@ -36,9 +57,9 @@ addProtocol("pmtiles", protocole.tile);
 const carte = new Carte({
   container: "carte",
   style: FOND,
-  center: [-73.65, 45.53],
-  zoom: 9.6,
-  minZoom: 8,
+  center: [-72.6, 46.6],
+  zoom: 6,
+  minZoom: 3.5,
   maxZoom: 17,
   attributionControl: { compact: true },
   hash: true,
@@ -60,46 +81,38 @@ function ajouterCouches(): void {
 
   // Les couleurs passent sous les noms de rues et de lieux du fond.
   const avant = premiereCoucheDeTexte();
-  for (const [couche, min, max] of [["secteurs", 0, ZOOM_AIRES], ["aires", ZOOM_AIRES, 24]] as const) {
+  for (const c of COUCHES) {
+    const base = { source: "atlas", "source-layer": c.source, minzoom: c.min, maxzoom: c.max } as const;
     carte.addLayer({
-      id: `${couche}-remplissage`, type: "fill", source: "atlas", "source-layer": couche,
-      minzoom: min, maxzoom: max,
+      id: `${c.id}-remplissage`, type: "fill", ...base, ...(c.filtre ? { filter: c.filtre } : {}),
       paint: { "fill-color": expressionRemplissage(vue), "fill-opacity": 0.88 },
     }, avant);
     carte.addLayer({
-      id: `${couche}-egalite`, type: "fill", source: "atlas", "source-layer": couche,
-      minzoom: min, maxzoom: max, filter: filtreEgalite(),
+      id: `${c.id}-egalite`, type: "fill", ...base, filter: et(c, filtreEgalite()),
       paint: { "fill-pattern": expressionRayures(vue), "fill-opacity": 0.88 },
     }, avant);
     carte.addLayer({
-      id: `${couche}-faible`, type: "fill", source: "atlas", "source-layer": couche,
-      minzoom: min, maxzoom: max, filter: ["all", ["==", ["get", "fp"], true], ["==", ["get", "nd"], false]],
+      id: `${c.id}-faible`, type: "fill", ...base,
+      filter: et(c, ["all", ["==", ["get", "fp"], true], ["==", ["get", "nd"], false]]),
       paint: { "fill-pattern": "hachures" },
     }, avant);
     carte.addLayer({
-      id: `${couche}-nd`, type: "fill", source: "atlas", "source-layer": couche,
-      minzoom: min, maxzoom: max, filter: ["==", ["get", "nd"], true],
+      id: `${c.id}-nd`, type: "fill", ...base, filter: et(c, ["==", ["get", "nd"], true]),
       paint: { "fill-pattern": "points" },
     }, avant);
     carte.addLayer({
-      id: `${couche}-contour`, type: "line", source: "atlas", "source-layer": couche,
-      minzoom: min, maxzoom: max,
+      id: `${c.id}-contour`, type: "line", ...base, ...(c.filtre ? { filter: c.filtre } : {}),
       paint: {
         "line-color": "#ffffff",
-        "line-width": ["interpolate", ["linear"], ["zoom"], 9, 0.2, 14, 0.8],
+        "line-width": ["interpolate", ["linear"], ["zoom"], 5, 0.3, 14, 0.8],
         "line-opacity": 0.8,
       },
     }, avant);
     carte.addLayer({
-      id: `${couche}-survol`, type: "line", source: "atlas", "source-layer": couche,
-      minzoom: min, maxzoom: max, filter: ["==", ["get", "id"], ""],
+      id: `${c.id}-survol`, type: "line", ...base, filter: ["==", ["get", "id"], ""],
       paint: { "line-color": "#1a1a1a", "line-width": 2 },
     });
   }
-  carte.addLayer({
-    id: "rmr-contour", type: "line", source: "atlas", "source-layer": "rmr",
-    paint: { "line-color": "#555", "line-width": 1, "line-dasharray": [3, 2] },
-  }, avant);
 }
 
 function filtreEgalite(): FilterSpecification {
@@ -107,11 +120,11 @@ function filtreEgalite(): FilterSpecification {
 }
 
 function appliquerVue(): void {
-  for (const c of ["secteurs", "aires"]) {
-    if (!carte.getLayer(`${c}-remplissage`)) continue;
-    carte.setPaintProperty(`${c}-remplissage`, "fill-color", expressionRemplissage(vue));
-    carte.setPaintProperty(`${c}-egalite`, "fill-pattern", expressionRayures(vue));
-    carte.setFilter(`${c}-egalite`, filtreEgalite());
+  for (const c of COUCHES) {
+    if (!carte.getLayer(`${c.id}-remplissage`)) continue;
+    carte.setPaintProperty(`${c.id}-remplissage`, "fill-color", expressionRemplissage(vue));
+    carte.setPaintProperty(`${c.id}-egalite`, "fill-pattern", expressionRayures(vue));
+    carte.setFilter(`${c.id}-egalite`, et(c, filtreEgalite()));
   }
   dessinerLegende($("#legende"), vue);
   $("#option-sans").hidden = vue.carte !== "lm";
@@ -125,9 +138,9 @@ const bulle = new Popup({ closeButton: false, closeOnClick: false, maxWidth: "28
 function texteBulle(f: MapGeoJSONFeature): string {
   const p = f.properties;
   const k = proprietes(vue);
-  const niveau = f.sourceLayer === "aires" ? t("aire") : t("secteur");
-  const entete = `<strong>${niveau}</strong><br><span class="discret">${p.pop != null ? `${nombre(p.pop)} ${t("habitants")}` : ""}</span>`;
-  if (p.nd) return `${entete}<br>${t("nonDisponible")}`;
+  const niveau = NIVEAU_DE_COUCHE[f.sourceLayer ?? ""] ?? "CA.DA";
+  const entete = `<strong>${p.nom ?? nomNiveau(niveau)}</strong>${p.nom ? `<br><span class="discret">${nomNiveau(niveau)}</span>` : ""}<br><span class="discret">${p.pop != null ? `${nombre(p.pop)} ${t("habitants")}` : ""}</span>`;
+  if (p.nd) return `${entete}<br>${p.auto ? t("autochtoneNd") : t("nonDisponible")}`;
   const l = p[k.langue];
   if (l == null) return entete;
   if (l === EGALITE) {
@@ -141,6 +154,10 @@ function texteBulle(f: MapGeoJSONFeature): string {
   return `${entete}<br>${nomPoste(l)} : <strong>${pourcentage(p[k.part])}</strong> (${nombre(p[k.effectif])})${avert}`;
 }
 
+const NIVEAU_DE_COUCHE: Record<string, string> = {
+  regions: "CA.ER", mrc: "CA.CD", municipalites: "CA.CSD", secteurs: "CA.CT", aires: "CA.DA",
+};
+
 let survole: string | null = null;
 function survol(e: MapLayerMouseEvent): void {
   const f = e.features?.[0];
@@ -148,23 +165,21 @@ function survol(e: MapLayerMouseEvent): void {
   carte.getCanvas().style.cursor = "pointer";
   if (survole !== f.properties.id) {
     survole = f.properties.id;
-    for (const c of ["secteurs", "aires"]) carte.setFilter(`${c}-survol`, ["==", ["get", "id"], survole]);
+    for (const c of COUCHES) carte.setFilter(`${c.id}-survol`, ["==", ["get", "id"], survole]);
   }
   bulle.setLngLat(e.lngLat).setHTML(texteBulle(f)).addTo(carte);
 }
 function sortie(): void {
   carte.getCanvas().style.cursor = "";
   survole = null;
-  for (const c of ["secteurs", "aires"]) carte.setFilter(`${c}-survol`, ["==", ["get", "id"], ""]);
+  for (const c of COUCHES) carte.setFilter(`${c.id}-survol`, ["==", ["get", "id"], ""]);
   bulle.remove();
 }
 
 function clic(e: MapLayerMouseEvent): void {
   const f = e.features?.[0];
   if (!f) return;
-  const id = f.properties.id as string;
-  const secteur = f.sourceLayer === "aires" ? (f.properties.ct as string) : id;
-  afficherDetail($("#detail"), id, secteur, vue);
+  afficherDetail($("#detail"), f.properties.id as string, vue);
 }
 
 // ---------------------------------------------------------------- interface
@@ -174,6 +189,7 @@ function textes(): void {
     el.textContent = t(el.dataset.t as Parameters<typeof t>[0]);
   });
   $("#bouton-langue").textContent = langue() === "fr" ? "English" : "Français";
+  $<HTMLInputElement>("#recherche").placeholder = t("rechercher");
 }
 
 async function sources(): Promise<void> {
@@ -193,6 +209,12 @@ function brancherInterface(): void {
   });
   document.querySelectorAll<HTMLInputElement>('input[name="denominateur"]').forEach((r) =>
     r.addEventListener("change", () => { vue.denominateur = r.value as Vue["denominateur"]; appliquerVue(); }));
+  // Une adresse mène au niveau de l'aire de diffusion ; une ville ou une région,
+  // à son emprise.
+  brancherRecherche($<HTMLInputElement>("#recherche"), $("#recherche-resultats"), (r) => {
+    if (r.emprise) carte.fitBounds(r.emprise, { padding: 40, maxZoom: 14 });
+    else carte.flyTo({ center: r.lngLat, zoom: 14.5 });
+  });
   $("#bouton-langue").addEventListener("click", () => {
     choisirLangue((langue() === "fr" ? "en" : "fr") as Langue);
     textes(); appliquerVue(); sources();
@@ -216,9 +238,9 @@ carte.on("styleimagemissing", (e) => {
 carte.on("load", () => {
   ajouterCouches();
   appliquerVue();
-  for (const c of ["secteurs", "aires"]) {
-    carte.on("mousemove", `${c}-remplissage`, survol);
-    carte.on("mouseleave", `${c}-remplissage`, sortie);
-    carte.on("click", `${c}-remplissage`, clic);
+  for (const c of COUCHES) {
+    carte.on("mousemove", `${c.id}-remplissage`, survol);
+    carte.on("mouseleave", `${c.id}-remplissage`, sortie);
+    carte.on("click", `${c.id}-remplissage`, clic);
   }
 });

@@ -1,7 +1,7 @@
 // Panneau de détail : composition complète du territoire cliqué, sur les deux
 // axes, avec population, non-réponse et source (PRD 6.3).
 import { composition, nomPoste, type Fiche } from "./donnees";
-import { nombre, pourcentage, t } from "./i18n";
+import { nombre, nomNiveau, pourcentage, t } from "./i18n";
 import { entrees, type Vue } from "./reglages";
 
 const NB_POSTES = 12;
@@ -26,20 +26,20 @@ function barres(fiche: Fiche, axe: "lm" | "plop", v: Vue): string {
   return `<ol class="barres">${lignes}</ol>${reste > 0 ? `<p class="discret">${t("autresPostes", { n: reste })}</p>` : ""}`;
 }
 
-export async function afficherDetail(racine: HTMLElement, id: string, secteur: string, v: Vue): Promise<void> {
+export async function afficherDetail(racine: HTMLElement, id: string, v: Vue): Promise<void> {
   racine.hidden = false;
   racine.innerHTML = `<p class="discret">${t("chargement")}</p>`;
-  const c = await composition(secteur);
-  const fiche = id === c.secteur.id ? c.secteur : c.aires[id];
+  const fiche = await composition(id);
   if (!fiche) {
     racine.innerHTML = `<p class="discret">${t("nonDisponible")}</p>`;
     return;
   }
-  const estAire = fiche.niveau === "CA.DA";
-  const code = estAire ? id.replace(/^2021S0512/, "") : id.replace(/^2021S0507/, "");
+  const titre = fiche.nom && fiche.niveau !== "CA.CT" && fiche.niveau !== "CA.DA"
+    ? fiche.nom : fiche.id.replace(/^2021S05(07|12)/, "");
   racine.innerHTML = `
     <button class="fermer" aria-label="${t("fermer")}">×</button>
-    <h2>${estAire ? t("aire") : t("secteur")} ${code}</h2>
+    <p class="discret niveau">${nomNiveau(fiche.niveau)}</p>
+    <h2>${titre}</h2>
     <p class="discret">
       ${fiche.population != null ? `${nombre(fiche.population)} ${t("habitants")}` : ""}
       ${fiche.non_reponse_pct != null ? ` · ${t("nonReponse")} ${pourcentage(fiche.non_reponse_pct / 100)}` : ""}

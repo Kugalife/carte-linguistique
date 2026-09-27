@@ -110,6 +110,17 @@ CREATE TABLE IF NOT EXISTS territoire_geometrie (
     extraction_id   TEXT NOT NULL REFERENCES extraction(id)
 );
 
+-- Appartenances hors de la chaîne principale. parent_id suit la chaîne
+-- administrative (province → région économique → division → subdivision →
+-- aire), qui couvre tout le territoire ; cette table porte les autres :
+-- aire ∈ secteur de recensement, subdivision ∈ RMR. Voir docs/decisions/0006.
+CREATE TABLE IF NOT EXISTS territoire_inclusion (
+    territoire_id   TEXT NOT NULL REFERENCES territoire(id),
+    englobant_id    TEXT NOT NULL REFERENCES territoire(id),
+    extraction_id   TEXT NOT NULL REFERENCES extraction(id),
+    PRIMARY KEY (territoire_id, englobant_id)
+);
+
 ------------------------------------------------------------------ axes et langues
 
 -- Une classification linguistique : l'arbre de postes que publie une source.

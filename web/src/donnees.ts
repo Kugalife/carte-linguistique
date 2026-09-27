@@ -2,8 +2,8 @@
 import { langue } from "./i18n";
 
 const BASE = "./donnees/";
-export const RMR = "462";
-export const URL_TUILES = new URL(`${BASE}rmr-${RMR}.pmtiles`, document.baseURI).href;
+export const PROVINCE = "24";
+export const URL_TUILES = new URL(`${BASE}pr-${PROVINCE}.pmtiles`, document.baseURI).href;
 
 export interface Poste {
   fr: string;
@@ -27,15 +27,11 @@ export interface Source {
 export interface Fiche {
   id: string;
   niveau: string;
+  nom: string | null;
   population: number | null;
   non_reponse_pct: number | null;
   superficie_km2: number | null;
   axes: Partial<Record<"lm" | "plop", { total: number; postes: [string, number][] }>>;
-}
-
-export interface Composition {
-  secteur: Fiche;
-  aires: Record<string, Fiche>;
 }
 
 let postes: Record<string, Poste> = {};
@@ -57,13 +53,25 @@ export async function chargerSources(): Promise<Source[]> {
   return (await fetch(`${BASE}sources.json`)).json();
 }
 
-const cache = new Map<string, Promise<Composition>>();
-
-/** Composition d'un secteur et de ses aires : un fichier par secteur, lu au clic. */
-export function composition(secteurId: string): Promise<Composition> {
-  const code = secteurId.replace(/^2021S0507/, "");
-  if (!cache.has(code)) {
-    cache.set(code, fetch(`${BASE}composition/${code}.json`).then((r) => r.json()));
+/**
+ * Fichier de composition d'un territoire : FNV-1a 32 bits de son identifiant,
+ * modulo 256. Même calcul que pipeline/scripts/06_exporter_carte.py.
+ */
+function fichierComposition(id: string): string {
+  let h = 0x811c9dc5;
+  for (const octet of new TextEncoder().encode(id)) {
+    h = Math.imul(h ^ octet, 0x01000193) >>> 0;
   }
-  return cache.get(code)!;
+  return (h % 256).toString(16).padStart(2, "0");
+}
+
+const cache = new Map<string, Promise<Record<string, Fiche>>>();
+
+/** Composition complète d'un territoire, lue au clic. */
+export async function composition(id: string): Promise<Fiche | undefined> {
+  const nom = fichierComposition(id);
+  if (!cache.has(nom)) {
+    cache.set(nom, fetch(`${BASE}composition/${nom}.json`).then((r) => r.json()));
+  }
+  return (await cache.get(nom)!)[id];
 }

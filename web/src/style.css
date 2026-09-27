@@ -40,6 +40,17 @@ button { font: inherit; cursor: pointer; }
   background: none; border: 1px solid var(--bord); border-radius: 6px; padding: 2px 8px; font-size: 12px;
 }
 
+.recherche { position: relative; margin-top: 10px; }
+#recherche {
+  width: 100%; font: inherit; padding: 7px 10px; border: 1px solid var(--bord); border-radius: 6px;
+}
+#recherche-resultats {
+  position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 2px); margin: 0; padding: 4px 0;
+  list-style: none; background: var(--fond); border: 1px solid var(--bord); border-radius: 6px; box-shadow: var(--ombre);
+}
+#recherche-resultats li { padding: 6px 10px; cursor: pointer; font-size: 13px; }
+#recherche-resultats li[aria-selected="true"], #recherche-resultats li[data-i]:hover { background: #eef2f7; }
+
 fieldset { border: 0; padding: 0; margin: 12px 0 0; }
 legend { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--discret); margin-bottom: 4px; }
 fieldset label, .interrupteur { display: flex; align-items: center; gap: 6px; padding: 3px 0; cursor: pointer; }

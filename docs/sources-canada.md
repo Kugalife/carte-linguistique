@@ -194,18 +194,29 @@ sous `data/raw/statcan_limites/` (connecteur `statcan_limites.py`).
 
 | Niveau | Fichier | Taille |
 |---|---|---|
+| Provinces et territoires | `lpr_000b21a_e.zip` | 134 Mo |
+| Régions économiques | `ler_000b21a_e.zip` | 137 Mo |
+| Divisions de recensement | `lcd_000b21a_e.zip` | 140 Mo |
+| Subdivisions de recensement | `lcsd000b21a_e.zip` | 156 Mo |
 | RMR et agglomérations | `lcma000b21a_e.zip` | 13 Mo |
 | Secteurs de recensement | `lct_000b21a_e.zip` | 13 Mo |
 | Aires de diffusion | `lda_000b21a_e.zip` | 197 Mo |
+
+Le nom suit un gabarit : `l` + code du niveau complété à quatre caractères par
+`_` + `000b21a_e`. `lcsd000b21a_e` n'a donc pas de souligné, `lcd_000b21a_e` en
+a un.
 
 - **Version cartographique** (« b » dans le nom), découpée selon le littoral. La
   version numérique (« a ») couvre le fleuve et les lacs.
 - **Projection EPSG:3347** (Lambert de Statistique Canada, en mètres). Le
   pipeline stocke les géométries en WGS 84 (EPSG:4326), la projection des tuiles.
-- **Le fichier des aires de diffusion ne dit ni le secteur ni la RMR.** Ses
-  attributs : `DAUID`, `DGUID`, `LANDAREA`, `PRUID`. L'aire est rattachée au
-  secteur qui contient un point intérieur de son polygone. Les secteurs, eux, se
-  filtrent par préfixe : un `CTUID` commence par le code de sa RMR.
+- **Le fichier des aires de diffusion ne dit ni la subdivision, ni le secteur,
+  ni la RMR.** Ses attributs : `DAUID`, `DGUID`, `LANDAREA`, `PRUID`. L'aire est
+  rattachée par position (point intérieur de son polygone). Les autres niveaux se
+  rattachent par code quand le code le permet : un `CTUID` commence par le code
+  de sa RMR, un `CSDUID` par celui de sa division. Voir la décision 0006.
+- **`CSDTYPE`** distingue les communautés autochtones (IRI, S-É, TC, TK, TI) :
+  certaines n'ont pas été entièrement dénombrées, et la carte l'explique.
 - **`LANDAREA` est la superficie terrestre en km²**, arrondie à 4 décimales. Elle
   sert au contrôle d'emboîtement : la somme des aires redonne le secteur.
 - **Le serveur ralentit parfois une connexion** à quelques dizaines de Ko/s ou la

@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""Phase 1 — langue maternelle et PLOP de tous les territoires d'une RMR.
+"""Langue maternelle et PLOP de tous les territoires d'une province.
 
-Charge la RMR, ses secteurs de recensement et ses aires de diffusion, puis
-contrôle la cohérence : chaque territoire se recompose, et les aires redonnent
-leurs secteurs, qui redonnent la RMR.
+Charge la province et tous ses niveaux (régions économiques, divisions et
+subdivisions de recensement, RMR et agglomérations, secteurs, aires de
+diffusion), puis contrôle la cohérence : chaque territoire se recompose, et
+chaque niveau redonne celui qui l'englobe (décision 0006).
 
-    python pipeline/scripts/05_charger_donnees_rmr.py [code_rmr] [--tout]
+    python pipeline/scripts/05_charger_donnees.py [code_province] [--tout]
 
-Les territoires sont ceux que 04_charger_limites_rmr.py a créés. Un territoire
-qui a déjà ses observations est sauté : relancer le script reprend là où il
-s'était arrêté. --tout recharge tout.
+Les territoires sont ceux que 04_charger_limites.py a créés. Un territoire qui
+a déjà ses observations est sauté : relancer le script reprend là où il s'était
+arrêté. --tout recharge tout. Québec : environ 85 requêtes, une heure.
 """
 
 from __future__ import annotations
@@ -20,15 +21,17 @@ import sys
 import time
 from pathlib import Path
 
+import duckdb
 import requests
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from atlas import config, db, loaders
+from atlas.connectors.statcan_limites import StatCanLimites
 from atlas.connectors.statcan_sdmx import StatCanSdmx
 
 AXES = ["CA.langue_maternelle", "CA.plop"]
-NIVEAUX = ["CA.CMACA", "CA.CT", "CA.DA"]
+NIVEAUX = loaders.NIVEAUX_PROVINCE
 ESSAIS = 4
 
 # Statistique Canada arrondit chaque case au multiple de 5, au hasard, vers le
@@ -38,14 +41,41 @@ ESSAIS = 4
 # la source, signalée ; au-delà du double, il ne peut venir que d'une erreur de
 # correspondance ou de rattachement, et le contrôle échoue.
 ARRONDI = 5
+# Emboîtement : arrondi « au multiple de 5 et, dans certains cas, de 10 », et
+# part du total au-delà de laquelle un écart trahit un territoire manquant.
+ARRONDI_EMBOITEMENT = 10
+SEUIL_ERREUR = 0.01
+
+# (niveau enfant, niveau englobant, relation) : voir 04_charger_limites.py.
+EMBOITEMENTS = [
+    ("CA.ER", "CA.PR", "parent"),
+    ("CA.CD", "CA.ER", "parent"),
+    ("CA.CSD", "CA.CD", "parent"),
+    ("CA.DA", "CA.CSD", "parent"),
+    ("CA.CT", "CA.CMACA", "parent"),
+    ("CA.DA", "CA.CT", "inclusion"),
+    ("CA.CSD", "CA.CMACA", "inclusion"),
+]
 
 
-def territoires(con, rmr: str, niveau: str) -> list[str]:
+def rmr_interprovinciales() -> list[str]:
+    """RMR dont le fichier de limites compte plusieurs parties provinciales."""
+    con = duckdb.connect()
+    db.charger_spatial(con)
+    couche = StatCanLimites().fichier("CA.CMACA").couche
+    return [r[0] for r in con.execute(f"""
+        SELECT any_value(DGUID) FROM ST_Read('{couche}')
+        GROUP BY CMAUID HAVING count(DISTINCT PRUID) > 1""").fetchall()]
+
+
+def territoires(con, province: str, niveau: str) -> list[str]:
+    """Territoires d'un niveau dans la province : tous descendent d'elle par parent_id."""
     return [r[0] for r in con.execute("""
-        SELECT id FROM territoire
-        WHERE niveau_code = ? AND (id = ? OR parent_id = ?
-              OR parent_id IN (SELECT id FROM territoire WHERE parent_id = ?))
-        ORDER BY id""", [niveau, rmr, rmr, rmr]).fetchall()]
+        WITH RECURSIVE d(id) AS (
+            SELECT ? UNION ALL
+            SELECT t.id FROM territoire t JOIN d ON t.parent_id = d.id)
+        SELECT t.id FROM territoire t JOIN d USING (id)
+        WHERE t.niveau_code = ? ORDER BY t.id""", [province, niveau]).fetchall()]
 
 
 def a_charger(con, ids: list[str]) -> list[str]:
@@ -58,11 +88,11 @@ def a_charger(con, ids: list[str]) -> list[str]:
     return [i for i in ids if i not in complets]
 
 
-def charger(con, sdmx: StatCanSdmx, rmr: str, tout: bool) -> None:
+def charger(con, sdmx: StatCanSdmx, province: str, tout: bool) -> None:
     codes = sorted({c for axe in AXES for c in loaders._correspondance(con, axe, 2021)}
                    | {loaders.CARACTERISTIQUE_POPULATION}, key=int)
     for niveau in NIVEAUX:
-        ids = territoires(con, rmr, niveau)
+        ids = territoires(con, province, niveau)
         restants = ids if tout else a_charger(con, ids)
         lots = sdmx.lots(restants, codes)
         print(f"{niveau:<9} {len(ids):>5} territoires, {len(restants)} à charger, "
@@ -90,11 +120,11 @@ def charger(con, sdmx: StatCanSdmx, rmr: str, tout: bool) -> None:
                   f"{time.monotonic() - debut:.0f} s", flush=True)
 
 
-def controler(con, rmr: str) -> bool:
+def controler(con, province: str) -> bool:
     ok = True
     print("\n--- territoires sans observation ---")
     for niveau in NIVEAUX:
-        manquants = len(a_charger(con, territoires(con, rmr, niveau)))
+        manquants = len(a_charger(con, territoires(con, province, niveau)))
         ok &= manquants == 0
         print(f"  {niveau:<9} {manquants}")
 
@@ -110,7 +140,7 @@ def controler(con, rmr: str) -> bool:
                 FROM observation o JOIN langue l ON l.code = o.langue_code
                 WHERE o.axe_code = ? AND o.territoire_id IN (SELECT unnest(?))
                 GROUP BY o.territoire_id)
-            SELECT territoire_id, total, somme, k FROM t""", [axe, tous(con, rmr)]).fetchall()
+            SELECT territoire_id, total, somme, k FROM t""", [axe, tous(con, province)]).fetchall()
         supprimes = sum(1 for _, t, _, _ in lignes if t is None)
         mesurables = [(i, t - s, k) for i, t, s, k in lignes if t is not None and s is not None]
         exacts = sum(1 for _, e, _ in mesurables if e == 0)
@@ -124,48 +154,63 @@ def controler(con, rmr: str) -> bool:
         for i, e in (anomalies + erreurs)[:5]:
             print(f"    {i}  total − somme = {e:+.0f}")
 
-    # Emboîtement : la somme des enfants redonne le parent, à l'arrondi près.
-    # Statistique Canada arrondit chaque effectif au multiple de 5, au hasard :
-    # la somme de n aires s'écarte donc du secteur, arrondi indépendamment, de
-    # quelques unités par aire. Un écart systématique ou massif signalerait en
-    # revanche une aire mal rattachée ou manquante.
-    print("\n--- emboîtement des totaux (somme des enfants − parent) ---")
-    for axe in AXES:
-        for niveau_enfant, libelle in (("CA.DA", "aires → secteurs"),
-                                       ("CA.CT", "secteurs → RMR")):
-            lignes = con.execute("""
+    # Emboîtement : la somme des enfants redonne l'englobant, à l'arrondi près.
+    # Statistique Canada arrondit chaque effectif au hasard « au multiple de 5 et,
+    # dans certains cas, de 10 » : n enfants et l'englobant, arrondis séparément,
+    # s'écartent d'au plus 10 × (n + 1). Au-delà, l'écart est une anomalie de la
+    # source, signalée (observé : division 2423, −55 sur 580 750). Il n'est une
+    # erreur que s'il dépasse aussi 1 % du total : c'est l'ordre de grandeur d'un
+    # territoire manquant ou mal rattaché. Les RMR à cheval sur deux provinces
+    # sont exclues : leur total couvre la RMR entière, leurs enfants chargés
+    # seulement la province.
+    print("\n--- emboîtement des totaux (somme des enfants − englobant) ---")
+    interprovinciales = rmr_interprovinciales()
+    ids = tous(con, province)
+    for enfant, englobant, relation in EMBOITEMENTS:
+        lien = ("SELECT id AS e_id, parent_id AS p_id FROM territoire WHERE niveau_code = ?"
+                if relation == "parent" else
+                "SELECT i.territoire_id AS e_id, i.englobant_id AS p_id FROM territoire_inclusion i "
+                "JOIN territoire e ON e.id = i.territoire_id WHERE e.niveau_code = ?")
+        for axe in AXES:
+            lignes = con.execute(f"""
                 WITH tot AS (
                     SELECT territoire_id, total_reference AS total FROM observation
                     WHERE axe_code = ? AND langue_code = (
                         SELECT langue_code FROM variable_source
-                        WHERE axe_code = ? AND est_total LIMIT 1))
-                SELECT p.id, pt.total, sum(et.total), count(*),
+                        WHERE axe_code = ? AND est_total LIMIT 1)),
+                lien AS ({lien})
+                SELECT l.p_id, pt.total, sum(et.total), count(*),
                        count(*) FILTER (WHERE et.total IS NULL)
-                FROM territoire e
-                JOIN territoire p ON p.id = e.parent_id
-                LEFT JOIN tot et ON et.territoire_id = e.id
-                LEFT JOIN tot pt ON pt.territoire_id = p.id
-                WHERE e.niveau_code = ? AND e.id IN (SELECT unnest(?))
-                GROUP BY p.id, pt.total""", [axe, axe, niveau_enfant, tous(con, rmr)]).fetchall()
+                FROM lien l
+                JOIN territoire p ON p.id = l.p_id AND p.niveau_code = ?
+                LEFT JOIN tot et ON et.territoire_id = l.e_id
+                LEFT JOIN tot pt ON pt.territoire_id = l.p_id
+                WHERE l.e_id IN (SELECT unnest(?)) AND l.p_id NOT IN (SELECT unnest(?))
+                GROUP BY l.p_id, pt.total""",
+                [axe, axe, enfant, englobant, ids, interprovinciales or [""]]).fetchall()
             diffs = [s - t for _, t, s, _, _ in lignes if t is not None and s is not None]
-            enfants_supprimes = sum(r[4] for r in lignes)
-            rel = [abs(s - t) / t for _, t, s, _, _ in lignes if t and s is not None]
-            # Borne de l'arrondi, pour les parents dont aucun enfant n'est
-            # supprimé : n enfants et le parent, arrondis séparément.
-            hors_marge = [p for p, t, s, n, sup in lignes
+            if not diffs:
+                continue
+            hors_marge = [(p, s - t) for p, t, s, n, sup in lignes
                           if t is not None and s is not None and not sup
-                          and abs(s - t) > ARRONDI * n]
-            ok &= not hors_marge
-            print(f"  {axe:<22} {libelle:<17} {len(lignes)} parents : "
-                  f"écart médian {statistics.median(diffs):+.0f}, "
-                  f"max {max(diffs, key=abs):+.0f} ({max(rel):.1%}), "
-                  f"somme {sum(diffs):+.0f} ; hors marge de l'arrondi : {len(hors_marge)} ; "
-                  f"enfants à total supprimé : {enfants_supprimes}")
+                          and abs(s - t) > ARRONDI_EMBOITEMENT * (n + 1)]
+            erreurs = [(p, e) for p, e in hors_marge
+                       if abs(e) > SEUIL_ERREUR * dict((r[0], r[1]) for r in lignes)[p]]
+            ok &= not erreurs
+            rel = max((abs(s - t) / t for _, t, s, _, _ in lignes if t and s is not None), default=0)
+            print(f"  {axe:<22} {enfant.split('.')[1]:>5} → {englobant.split('.')[1]:<6} "
+                  f"{len(lignes):>5} englobants : écart médian {statistics.median(diffs):+.0f}, "
+                  f"max {max(diffs, key=abs):+.0f} ({rel:.1%}) ; "
+                  f"anomalies de la source : {len(hors_marge) - len(erreurs)}, erreurs : {len(erreurs)}")
+            for p, e in hors_marge[:3]:
+                print(f"      {p}  {e:+.0f}")
+    if interprovinciales:
+        print(f"  (RMR interprovinciales exclues : {', '.join(interprovinciales)})")
 
     print("\n--- fiabilité des aires de diffusion ---")
     seuil = json.loads((config.RACINE / "config" / "carte.json").read_text(
         encoding="utf-8"))["seuil_faible_population"]["valeur"]
-    das = territoires(con, rmr, "CA.DA")
+    das = territoires(con, province, "CA.DA")
     faibles, tnr25, sans_pop = con.execute("""
         SELECT count(*) FILTER (WHERE population < ?),
                count(*) FILTER (WHERE tnr_questionnaire_abrege > 25),
@@ -181,21 +226,21 @@ def controler(con, rmr: str) -> bool:
     return ok
 
 
-def tous(con, rmr: str) -> list[str]:
-    return [i for n in NIVEAUX for i in territoires(con, rmr, n)]
+def tous(con, province: str) -> list[str]:
+    return [i for n in NIVEAUX for i in territoires(con, province, n)]
 
 
 def main(*args: str) -> int:
     tout = "--tout" in args
     positionnels = [a for a in args if not a.startswith("--")]
-    code_rmr = positionnels[0] if positionnels else "462"
+    code_pr = positionnels[0] if positionnels else "24"
 
     config.charger_env()
     con = db.ouvrir()
-    rmr = loaders.dguid("CA.CMACA", code_rmr)
-    if not territoires(con, rmr, "CA.DA"):
-        print(f"aucune aire de diffusion pour la RMR {code_rmr} : "
-              "lancer 04_charger_limites_rmr.py d'abord")
+    province = loaders.dguid("CA.PR", code_pr)
+    if not territoires(con, province, "CA.DA"):
+        print(f"aucune aire de diffusion pour la province {code_pr} : "
+              "lancer 04_charger_limites.py d'abord")
         return 1
 
     sdmx = StatCanSdmx()
@@ -203,10 +248,10 @@ def main(*args: str) -> int:
         loaders.charger_classifications(con, sdmx)
 
     debut = time.monotonic()
-    charger(con, sdmx, rmr, tout)
+    charger(con, sdmx, province, tout)
     print(f"chargement : {time.monotonic() - debut:.0f} s")
 
-    ok = controler(con, rmr)
+    ok = controler(con, province)
     con.close()
     print(f"\n{'données chargées et cohérentes' if ok else 'ÉCHEC des vérifications'}")
     return 0 if ok else 1

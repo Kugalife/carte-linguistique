@@ -8,9 +8,9 @@ fine que permettent les données publiques de chaque pays.
 - [`prd.md`](prd.md) — vision, périmètre, conception visuelle
 - [`roadmap.md`](roadmap.md) — phases et livrables
 
-**État : phase 1 (MVP Montréal) en cours, démo publique en ligne.** Langue
-maternelle et première langue officielle parlée pour les 6 574 aires de
-diffusion de la région métropolitaine de Montréal, recensement de 2021.
+**État : phase 2 (Québec) en cours, démo publique en ligne.** Langue maternelle
+et première langue officielle parlée pour tout le Québec, de la région
+économique jusqu'aux 13 805 aires de diffusion, recensement de 2021.
 
 ## Démarrer
 
@@ -33,15 +33,15 @@ vingtaine de secondes.
 # Contrôles de cohérence sur les données chargées
 .venv/bin/python pipeline/scripts/03_controle_croise.py
 
-# Phase 1 : secteurs et aires de diffusion de la RMR de Montréal, avec leurs
-# limites. Le premier lancement télécharge 225 Mo de fichiers de limites.
-.venv/bin/python pipeline/scripts/04_charger_limites_rmr.py
+# Territoires du Québec, tous niveaux, avec leurs limites (moins d'une minute ;
+# le premier lancement télécharge environ 800 Mo de fichiers de limites)
+.venv/bin/python pipeline/scripts/04_charger_limites.py        # [code_province], 24 par défaut
 
-# Phase 1 : langue maternelle et PLOP de tous ces territoires (environ 20 min ;
+# Langue maternelle et PLOP de ces 16 700 territoires (environ une heure ;
 # relancé, il reprend là où il s'était arrêté)
-.venv/bin/python pipeline/scripts/05_charger_donnees_rmr.py
+.venv/bin/python pipeline/scripts/05_charger_donnees.py
 
-# Phase 1 : tuiles et fichiers de la carte, sous web/public/donnees/
+# Tuiles et fichiers de la carte, sous web/public/donnees/
 # (exige tippecanoe : https://github.com/felt/tippecanoe)
 .venv/bin/python pipeline/scripts/06_exporter_carte.py
 ```

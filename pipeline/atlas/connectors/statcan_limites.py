@@ -14,7 +14,9 @@ Ce que la phase 1 a établi :
   * Le fichier des aires de diffusion ne dit pas à quel secteur de recensement
     ni à quelle RMR appartient une aire : ses attributs se limitent à DAUID,
     DGUID, LANDAREA et PRUID. Le rattachement se fait donc par position (voir
-    loaders.charger_limites).
+    loaders.charger_limites_province).
+  * Tous les fichiers portent PRUID : une province se filtre directement. Une
+    RMR à cheval sur deux provinces (Ottawa-Gatineau) a une ligne par partie.
   * GDAL lit le shapefile directement dans l'archive (/vsizip/) : rien à
     décompresser.
 """
@@ -33,12 +35,17 @@ from .. import config
 BASE = ("https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/"
         "boundary-limites/files-fichiers")
 
-# Fichier par niveau géographique du modèle générique, et nom de la colonne
-# d'identifiant court dans ses attributs.
+# Fichier par niveau géographique du modèle générique, et colonnes
+# d'identifiant court et de nom dans ses attributs (None : pas de nom).
+# Tailles : 134 à 197 Mo chacun, sauf RMR et secteurs (13 Mo).
 FICHIER_PAR_NIVEAU = {
-    "CA.CMACA": ("lcma000b21a_e", "CMAUID"),
-    "CA.CT": ("lct_000b21a_e", "CTUID"),
-    "CA.DA": ("lda_000b21a_e", "DAUID"),
+    "CA.PR": ("lpr_000b21a_e", "PRUID", "PRFNAME"),
+    "CA.ER": ("ler_000b21a_e", "ERUID", "ERNAME"),
+    "CA.CD": ("lcd_000b21a_e", "CDUID", "CDNAME"),
+    "CA.CSD": ("lcsd000b21a_e", "CSDUID", "CSDNAME"),
+    "CA.CMACA": ("lcma000b21a_e", "CMAUID", "CMANAME"),
+    "CA.CT": ("lct_000b21a_e", "CTUID", "CTNAME"),
+    "CA.DA": ("lda_000b21a_e", "DAUID", None),
 }
 
 PROJECTION = "EPSG:3347"
@@ -59,6 +66,7 @@ class Fichier:
     chemin: Path
     sha256: str
     colonne_code: str
+    colonne_nom: str | None
 
     @property
     def couche(self) -> str:
@@ -129,7 +137,7 @@ class StatCanLimites:
         une fois pour tout le recensement. L'empreinte, recalculée à chaque
         chargement, dit si le fichier a changé.
         """
-        nom, colonne = FICHIER_PAR_NIVEAU[niveau_code]
+        nom, colonne, colonne_nom = FICHIER_PAR_NIVEAU[niveau_code]
         url = f"{BASE}/{nom}.zip"
         chemin = config.BRUT / CODE_SOURCE / f"{nom}.zip"
         if not chemin.exists():
@@ -139,4 +147,4 @@ class StatCanLimites:
         with chemin.open("rb") as f:
             for bloc in iter(lambda: f.read(1 << 20), b""):
                 h.update(bloc)
-        return Fichier(niveau_code, nom, url, chemin, h.hexdigest(), colonne)
+        return Fichier(niveau_code, nom, url, chemin, h.hexdigest(), colonne, colonne_nom)

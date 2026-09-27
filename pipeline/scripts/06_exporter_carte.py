@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Phase 1 — fichiers de la carte : tuiles vectorielles et compositions.
+"""Fichiers de la carte d'une province : tuiles vectorielles et compositions.
 
 Produit, sous web/public/donnees/ :
 
-  <rmr>.pmtiles           tuiles vectorielles, trois couches : rmr, secteurs, aires ;
+  pr-<code>.pmtiles       tuiles vectorielles, une couche par niveau (COUCHES) ;
                           chaque entité porte les indicateurs de atlas.indicateurs
-  composition/<ct>.json   composition linguistique complète d'un secteur et de
-                          ses aires, lue par le panneau de détail au clic
+  composition/<xx>.json   composition linguistique complète de chaque territoire,
+                          répartie en 256 fichiers selon une empreinte de son
+                          identifiant (décision 0006), lue au clic
   langues.json            noms bilingues, type et famille de chaque poste
   sources.json            provenance des chiffres affichés
 
-    python pipeline/scripts/06_exporter_carte.py [code_rmr]
+    python pipeline/scripts/06_exporter_carte.py [code_province]
 
 Exige tippecanoe (https://github.com/felt/tippecanoe).
 """
@@ -26,23 +27,58 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from atlas import config, db, indicateurs, loaders
+from atlas.connectors.statcan_limites import StatCanLimites
 
 SORTIE = config.RACINE / "web" / "public" / "donnees"
 TRAVAIL = config.INTERIM / "carte"
 
-# Zooms des tuiles. Les secteurs couvrent la vue d'ensemble, les aires le
-# quartier ; le site choisit ensuite la couche affichée selon le zoom. Au-delà de
-# ZOOM_MAX, MapLibre agrandit les tuiles du dernier niveau.
-ZOOM_MIN, ZOOM_MAX = 8, 14
-ZOOM_AIRES = 11
+# Couche de tuiles → (niveau, zoom minimal, zoom maximal des tuiles). Le site
+# choisit ensuite, dans ces plages, le niveau affiché selon le zoom ; au-delà du
+# zoom maximal, MapLibre agrandit les tuiles du dernier niveau. Les aires
+# commencent tôt : hors des RMR, sans secteurs, elles succèdent directement aux
+# municipalités.
+#
+# Plafond au zoom 12 : une tuile de zoom 12 a une précision d'environ 2,4 m,
+# largement suffisante pour des limites d'aires. Au-delà, les grandes aires
+# rurales du Nord se découpent en centaines de milliers de tuiles : mesuré, les
+# zooms 13 et 14 pesaient les deux tiers d'un fichier de 75 Mo.
+COUCHES = {
+    "regions": ("CA.ER", 3, 7),
+    "mrc": ("CA.CD", 5, 9),
+    "municipalites": ("CA.CSD", 7, 11),
+    "secteurs": ("CA.CT", 9, 12),
+    "aires": ("CA.DA", 9, 12),
+}
+ZOOM_MIN = min(z for _, z, _ in COUCHES.values())
+ZOOM_MAX = max(z for _, _, z in COUCHES.values())
 
 # Postes détaillés du panneau : les langues, résiduels et réponses multiples
 # non nuls. Les familles et regroupements se recalculent à partir de l'arbre.
 TYPES_DETAIL = ("langue", "residuel", "multiple", "aucune")
+NB_FICHIERS = 256
+
+# Types de subdivision qui désignent une communauté autochtone : réserve
+# indienne, établissement indien, terres réservées cries, naskapies et inuites.
+# Statistique Canada n'a pu dénombrer entièrement certaines d'entre elles
+# (Kahnawake, Akwesasne, Doncaster…) : leurs données sont absentes, et la carte
+# doit dire pourquoi plutôt qu'afficher un simple « non disponible ».
+TYPES_AUTOCHTONES = ("IRI", "S-É", "TC", "TK", "TI")
+
+
+def fichier_composition(territoire_id: str) -> str:
+    """Nom du fichier de composition d'un territoire : FNV-1a 32 bits, modulo 256.
+
+    Le site calcule la même empreinte (web/src/donnees.ts) : les deux doivent
+    rester identiques.
+    """
+    h = 0x811C9DC5
+    for octet in territoire_id.encode("utf-8"):
+        h = ((h ^ octet) * 0x01000193) & 0xFFFFFFFF
+    return f"{h % NB_FICHIERS:02x}"
 
 
 def ecrire_couche(con, chemin: Path, ids: list[str], props: dict[str, dict],
-                  minzoom: int) -> int:
+                  minzoom: int, maxzoom: int) -> int:
     """GeoJSON délimité par lignes, le format que tippecanoe lit en flux."""
     n = 0
     with chemin.open("w", encoding="utf-8") as f:
@@ -52,7 +88,7 @@ def ecrire_couche(con, chemin: Path, ids: list[str], props: dict[str, dict],
                 [ids]).fetchall():
             f.write(json.dumps({
                 "type": "Feature",
-                "tippecanoe": {"minzoom": minzoom, "maxzoom": ZOOM_MAX},
+                "tippecanoe": {"minzoom": minzoom, "maxzoom": maxzoom},
                 "properties": props.get(tid, {"id": tid}),
                 "geometry": json.loads(geojson),
             }, ensure_ascii=False, separators=(",", ":")) + "\n")
@@ -60,47 +96,37 @@ def ecrire_couche(con, chemin: Path, ids: list[str], props: dict[str, dict],
     return n
 
 
-def compositions(con, rmr: str) -> int:
-    """Un fichier par secteur : le secteur et ses aires, postes non nuls."""
+def compositions(con, ids: list[str]) -> int:
+    """Composition de chaque territoire, postes non nuls, en NB_FICHIERS fichiers."""
     dossier = SORTIE / "composition"
     if dossier.exists():
         shutil.rmtree(dossier)
     dossier.mkdir(parents=True)
 
-    detail: dict[str, dict] = {}
+    fiches: dict[str, dict] = {
+        tid: {"id": tid, "niveau": niv, "nom": nom, "population": pop,
+              "non_reponse_pct": tnr, "superficie_km2": sup, "axes": {}}
+        for tid, niv, nom, pop, tnr, sup in con.execute("""
+            SELECT id, niveau_code, nom, population, tnr_questionnaire_abrege, superficie_km2
+            FROM territoire WHERE id IN (SELECT unnest(?))""", [ids]).fetchall()
+    }
     for tid, axe, code, eff, total in con.execute("""
         SELECT o.territoire_id, o.axe_code, o.langue_code, o.effectif, o.total_reference
         FROM observation o JOIN langue l ON l.code = o.langue_code
-        JOIN territoire t ON t.id = o.territoire_id
-        WHERE (t.parent_id = ? OR t.parent_id IN
-               (SELECT id FROM territoire WHERE parent_id = ?))
+        WHERE o.territoire_id IN (SELECT unnest(?))
           AND l.type_noeud IN (SELECT unnest(?)) AND o.effectif > 0
-        ORDER BY o.effectif DESC""", [rmr, rmr, list(TYPES_DETAIL)]).fetchall():
-        axes = detail.setdefault(tid, {})
+        ORDER BY o.effectif DESC""", [ids, list(TYPES_DETAIL)]).fetchall():
         cle = "lm" if axe == "CA.langue_maternelle" else "plop"
-        bloc = axes.setdefault(cle, {"total": total, "postes": []})
+        bloc = fiches[tid]["axes"].setdefault(cle, {"total": total, "postes": []})
         bloc["postes"].append([code, eff])
 
-    infos = {r[0]: r[1:] for r in con.execute("""
-        SELECT id, niveau_code, parent_id, population, tnr_questionnaire_abrege,
-               superficie_km2
-        FROM territoire WHERE parent_id = ? OR parent_id IN
-              (SELECT id FROM territoire WHERE parent_id = ?)""", [rmr, rmr]).fetchall()}
-
-    def fiche(tid: str) -> dict:
-        niveau, _, pop, tnr, sup = infos[tid]
-        return {"id": tid, "niveau": niveau, "population": pop,
-                "non_reponse_pct": tnr, "superficie_km2": sup,
-                "axes": detail.get(tid, {})}
-
-    secteurs = [t for t, i in infos.items() if i[0] == "CA.CT"]
-    for ct in secteurs:
-        contenu = {"secteur": fiche(ct),
-                   "aires": {t: fiche(t) for t, i in infos.items() if i[1] == ct}}
-        code = ct.removeprefix("2021S0507")
-        (dossier / f"{code}.json").write_text(
+    lots: dict[str, dict] = {}
+    for tid, fiche in fiches.items():
+        lots.setdefault(fichier_composition(tid), {})[tid] = fiche
+    for nom, contenu in lots.items():
+        (dossier / f"{nom}.json").write_text(
             json.dumps(contenu, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return len(secteurs)
+    return len(lots)
 
 
 def langues(con) -> int:
@@ -116,7 +142,7 @@ def langues(con) -> int:
     return len(lignes)
 
 
-def sources(con, rmr: str) -> None:
+def sources(con) -> None:
     """Provenance affichée sur la carte : une ligne par source et tableau."""
     lignes = con.execute("""
         SELECT s.nom, s.organisme, s.licence, s.licence_url, e.tableau_source,
@@ -137,7 +163,7 @@ def sources(con, rmr: str) -> None:
 
 
 def main(*args: str) -> int:
-    code_rmr = args[0] if args else "462"
+    code_pr = args[0] if args else "24"
     tippecanoe = shutil.which("tippecanoe")
     if not tippecanoe:
         print("tippecanoe introuvable : voir https://github.com/felt/tippecanoe")
@@ -145,56 +171,81 @@ def main(*args: str) -> int:
 
     con = db.ouvrir()
     db.charger_spatial(con)
-    rmr = loaders.dguid("CA.CMACA", code_rmr)
+    province = loaders.dguid("CA.PR", code_pr)
 
     def ids(niveau: str) -> list[str]:
         return [r[0] for r in con.execute("""
-            SELECT id FROM territoire WHERE niveau_code = ? AND (id = ? OR parent_id = ?
-                OR parent_id IN (SELECT id FROM territoire WHERE parent_id = ?))""",
-            [niveau, rmr, rmr, rmr]).fetchall()]
+            WITH RECURSIVE d(id) AS (
+                SELECT ? UNION ALL
+                SELECT t.id FROM territoire t JOIN d ON t.parent_id = d.id)
+            SELECT t.id FROM territoire t JOIN d USING (id) WHERE t.niveau_code = ?""",
+            [province, niveau]).fetchall()]
 
-    secteurs, aires = ids("CA.CT"), ids("CA.DA")
+    par_couche = {c: ids(niv) for c, (niv, _, _) in COUCHES.items()}
+    tous = [i for liste in par_couche.values() for i in liste]
     reglages = indicateurs.Reglages.lire()
-    props = indicateurs.proprietes(con, secteurs + aires, reglages)
-    # Le panneau de détail d'une aire lit le fichier de son secteur.
-    for aire, secteur in con.execute(
-            "SELECT id, parent_id FROM territoire WHERE id IN (SELECT unnest(?))", [aires]).fetchall():
-        props[aire]["ct"] = secteur
+    props = indicateurs.proprietes(con, tous, reglages)
+
+    # Nom des territoires qui en ont un (municipalités, MRC, régions) ; secteur
+    # d'une aire, s'il existe : une aire hors secteur s'affiche plus tôt.
+    for tid, nom, niveau in con.execute(
+            "SELECT id, nom, niveau_code FROM territoire WHERE id IN (SELECT unnest(?))",
+            [tous]).fetchall():
+        if niveau in ("CA.ER", "CA.CD", "CA.CSD") and nom:
+            props[tid]["nom"] = nom
+    # Communautés autochtones : la subdivision et ses aires.
+    fichier_csd = StatCanLimites().fichier("CA.CSD")
+    autochtones = {r[0] for r in con.execute(f"""
+        SELECT DGUID FROM ST_Read('{fichier_csd.couche}')
+        WHERE PRUID = ? AND CSDTYPE IN (SELECT unnest(?))""",
+        [code_pr, list(TYPES_AUTOCHTONES)]).fetchall()}
+    for tid, parent in con.execute(
+            "SELECT id, parent_id FROM territoire WHERE id IN (SELECT unnest(?))", [tous]).fetchall():
+        if tid in autochtones or parent in autochtones:
+            props[tid]["auto"] = True
+
+    for aire, secteur in con.execute("""
+            SELECT i.territoire_id, i.englobant_id FROM territoire_inclusion i
+            JOIN territoire e ON e.id = i.englobant_id WHERE e.niveau_code = 'CA.CT'""").fetchall():
+        if aire in props:
+            props[aire]["ct"] = secteur
 
     TRAVAIL.mkdir(parents=True, exist_ok=True)
     SORTIE.mkdir(parents=True, exist_ok=True)
-    couches = {
-        "rmr": ecrire_couche(con, TRAVAIL / "rmr.geojsonl", [rmr],
-                             {rmr: {"id": rmr}}, ZOOM_MIN),
-        "secteurs": ecrire_couche(con, TRAVAIL / "secteurs.geojsonl", secteurs, props, ZOOM_MIN),
-        "aires": ecrire_couche(con, TRAVAIL / "aires.geojsonl", aires, props, ZOOM_AIRES),
+    comptes = {
+        c: ecrire_couche(con, TRAVAIL / f"{c}.geojsonl", par_couche[c], props, zmin, zmax)
+        for c, (_, zmin, zmax) in COUCHES.items()
     }
-    print("entités : " + ", ".join(f"{k} {v}" for k, v in couches.items()))
+    print("entités : " + ", ".join(f"{k} {v}" for k, v in comptes.items()))
 
-    pmtiles = SORTIE / f"rmr-{code_rmr}.pmtiles"
+    pmtiles = SORTIE / f"pr-{code_pr}.pmtiles"
     commande = [
         tippecanoe, "-o", str(pmtiles), "--force",
         "-Z", str(ZOOM_MIN), "-z", str(ZOOM_MAX),
         # Aucune entité ne doit disparaître : une aire manquante serait un trou
         # dans la carte, pas une simplification.
         "--no-feature-limit", "--no-tile-size-limit",
-        # Les aires voisines partagent leurs limites : les simplifier ensemble
-        # évite les interstices et les chevauchements entre polygones.
+        # Les territoires voisins partagent leurs limites : les simplifier
+        # ensemble évite les interstices et les chevauchements.
         "--no-simplification-of-shared-nodes",
-        "--name", f"Atlas des langues, RMR {code_rmr}",
+        "--name", f"Atlas des langues, province {code_pr}",
         "--attribution", "Statistique Canada, Recensement de 2021",
         "--quiet",
     ]
-    for couche in couches:
+    for couche in COUCHES:
         commande += ["-L", json.dumps({"file": str(TRAVAIL / f"{couche}.geojsonl"),
                                        "layer": couche})]
     subprocess.run(commande, check=True)
     print(f"tuiles : {pmtiles.relative_to(config.RACINE)} "
           f"({pmtiles.stat().st_size / 1e6:.1f} Mo)")
 
-    print(f"compositions : {compositions(con, rmr)} fichiers de secteur")
+    # Anciennes tuiles de la phase 1 (RMR seule), remplacées par la province.
+    for ancien in SORTIE.glob("rmr-*.pmtiles"):
+        ancien.unlink()
+
+    print(f"compositions : {len(tous)} territoires en {compositions(con, tous)} fichiers")
     print(f"langues : {langues(con)} postes")
-    sources(con, rmr)
+    sources(con)
     print(f"sortie : {SORTIE.relative_to(config.RACINE)}/")
     con.close()
     return 0

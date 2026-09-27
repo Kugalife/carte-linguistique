@@ -6,7 +6,10 @@ export type Langue = "fr" | "en";
 const textes = {
   fr: {
     titre: "Atlas des langues",
-    sousTitre: "Région métropolitaine de Montréal, recensement de 2021",
+    sousTitre: "Québec, recensement de 2021",
+    niveauER: "Région économique",
+    niveauCD: "Division de recensement (MRC)",
+    niveauCSD: "Municipalité",
     carte: "Carte",
     lm: "Langue maternelle",
     plop: "Première langue officielle parlée",
@@ -25,6 +28,7 @@ const textes = {
     autres: "Autres langues",
     faiblePop: "Moins de {n} habitants : pourcentages instables",
     nonDisponible: "Donnée non disponible",
+    autochtoneNd: "Communauté autochtone : le recensement n'a pu y être mené entièrement, ou les données sont supprimées.",
     secteur: "Secteur de recensement",
     aire: "Aire de diffusion",
     habitants: "habitants",
@@ -36,6 +40,8 @@ const textes = {
       "Statistique Canada arrondit chaque effectif au multiple de 5 : dans une petite aire, les pourcentages sont approximatifs. " +
       "Une couleur décrit un territoire, pas chacun de ses habitants.",
     fermer: "Fermer",
+    rechercher: "Adresse, rue ou lieu…",
+    aucunResultat: "Aucun résultat au Québec",
     cliquez: "Cliquez sur un territoire pour sa composition complète.",
     chargement: "Chargement…",
     autresPostes: "{n} autres postes",
@@ -43,7 +49,10 @@ const textes = {
   },
   en: {
     titre: "Language Atlas",
-    sousTitre: "Montréal census metropolitan area, 2021 Census",
+    sousTitre: "Quebec, 2021 Census",
+    niveauER: "Economic region",
+    niveauCD: "Census division",
+    niveauCSD: "Municipality",
     carte: "Map",
     lm: "Mother tongue",
     plop: "First official language spoken",
@@ -62,6 +71,7 @@ const textes = {
     autres: "Other languages",
     faiblePop: "Fewer than {n} residents: unstable percentages",
     nonDisponible: "Data not available",
+    autochtoneNd: "Indigenous community: the census could not be fully conducted here, or data are suppressed.",
     secteur: "Census tract",
     aire: "Dissemination area",
     habitants: "residents",
@@ -73,6 +83,8 @@ const textes = {
       "Statistics Canada rounds every count to a multiple of 5: in a small area, percentages are approximate. " +
       "A colour describes an area, not each of its residents.",
     fermer: "Close",
+    rechercher: "Address, street or place…",
+    aucunResultat: "No result in Quebec",
     cliquez: "Click an area for its full composition.",
     chargement: "Loading…",
     autresPostes: "{n} more",
@@ -102,4 +114,15 @@ export function nombre(n: number): string {
 }
 export function pourcentage(p: number): string {
   return (p * 100).toLocaleString(courante === "fr" ? "fr-CA" : "en-CA", { maximumFractionDigits: p < 0.1 ? 1 : 0 }) + (courante === "fr" ? " %" : "%");
+}
+
+/** Nom d'un niveau géographique du modèle (CA.DA, CA.CSD…). */
+export function nomNiveau(niveau: string): string {
+  switch (niveau) {
+    case "CA.ER": return t("niveauER");
+    case "CA.CD": return t("niveauCD");
+    case "CA.CSD": return t("niveauCSD");
+    case "CA.CT": return t("secteur");
+    default: return t("aire");
+  }
 }
