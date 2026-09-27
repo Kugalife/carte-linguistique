@@ -50,7 +50,8 @@ vingtaine de secondes.
 cd web
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # site statique dans web/dist/, à publier sur GitHub Pages
+npm run build    # site statique dans web/dist/
+npm run deploy   # construit et pousse le site, données comprises, sur gh-pages
 ```
 
 Le site lit les fichiers produits par `06_exporter_carte.py` sous
